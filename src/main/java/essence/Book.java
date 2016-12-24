@@ -5,8 +5,12 @@ package essence;
  */
 public class Book {
 
+    public int id;
     public String autor;
-    public double year;
+    public int year;
     public String name;
+    public String language;
+    public String path;
+
 
 }
