@@ -1,5 +1,7 @@
 package servlet;
 
+import dataBaseUtils.SQLConnection;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +25,8 @@ public class StartPageServlet extends HttpServlet {
 
         String message = "Worked";
         request.setAttribute("message", message);
-
-        request.getRequestDispatcher("/BookSorterPro.jsp").forward(request,response);
+        SQLConnection sqlCon = new SQLConnection();
+        request.setAttribute("booksSort", sqlCon.getBooks());
+        request.getRequestDispatcher("/BookSorterPro.jsp").forward(request, response);
     }
 }

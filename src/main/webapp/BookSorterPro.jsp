@@ -8,7 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <title>Title</title>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ page isELIgnored="false" %>
     <html>
@@ -19,6 +20,7 @@
         body {
             margin: 0px;
             padding: 0px;
+            background-color: #0b0b0b;
         }
 
         .bodyDiv {
@@ -34,6 +36,24 @@
             color: blue;
             font-weight: bold;
         }
+
+        table {
+            border-collapse: collapse;
+            margin: 10px;
+            background-color: #525252;
+            color: aliceblue;
+            box-shadow: 2px 2px 6px black;
+        }
+
+        td {
+            padding: 5px;
+            border: 1px solid #0b0b0b;
+        }
+        .headerRow{
+            font-weight: bold;
+            color: floralwhite;
+        }
+
     </style>
 <body>
 <div class="bodyDiv">
@@ -41,7 +61,39 @@
         <h2>TEST PAGE</h2>
     </div>
     <div>
-        <c:set var="myName" value="Alex"/>
+
+        <%--${message}--%>
+
+        <table>
+            <tr>
+                <td width="150px" class="headerRow">
+                    Name
+                </td>
+                <td width="150px;" class="headerRow">
+                    Author
+                </td>
+                <td width="150px;" class="headerRow">
+                    Year
+                </td>
+                <td width="150px;" width="15px" class="headerRow">
+                    Language
+                </td>
+                <td width="150px;" class="headerRow">
+                    Format
+                </td>
+            </tr>
+            <c:forEach items="${booksSort}" var="bo">
+                <tr>
+                    <td>${bo.getName()}</td>
+                    <td>${bo.getAuthor()}</td>
+                    <td>${bo.getYear()}</td>
+                    <td>${bo.getLanguage()}</td>
+                    <td>${bo.getFormat()}</td>
+                </tr>
+            </c:forEach>
+        </table>
+
+        <%--<c:set var="myName" value="Alex"/>
         ${myName}
 
         <c:if test="${10 > 9}">
@@ -60,7 +112,7 @@
         .<%String name = (String) request.getAttribute("message"); %>
             <%= name%>
 
-            <%= request.getAttribute("message") %>.
+            <%= request.getAttribute("message") %>.--%>
     </div>
 </div>
 </body>

@@ -7,6 +7,27 @@ import java.util.ArrayList;
 
 public class SQLConnection {
 
+    public ArrayList<Book> getBooks() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Book> books = SQLUtils.getAllBooks(conn);
+        return books;
+    }
+
+    public static String getAnyValue() {
+        return "Fuck";
+    }
+
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
         Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
