@@ -9,7 +9,6 @@
 
     <display-name>Archetype Created Web Application</display-name>
 
-
     <servlet>
         <servlet-name>QWE</servlet-name>
         <servlet-class>servlet.QWE</servlet-class>
