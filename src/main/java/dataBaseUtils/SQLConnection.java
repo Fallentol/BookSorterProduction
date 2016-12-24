@@ -13,7 +13,7 @@ public class SQLConnection {
         ResultSet rs = null;
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/students?user=root&password=214926341qQ!&useSSL=true");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/students?user=admin&password=214926341&useSSL=true");
 
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM students");
