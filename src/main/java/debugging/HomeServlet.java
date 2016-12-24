@@ -21,7 +21,6 @@ public class HomeServlet extends HttpServlet {
         emp2.setId(2); emp2.setName("Meghna");emp2.setRole("Manager");
         empList.add(emp1);empList.add(emp2);
         request.setAttribute("empList", empList);
-
         request.setAttribute("htmlTagData", "<br/> creates a new line.");
         request.setAttribute("url", "http://www.journaldev.com");
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
