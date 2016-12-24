@@ -1,5 +1,6 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Title</title>
@@ -30,8 +31,26 @@
         <h2>TEST PAGE</h2>
     </div>
     <div>
-        <p>${textA}</p>
-        <p>${textB}</p>
+        <c:set var="myName" value="Alex"/>
+        ${myName}
+
+        <c:if test="${10 > 9}">
+        <p>True<p>
+        </c:if>
+        <c:if test="${10 < 9}">
+        <p>False<p>
+        </c:if>
+
+        <% if (Math.random() < 0.5) { %>
+        <B>Удачного</B> Вам дня!
+        <% } else { %>
+        <B>Не удачного</B> Вам дня!
+        <% } %>
+
+        .<%String name = (String) request.getAttribute("message"); %>
+        <%= name%>
+
+        <%= request.getAttribute("message") %>.
     </div>
 </div>
 </body>

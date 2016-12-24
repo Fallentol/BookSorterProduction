@@ -1,3 +1,5 @@
+package servlet;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +23,9 @@ public class MyServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
 
-        String varTextA = "Hello World!";
-        request.setAttribute("textA", varTextA);
-        String varTextB = "It JSP.";
-        request.setAttribute("textB", varTextB);
+        String message = "DAVAI BLYDI";
+        request.setAttribute("message", message);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/index.jsp").forward(request,response);
     }
 }
