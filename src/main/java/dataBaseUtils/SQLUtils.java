@@ -37,6 +37,7 @@ public class SQLUtils implements mySQLhandler {
             e.printStackTrace();
         }
         return result;
+        //куку
     }
 
     public Book getBookFromId(String id) {
