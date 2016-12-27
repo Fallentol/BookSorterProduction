@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface mySQLhandler {
 
+    public ArrayList<Book> getAllBooks();
+
     // получает аргументом айдишник книги, возвращает наполненый полями экземпляр класса Book
     public Book getBookFromId(String id);
 

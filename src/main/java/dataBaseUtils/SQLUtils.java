@@ -6,42 +6,49 @@ import essence.Tag;
 import interfase.mySQLhandler;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SQLUtils implements mySQLhandler {
 
-    public static ArrayList<Book> getAllBooks(Connection sqlConnection) {
-        ArrayList<Book> result = new ArrayList<Book>();
-        Statement stmt = null;
+    private static Connection sqlConnection;
+    private static final String sqlHost = "jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true";
+
+    static {
         try {
-            stmt = sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM books");
+            sqlConnection = DriverManager.getConnection(sqlHost);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Book> getAllBooks() {
+        ArrayList<Book> result = new ArrayList<Book>();
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books");
             while (rs.next()) {
-                Book book = new Book();
-                book.name = rs.getString("bookName");
-                book.author = rs.getString("bookAuthor");
-                book.language = rs.getString("bookLanguage");
-                book.type = rs.getString("bookType");
-                book.format = rs.getString("bookFormat");
-                book.path = rs.getString("bookPath");
-                book.description = rs.getString("bookDescription");
-                book.year = Integer.valueOf(rs.getString("bookYear"));
-                book.size = Integer.valueOf(rs.getString("bookSize"));
-                result.add(book);
+                result.add(allocateBookFields(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
-        //куку
     }
 
     public Book getBookFromId(String id) {
-        return null;
+        Book result = new Book();
+        if (id == null || "".equals(id)) return result;
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE book_id = " + id);
+            result = allocateBookFields(rs);
+        } catch (SQLException e) {
+            System.err.println("getBookFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
     }
 
     public Tag getTagFromId(String id) {
@@ -87,4 +94,24 @@ public class SQLUtils implements mySQLhandler {
     public ArrayList<Book> getFilteredTags(String field, ArrayList<String> filters) {
         return null;
     }
+
+
+    ////////   SERVICE METHODS //////
+    private static Book allocateBookFields(ResultSet rs) throws SQLException {
+        Book book = new Book();
+        book.id = rs.getInt("book_id");
+        book.name = rs.getString("bookName");
+        book.author = rs.getString("bookAuthor");
+        book.language = rs.getString("bookLanguage");
+        book.type = rs.getString("bookType");
+        book.format = rs.getString("bookFormat");
+        book.path = rs.getString("bookPath");
+        book.description = rs.getString("bookDescription");
+        book.year = Integer.valueOf(rs.getString("bookYear"));
+        book.size = Integer.valueOf(rs.getString("bookSize"));
+        return book;
+    }
+    ////////   SERVICE METHODS //////
+
+
 }

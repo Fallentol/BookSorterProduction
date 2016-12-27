@@ -2,7 +2,9 @@ package dataBaseUtils;
 
 import essence.Book;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLConnection {
@@ -20,7 +22,8 @@ public class SQLConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ArrayList<Book> books = SQLUtils.getAllBooks(conn);
+        SQLUtils sqlUtilsObject = new SQLUtils();
+        ArrayList<Book> books = sqlUtilsObject.getAllBooks();
         return books;
     }
 
@@ -33,7 +36,8 @@ public class SQLConnection {
         Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
 
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true");
-        ArrayList<Book> books = SQLUtils.getAllBooks(conn);
+        SQLUtils sqlUtilsObject = new SQLUtils();
+        ArrayList<Book> books = sqlUtilsObject.getAllBooks();
         for (Book b : books) {
             System.out.println(b);
         }

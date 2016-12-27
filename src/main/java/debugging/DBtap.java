@@ -11,6 +11,10 @@ import java.util.List;
  * Created by New on 12/17/2016.
  */
 class DBtap implements mySQLhandler {
+    public ArrayList<Book> getAllBooks() {
+        return null;
+    }
+
     public Book getBookFromId(String id) {
         return null;
     }
