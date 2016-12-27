@@ -2,14 +2,17 @@ package dataBaseUtils;
 
 
 import essence.Book;
+import essence.Tag;
+import interfase.mySQLhandler;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SQLUtils {
+public class SQLUtils implements mySQLhandler {
 
     public static ArrayList<Book> getAllBooks(Connection sqlConnection) {
         ArrayList<Book> result = new ArrayList<Book>();
@@ -34,5 +37,53 @@ public class SQLUtils {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public Book getBookFromId(String id) {
+        return null;
+    }
+
+    public Tag getTagFromId(String id) {
+        return null;
+    }
+
+    public void insertNewBook(Book book) {
+
+    }
+
+    public void insertNewTag(Tag tag) {
+
+    }
+
+    public void updateBook(Book book) {
+
+    }
+
+    public void updateTag(Tag tag) {
+
+    }
+
+    public void deleteBook(String Id) {
+
+    }
+
+    public void deleteTag(String Id) {
+
+    }
+
+    public ArrayList<Book> getBooksFromTo(int from, int to, int quantity) {
+        return null;
+    }
+
+    public ArrayList<Book> getFilteredBooks(String field, ArrayList<String> filters) {
+        return null;
+    }
+
+    public List<Tag> getTagsFromTo(int from, int to, int quantity) {
+        return null;
+    }
+
+    public ArrayList<Book> getFilteredTags(String field, ArrayList<String> filters) {
+        return null;
     }
 }
