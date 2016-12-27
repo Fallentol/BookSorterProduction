@@ -34,5 +34,6 @@ public class SQLUtils {
             e.printStackTrace();
         }
         return result;
+        //куку
     }
 }
