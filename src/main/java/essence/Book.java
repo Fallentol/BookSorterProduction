@@ -6,30 +6,30 @@ package essence;
 public class Book {
 
     public int id;
-    public String author;
-    public int year;
     public String name;
+    public String author;
     public String language;
-    public String path;
     public String type;
     public String format;
+    public String path;
     public String description;
+    public int year;
     public int size;
 
     public Book(){
 
     }
 
-    public Book(int id, String author, int year, String name, String language, String path, String type, String format, String description, int size) {
+    public Book(int id, String name, String author, String language, String type, String format, String path, String description, int year, int size) {
         this.id = id;
-        this.author = author;
-        this.year = year;
         this.name = name;
+        this.author = author;
         this.language = language;
-        this.path = path;
         this.type = type;
         this.format = format;
+        this.path = path;
         this.description = description;
+        this.year = year;
         this.size = size;
     }
 
@@ -124,7 +124,7 @@ public class Book {
     }
 
     public String toString() {
-        return "Название книги '" + this.name + "', её автор " + author + " написана " + year + " г.";
+        return "Название книги '" + this.name + "', её автор " + this.author + ", написана в " + this.year + " г.";
     }
 
 

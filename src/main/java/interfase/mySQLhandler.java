@@ -1,6 +1,7 @@
 package interfase;
 
 import essence.Book;
+import essence.Link;
 import essence.Tag;
 
 import java.util.ArrayList;
@@ -25,19 +26,27 @@ public interface mySQLhandler {
 
     public Tag getTagFromId(String id);
 
+    public Link getLinkFromId(String id);
+
     // получает аргументом Book и инсертит в базу данных
     public void insertNewBook(Book book);
 
     public void insertNewTag(Tag tag);
 
+    public void insertNewLink(Link link);
+
     public void updateBook(Book book);
 
     public void updateTag(Tag tag);
+
+    public void updateLink(Link link);
 
     // получает аргументом номер айдишника, который нужно удалить
     public void deleteBook(String Id);
 
     public void deleteTag(String Id);
+
+    public void deleteLink(String Id);
 
     public void readDB(String dbName, String tableName);
 

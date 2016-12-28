@@ -2,6 +2,7 @@ package dataBaseUtils;
 
 
 import essence.Book;
+import essence.Link;
 import essence.Tag;
 import interfase.mySQLhandler;
 
@@ -184,15 +185,16 @@ public class SQLUtils implements mySQLhandler {
         tableName = "books";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
-                "  `id` int(11) NOT NULL auto_increment," +
-                "  `author` varchar(50) default NULL," +
-                "  `year` int(11) default NULL," +
-                "  `name` varchar(45) default NULL," +
-                "  `path` varchar(45) default NULL," +
-                "  `type` varchar(45) default NULL," +
-                "  `format` varchar(45) default NULL," +
-                "  `description` varchar(45) default NULL," +
-                "  `size` int(11) default NULL," +
+                "  `book_id` int(11) NOT NULL auto_increment," +
+                "  `bookName` varchar(255) default NULL," +
+                "  `bookAuthor` varchar(255) default NULL," +
+                "  `bookLanguage` varchar(45) default NULL," +
+                "  `bookType` varchar(45) default NULL," +
+                "  `bookFormat` varchar(45) default NULL," +
+                "  `bookPath` varchar(45) default NULL," +
+                "  `bookDescription` varchar(45) default NULL," +
+                "  `bookYear` int(11) default NULL," +
+                "  `bookSize` int(11) default NULL," +
                 "  PRIMARY KEY  (`id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -208,9 +210,9 @@ public class SQLUtils implements mySQLhandler {
         tableName = "tags";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
-                "  `id` int(11) NOT NULL auto_increment," +
-                "  `name` varchar(50) default NULL," +
-                "  `parent` varchar(45) default NULL," +
+                "  `tag_id` int(11) NOT NULL auto_increment," +
+                "  `tagName` varchar(50) default NULL," +
+                "  `tagParent` varchar(45) default NULL," +
                 "  PRIMARY KEY  (`id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -226,9 +228,9 @@ public class SQLUtils implements mySQLhandler {
         tableName = "links";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
-                "  `id` int(11) NOT NULL auto_increment," +
-                "  `tag_id` int(11) default NULL," +
-                "  `book_id` int(11) default NULL," +
+                "  `link_id` int(11) NOT NULL auto_increment," +
+                "  `tagId` int(11) default NULL," +
+                "  `bookId` int(11) default NULL," +
                 "  PRIMARY KEY  (`link_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -279,22 +281,44 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public Tag getTagFromId(String id) {
-        return null;
+        Tag result = new Tag();
+        if (id == null || "".equals(id)) return result;
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE tag_id = " + id);
+            result = allocateTagFields(rs);
+        } catch (SQLException e) {
+            System.err.println("getTagFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
+    }
+
+    public Link getLinkFromId(String id) {
+        Link result = new Link();
+        if (id == null || "".equals(id)) return result;
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE link_id = " + id);
+            result = allocateLinkFields(rs);
+        } catch (SQLException e) {
+            System.err.println("getLinkFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
     }
 
     public void insertNewBook(Book book) {
         //найденная и расшифрованная книга на ПК передается в prepInsert
-        String createCommand = "insert into bookstorepro.books (author, year, name, language, path, type, format, description, size) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String createCommand = "insert into BookStorePro.books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            preStatement.setString(1,book.getAuthor());
-            preStatement.setInt(2, book.getYear());
-            preStatement.setString(3, book.getName());
-            preStatement.setString(4, book.getLanguage());
-            preStatement.setString(5, book.getPath());
-            preStatement.setString(6,book.getType());
-            preStatement.setString(7,book.getFormat());
-            preStatement.setString(8,book.getDescription());
+            preStatement.setString(1, book.getName());
+            preStatement.setString(2,book.getAuthor());
+            preStatement.setString(3, book.getLanguage());
+            preStatement.setString(4,book.getType());
+            preStatement.setString(5,book.getFormat());
+            preStatement.setString(6, book.getPath());
+            preStatement.setString(7,book.getDescription());
+            preStatement.setInt(8, book.getYear());
             preStatement.setInt(9,book.getSize());
             preStatement.execute();
         } catch (SQLException e) {
@@ -303,75 +327,129 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public void insertNewTag(Tag tag) {
+        //навый Tag передается в prepInsert
+        String createCommand = "insert into BookStorePro.Tags (tagName, tagParent) values (?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            preStatement.setString(1,tag.getName());
+            preStatement.setInt(2, tag.getParent());
+            preStatement.execute();
+        } catch (SQLException e) {
+            System.err.println("insertNewTag WARNING!! " + e.getStackTrace());
+        }
+    }
 
+    public void insertNewLink(Link link) {
+        //навый Link передается в prepInsert
+        String createCommand = "insert into BookStorePro.Links (tagId, bookId) values (?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            preStatement.setInt(1,link.getTag_id());
+            preStatement.setInt(2,link.getBook_id());
+            preStatement.execute();
+        } catch (SQLException e) {
+            System.err.println("insertNewLink WARNING!! " + e.getStackTrace());
+        }
     }
 
     public void updateBook(Book book) {
-        //определяю книгу для обновления по ID таблицы БД
-        int ID = book.getId();
-
-        //заполняю обновляемые поля книги
-        String author = book.getAuthor();
-        int year = book.getYear();
-        String name = book.getName();
-        String language = book.getLanguage();
-        String path = book.getPath();
-        String type = book.getType();
-        String format = book.getFormat();
-        String description = book.getDescription();
-        int size = book.getSize();
-
         //передаю запрос обновить книгу (поле книги)
-        String createCommand = "insert into bookstorepro.books (author, year, name, language, path, type, format, description, size) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String createCommand = "insert into BookStorePro.books (book_id, bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            preStatement.setString(1,book.getAuthor());
-            preStatement.setInt(2, book.getYear());
-            preStatement.setString(3, book.getName());
+            preStatement.setInt(1, book.getId());
+            preStatement.setString(2, book.getName());
+            preStatement.setString(3,book.getAuthor());
             preStatement.setString(4, book.getLanguage());
-            preStatement.setString(5, book.getPath());
-            preStatement.setString(6,book.getType());
-            preStatement.setString(7,book.getFormat());
+            preStatement.setString(5,book.getType());
+            preStatement.setString(6,book.getFormat());
+            preStatement.setString(7, book.getPath());
             preStatement.setString(8,book.getDescription());
-            preStatement.setInt(9,book.getSize());
+            preStatement.setInt(9, book.getYear());
+            preStatement.setInt(10,book.getSize());
             preStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("updateBook WARNING!! " + e.getStackTrace());
         }
 
     }
 
     public void updateTag(Tag tag) {
+        //передаю запрос обновить книгу (поле книги)
+        String createCommand = "insert into BookStorePro.Tags (tag_id, tagName, tagParent) values (?, ?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            preStatement.setInt(1, tag.getId()); //определяю элемент для обновления по ID таблицы БД
+            preStatement.setString(2,tag.getName());
+            preStatement.setInt(3, tag.getParent());
+            preStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("updateTag WARNING!! " + e.getStackTrace());
+        }
+    }
 
+    public void updateLink(Link link) {
+        //передаю запрос обновить книгу (поле книги)
+        String createCommand = "insert into BookStorePro.Links (link_id, tagId, bookId) values (?, ?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            preStatement.setInt(1, link.getId()); //определяю элемент для обновления по ID таблицы БД
+            preStatement.setInt(2,link.getTag_id());
+            preStatement.setInt(3,link.getBook_id());
+            preStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("updateLink WARNING!! " + e.getStackTrace());
+        }
     }
 
     public void deleteBook(String Id) {
-
         //передаю запрос
-        String createCommand = "DELETE FROM bookstore.books WHERE id=?";
+        String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
             preStatement.setString(1,Id);
             preStatement.execute();
-            System.out.println("Запись с id: " + Id + " успешно удалена из bookstore.books");
+            System.out.println("Book с id: " + Id + " успешно удалена из bookstore.books");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("deleteBook WARNING!! " + e.getStackTrace());
         }
 
     }
 
     public void deleteTag(String Id) {
+        //передаю запрос
+        String createCommand = "DELETE FROM BookBorterPro.Tags WHERE id=?";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
+            preStatement.setString(1,Id);
+            preStatement.execute();
+            System.out.println("Tag с id: " + Id + " успешно удален из BookSorterPro.Tags");
+        } catch (SQLException e) {
+            System.err.println("deleteTag WARNING!! " + e.getStackTrace());
+        }
+    }
 
+    public void deleteLink(String Id) {
+        //передаю запрос
+        String createCommand = "DELETE FROM BookBorterPro.Links WHERE id=?";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
+            preStatement.setString(1,Id);
+            preStatement.execute();
+            System.out.println("Link с id: " + Id + " успешно удален из BookSorterPro.Links");
+        } catch (SQLException e) {
+            System.err.println("deleteLink WARNING!! " + e.getStackTrace());
+        }
     }
 
     public void readDB(String dbName, String tableName) {
 
-        //вывожу все имеющиеся БД на сервере
+        /*//вывожу все имеющиеся БД на сервере
         try (Statement st = sqlConnection.createStatement()) {
-            System.out.println("Читаю сервер mysql:" + st.execute("SHOW DATABASES")); //нужно вывести на экран список БД
+            System.out.println("БД сервера MySQL:" + st.execute("SHOW DATABASES")); //нужно вывести на экран список БД
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //подготавливаю запрос
         System.out.println("Читаю таблицу: " + tableName + " БД: " + dbName);
@@ -383,7 +461,6 @@ public class SQLUtils implements mySQLhandler {
         ArrayList<Book> books = new ArrayList<>();
 
         try (Statement st = sqlConnection.createStatement()){
-            //System.out.println(DBConnectorObject.getConnection() + " 174");
             resultSet = st.executeQuery(query);
 
             while (resultSet.next()) {
@@ -396,7 +473,7 @@ public class SQLUtils implements mySQLhandler {
                 book.setPath(resultSet.getString("path"));
                 book.setType(resultSet.getString("type"));
                 book.setFormat(resultSet.getString("format"));
-                book.setDescription(resultSet.getString("desctiption"));
+                book.setDescription(resultSet.getString("description"));
                 book.setSize(resultSet.getInt("size"));
                 books.add(book);
                 System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
@@ -404,7 +481,7 @@ public class SQLUtils implements mySQLhandler {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("readDB WARNING!! " + e.getStackTrace());
         }
 
         /*for (Book b: books){
@@ -443,6 +520,22 @@ public class SQLUtils implements mySQLhandler {
         book.year = Integer.valueOf(rs.getString("bookYear"));
         book.size = Integer.valueOf(rs.getString("bookSize"));
         return book;
+    }
+
+    private static Tag allocateTagFields(ResultSet rs) throws SQLException {
+        Tag tag = new Tag();
+        tag.id = rs.getInt("tag_id");
+        tag.name = rs.getString("tagName");
+        tag.parent = rs.getInt("tagParent");
+        return tag;
+    }
+
+    private static Link allocateLinkFields(ResultSet rs) throws SQLException {
+        Link link = new Link();
+        link.id = rs.getInt("link_id");
+        link.tag_id = rs.getInt("tagId");
+        link.book_id = rs.getInt("bookId");
+        return link;
     }
 
     private static void allocateTableField (String createCommand, String tableName) throws SQLException {
