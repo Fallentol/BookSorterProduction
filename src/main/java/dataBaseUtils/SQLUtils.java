@@ -15,8 +15,6 @@ public class SQLUtils implements mySQLhandler {
     private static Connection sqlConnection;
     private static final String sqlHost = "jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true";
 
-    Scanner sc = new Scanner(System.in);
-
     static {
         try {
             sqlConnection = DriverManager.getConnection(sqlHost);
@@ -25,16 +23,16 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createUserAP() {
+    public void createUserAP(String userName, int userPass) {
         //создаю нового пользователя и пароль
-        String userAdmin = "admin";
-        int userPass = 214926341;
-        String createCommandUser = "CREATE USER '" + userAdmin + "'@'localhost' IDENTIFIED BY '" + userPass +"';";
+        userName = "admin";
+        userPass = 214926341;
+        String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass +"';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandUser);
-            System.out.println("пользователь '" + userAdmin + "' с паролем " + userPass + "' успешно добавлен!" );
+            System.out.println("пользователь '" + userName + "' с паролем " + userPass + "' успешно добавлен!" );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,7 +43,7 @@ public class SQLUtils implements mySQLhandler {
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandPrivileges);
-            System.out.println("Права пользователю '" + userAdmin + " успешно назначены!" );
+            System.out.println("Права пользователю '" + userName + " успешно назначены!" );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,39 +60,37 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDB() {
+    public void createDB(String dbName) {
         //подготавливаю запрос на создание БД
-        String dbName = "BookSorterPro";
+        dbName = "BookSorterPro";
         String createCommand = "CREATE DATABASE '" + dbName + "' CHARACTER SET utf8 COLLATE utf8_general_ci";
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommand);
-            System.out.println("База данных с именем: " + dbName + " создана успешно.");
+            System.out.println("База данных: " + dbName + " создана успешно.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void deleteDB() {
+    public void deleteDB(String dbName) {
         //подготавливаю запрос на удаление БД
-        System.out.println("Для удаление БД введите её название (BookSorterPro):");
-        String dbName = sc.nextLine();
-
+        dbName = "BookSorterPro";
         String createCommand = "DROP DATABASE " + dbName;
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommand);
-            System.out.println("База данных с именем: " + dbName + " удалена успешно.");
+            System.out.println("База данных: " + dbName + " удалена успешно.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void createDBTableBooks() {
+    public void createDBTableBooks(String tableName) {
         //подготавливаю запрос на создание таблицы
-        String tableName = "books";
+        tableName = "books";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
@@ -116,9 +112,9 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableTags() {
+    public void createDBTableTags(String tableName) {
         //подготавливаю запрос на создание таблицы
-        String tableName = "tags";
+        tableName = "tags";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
@@ -134,9 +130,9 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableLinks() {
+    public void createDBTableLinks(String tableName) {
         //подготавливаю запрос на создание таблицы
-        String tableName = "links";
+        tableName = "links";
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
@@ -152,10 +148,8 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void deleteDBTable() {
+    public void deleteDBTable(String tableName) {
         //подготавливаю запрос на DROP Table
-        System.out.println("Для удаления таблицы введите её название(books, tags, links):");
-        String tableName = sc.nextLine();
         String createCommand = ("DROP TABLE " + tableName);
 
         //передаю БД команду на удаление таблицы (пред запрос + название)
@@ -213,7 +207,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(9,book.getSize());
             preStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
         }
     }
 
@@ -226,24 +220,15 @@ public class SQLUtils implements mySQLhandler {
         int ID = book.getId();
 
         //заполняю обновляемые поля книги
-        System.out.println("Введите автора книги:");
-        String author = book.setAuthor(sc.nextLine());
-        System.out.println("Введите год издания книги:");
-        int year = book.setYear(Integer.parseInt(sc.nextLine()));
-        System.out.println("Введите название книги:");
-        String title = book.setName(sc.nextLine());
-        System.out.println("Введите язык книги:");
-        String language = book.setLanguage(sc.nextLine());
-        System.out.println("Введите путь к книге:");
-        String path = book.setPath(sc.nextLine());
-        System.out.println("Введите тип книги (книга, журнал...):");
-        String type = book.setType(sc.nextLine());
-        System.out.println("Введите формат (pdf, djvu...) книги:");
-        String format = book.setFormat(sc.nextLine());
-        System.out.println("Введите description книги:");
-        String description = book.setDescription(sc.nextLine());
-        System.out.println("Введите размер книги (Мб):");
-        int size = book.setSize(Integer.parseInt(sc.nextLine()));
+        String author = book.getAuthor();
+        int year = book.getYear();
+        String name = book.getName();
+        String language = book.getLanguage();
+        String path = book.getPath();
+        String type = book.getType();
+        String format = book.getFormat();
+        String description = book.getDescription();
+        int size = book.getSize();
 
         //передаю запрос обновить книгу (поле книги)
         String createCommand = "insert into bookstorepro.books (author, year, name, language, path, type, format, description, size) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -288,7 +273,7 @@ public class SQLUtils implements mySQLhandler {
 
     }
 
-    public void readDB() {
+    public void readDB(String dbName, String tableName) {
 
         //вывожу все имеющиеся БД на сервере
         try (Statement st = sqlConnection.createStatement()) {
@@ -298,13 +283,10 @@ public class SQLUtils implements mySQLhandler {
         }
 
         //подготавливаю запрос
-        System.out.println("Какую БД читать (bookstore):");
-        String dbName = sc.nextLine();
-        System.out.println("Какую таблицу БД:" + dbName + " читать (books):");
-        String tableDBName = sc.nextLine();
+        System.out.println("Читаю таблицу: " + tableName + " БД: " + dbName);
 
         //запрос в БД на вывод всех элементов таблицы
-        String query = "select * from " + dbName + "." + tableDBName;
+        String query = "select * from " + dbName + "." + tableName;
         ResultSet resultSet;
 
         ArrayList<Book> books = new ArrayList<>();
@@ -326,7 +308,7 @@ public class SQLUtils implements mySQLhandler {
                 book.setDescription(resultSet.getString("desctiption"));
                 book.setSize(resultSet.getInt("size"));
                 books.add(book);
-                System.out.println("Читаю таблицу: " + tableDBName + " из БД: " + dbName);
+                System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
                 System.out.println(book);
             }
 

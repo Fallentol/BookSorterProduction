@@ -10,14 +10,14 @@ public interface mySQLhandler {
 
     public ArrayList<Book> getAllBooks();
 
-    public void createUserAP(); //создаю нового пользователя и назначаю ему права
+    public void createUserAP(String userName, int userPass); //создаю нового пользователя и назначаю ему права All Privileges
 
-    public void createDB(); //создаю БД BookSorterPro
-    public void deleteDB(); //удаляю БД из сервера
-    public void createDBTableBooks();
-    public void createDBTableTags();
-    public void createDBTableLinks();
-    public void deleteDBTable(); //удаляю любую БД с сервера
+    public void createDB(String dbName); //создаю БД на сервере (поумолчанию:BookSorterPro)
+    public void deleteDB(String dbName); //удаляю БД из сервера (поумолчанию:BookSorterPro)
+    public void createDBTableBooks(String tableName);
+    public void createDBTableTags(String tableName);
+    public void createDBTableLinks(String tableName);
+    public void deleteDBTable(String tableName); //удаляю БД с сервера
 
     // получает аргументом айдишник книги, возвращает наполненый полями экземпляр класса Book
     public Book getBookFromId(String id);
@@ -38,7 +38,7 @@ public interface mySQLhandler {
 
     public void deleteTag(String Id);
 
-    public void readDB();
+    public void readDB(String dbName, String tableName);
 
     // получает аргументом номер первой и последней записи из БД
     // а так же их количество
