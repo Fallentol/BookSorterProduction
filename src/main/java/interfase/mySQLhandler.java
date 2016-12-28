@@ -10,6 +10,13 @@ public interface mySQLhandler {
 
     public ArrayList<Book> getAllBooks();
 
+    public void createDB();
+    public void deleteDB();
+    public void createDBTableBooks();
+    public void createDBTableTags();
+    public void createDBTableLinks();
+    public void deleteDBTable();
+
     // получает аргументом айдишник книги, возвращает наполненый полями экземпляр класса Book
     public Book getBookFromId(String id);
 
@@ -28,6 +35,8 @@ public interface mySQLhandler {
     public void deleteBook(String Id);
 
     public void deleteTag(String Id);
+
+    public void readDB();
 
     // получает аргументом номер первой и последней записи из БД
     // а так же их количество
