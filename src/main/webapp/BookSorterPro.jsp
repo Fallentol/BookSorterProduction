@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Book Sorter Pro</title>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ page isELIgnored="false" %>
@@ -53,12 +53,38 @@
             font-weight: bold;
             color: floralwhite;
         }
+        .btn{
+            display: inline-block;
+            background-color: cornflowerblue;
+            color: #525252;
+            font-weight: bold;
+            padding: 15px;
+            border: 2px solid #525252;
+        }
+        .btn:hover {
+            background-color: ivory;
+            color: green;
+        }
+        .btn:active {
+            border: 1px solid red;
+        }
 
     </style>
 <body>
 <div class="bodyDiv">
     <div class="mainDiv">
-        <h2>TEST PAGE</h2>
+        <h2>BOOK SORTER</h2>
+    </div>
+    <div class="mainDiv">
+        <div class="btn">
+            <a href="/fileStore">File Store</a>
+        </div>
+        <div class="btn">
+            <a href="/fileStore">Books</a>
+        </div>
+        <div class="btn">
+            <a href="/fileStore">Tags</a>
+        </div>
     </div>
     <div>
 
