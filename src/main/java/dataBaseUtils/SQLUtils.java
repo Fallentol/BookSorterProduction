@@ -443,50 +443,67 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public void readDB(String dbName, String tableName) {
+        dbName = "BookSorterPro";
+        tableName = "Books";
 
-        /*//вывожу все имеющиеся БД на сервере
-        try (Statement st = sqlConnection.createStatement()) {
-            System.out.println("БД сервера MySQL:" + st.execute("SHOW DATABASES")); //нужно вывести на экран список БД
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
-
-        //подготавливаю запрос
-        System.out.println("Читаю таблицу: " + tableName + " БД: " + dbName);
-
-        //запрос в БД на вывод всех элементов таблицы
-        String query = "select * from " + dbName + "." + tableName;
-        ResultSet resultSet;
-
-        ArrayList<Book> books = new ArrayList<>();
-
-        try (Statement st = sqlConnection.createStatement()){
-            resultSet = st.executeQuery(query);
-
-            while (resultSet.next()) {
-                Book book = new Book();
-                book.setId(resultSet.getInt("id"));
-                book.setAuthor(resultSet.getString("author"));
-                book.setYear(resultSet.getInt("year"));
-                book.setName(resultSet.getString("name"));
-                book.setLanguage(resultSet.getString("language"));
-                book.setPath(resultSet.getString("path"));
-                book.setType(resultSet.getString("type"));
-                book.setFormat(resultSet.getString("format"));
-                book.setDescription(resultSet.getString("description"));
-                book.setSize(resultSet.getInt("size"));
-                books.add(book);
-                System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
-                System.out.println(book);
+        if (tableName == "Books") {
+            try (Statement st = sqlConnection.createStatement()) {
+                ResultSet resultSet;
+                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+                while (resultSet.next()) {
+                    Book book = new Book();
+                    book.id = resultSet.getInt("book_id");
+                    book.name = resultSet.getString("bookName");
+                    book.author = resultSet.getString("bookAuthor");
+                    book.language = resultSet.getString("bookLanguage");
+                    book.type = resultSet.getString("bookType");
+                    book.format = resultSet.getString("bookFormat");
+                    book.path = resultSet.getString("bookPath");
+                    book.description = resultSet.getString("bookDescription");
+                    book.year = Integer.valueOf(resultSet.getString("bookYear"));
+                    book.size = Integer.valueOf(resultSet.getString("bookSize"));
+                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
+                    System.out.println(book);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-            System.err.println("readDB WARNING!! " + e.getStackTrace());
         }
 
-        /*for (Book b: books){
-            System.out.println(b);
-        }*/
+        if (tableName == "Tags") {
+            try (Statement st = sqlConnection.createStatement()) {
+                ResultSet resultSet;
+                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+                while (resultSet.next()) {
+                    Tag tag = new Tag();
+                    tag.id = resultSet.getInt("tag_id");
+                    tag.name = resultSet.getString("tagName");
+                    tag.parent = resultSet.getInt("tagParent");
+                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
+                    System.out.println(tag);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (tableName == "links") {
+            try (Statement st = sqlConnection.createStatement()){
+                ResultSet resultSet;
+                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+                while (resultSet.next()) {
+                    Link link = new Link();
+                    link.id = resultSet.getInt("link_id");
+                    link.tag_id = resultSet.getInt("tagId");
+                    link.book_id = resultSet.getInt("bookId");
+                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
+                    System.out.println(link);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public ArrayList<Book> getBooksFromTo(int from, int to, int quantity) {
