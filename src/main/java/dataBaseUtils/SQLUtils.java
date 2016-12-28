@@ -5,10 +5,13 @@ import essence.Book;
 import essence.Tag;
 import interfase.mySQLhandler;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class SQLUtils implements mySQLhandler {
 
@@ -19,6 +22,94 @@ public class SQLUtils implements mySQLhandler {
         try {
             sqlConnection = DriverManager.getConnection(sqlHost);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshLocalRoot () {
+        //задаю пароль для локального root пустого сервера MySQL для дальнейшей работы
+        try {
+            //исполняющий файл
+            String contentCMD = "cd C:/Program Files/MySQL/MySQL Server 5.7/bin/" +
+                    "mysqld --init-file=C:/Users/All Users/Temp/SQL.txt"; //два запроса в одном CMD????????????
+            String pathNameCMD = "C:/Users/All Users/Temp/rootpass.bat";
+
+            File CMDfile = new File(pathNameCMD);
+            // если нет файла, то создаю его
+            if (!CMDfile.exists()) {
+                CMDfile.createNewFile();
+                System.out.println("Файл обновления пароля root создан");
+            }
+
+            FileWriter fwCMD = new FileWriter(CMDfile.getAbsoluteFile());
+            BufferedWriter bwCMD = new BufferedWriter(fwCMD);
+            bwCMD.write(contentCMD);
+            bwCMD.flush();
+            bwCMD.close();
+            System.out.println("Изменения в исполняющий файл обновления пароля root внесены");
+
+
+            //файл SQL запроса
+            String contentSQL = "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');";
+            String pathNameSQL = "C:/Users/All Users/Temp/SQL.txt";
+
+            File SQLfile = new File(pathNameSQL);
+            // если нет файла, то создаю его
+            if (!SQLfile.exists()) {
+                SQLfile.createNewFile();
+                System.out.println("Файл SQL-запроса создан");
+            }
+
+            FileWriter fwSQL = new FileWriter(SQLfile.getAbsoluteFile());
+            BufferedWriter bwSQL = new BufferedWriter(fwSQL);
+            bwSQL.write(contentSQL);
+            bwSQL.flush();
+            bwSQL.close();
+            System.out.println("Изменения в файл SQL-запроса внесены");
+
+            //нужно остановить службу MySQL для подмены пароля root
+            String pathNameStopS = "C:/Users/All Users/Temp/stopS.bat";
+            String stopService = "net stop MySQL57";
+            File stopSfile = new File(pathNameStopS);
+            // если нет файла, то создаю его
+            if (!stopSfile.exists()) {
+                stopSfile.createNewFile();
+                System.out.println("Файл остановки службы MySQL создан");
+            }
+
+            FileWriter fwStopS = new FileWriter(stopSfile.getAbsoluteFile());
+            BufferedWriter bwStopS = new BufferedWriter(fwStopS);
+            bwStopS.write(stopService);
+            bwStopS.flush();
+            bwStopS.close();
+            System.out.println("Изменения в файл остановки службы внесены");
+
+            //запускаю stopS
+            new ProcessBuilder("cmd", "start", pathNameStopS).start();
+            Runtime.getRuntime().exec("cmd /c " + pathNameStopS);
+            System.out.println("Службу MySQL57 остановил");
+
+            //запускаю CMD
+            new ProcessBuilder("cmd", "start", pathNameCMD).start();
+            Runtime.getRuntime().exec("cmd /c " + pathNameCMD);
+            System.out.println("Батник выполнил");
+
+            //удаляю исполняющий файл rootpass.bat
+            if(CMDfile.delete()){
+                System.out.println("temp/rootpass.bat файл был удален");
+            }else System.out.println("Файл temp/rootpass.bat не был найден");
+
+            //удаляю файл запроса SQL.txt
+            if(SQLfile.delete()){
+                System.out.println("temp/SQL.txt файл был удален");
+            }else System.out.println("Файл temp/SQL.txt не был найден");
+
+            //удаляю файл остановки службы stopS.bat
+            if(stopSfile.delete()){
+                System.out.println("temp/stopS.bat файл был удален");
+            }else System.out.println("Файл temp/stopS.bat не был найден");
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
