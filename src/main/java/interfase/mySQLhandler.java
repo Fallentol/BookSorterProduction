@@ -10,12 +10,14 @@ public interface mySQLhandler {
 
     public ArrayList<Book> getAllBooks();
 
-    public void createDB();
-    public void deleteDB();
+    public void createUserAP(); //создаю нового пользователя и назначаю ему права
+
+    public void createDB(); //создаю БД BookSorterPro
+    public void deleteDB(); //удаляю БД из сервера
     public void createDBTableBooks();
     public void createDBTableTags();
     public void createDBTableLinks();
-    public void deleteDBTable();
+    public void deleteDBTable(); //удаляю любую БД с сервера
 
     // получает аргументом айдишник книги, возвращает наполненый полями экземпляр класса Book
     public Book getBookFromId(String id);

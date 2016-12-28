@@ -15,7 +15,6 @@ public class SQLUtils implements mySQLhandler {
     private static Connection sqlConnection;
     private static final String sqlHost = "jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true";
 
-    static SQLConnection SQLConnectionObject;
     Scanner sc = new Scanner(System.in);
 
     static {
@@ -26,11 +25,47 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
+    public void createUserAP() {
+        //создаю нового пользователя и пароль
+        String userAdmin = "admin";
+        int userPass = 214926341;
+        String createCommandUser = "CREATE USER '" + userAdmin + "'@'localhost' IDENTIFIED BY '" + userPass +"';";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandUser);
+            System.out.println("пользователь '" + userAdmin + "' с паролем " + userPass + "' успешно добавлен!" );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //раздаю права
+        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandPrivileges);
+            System.out.println("Права пользователю '" + userAdmin + " успешно назначены!" );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //обновляю права
+        String createCommandFlush = "FLUSH PRIVILEGES;";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandFlush);
+            System.out.println("Права пользователей успешно обновлены!" );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createDB() {
         //подготавливаю запрос на создание БД
-        System.out.println("Для создания новой БД введите её название(bookstore, tagstore, linkstore...):");
-        String dbName = sc.nextLine();
-        String createCommand = "CREATE DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci";
+        String dbName = "BookSorterPro";
+        String createCommand = "CREATE DATABASE '" + dbName + "' CHARACTER SET utf8 COLLATE utf8_general_ci";
 
         try {
             Statement stCR = sqlConnection.createStatement();
@@ -43,7 +78,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteDB() {
         //подготавливаю запрос на удаление БД
-        System.out.println("Для удаление БД введите её название:");
+        System.out.println("Для удаление БД введите её название (BookSorterPro):");
         String dbName = sc.nextLine();
 
         String createCommand = "DROP DATABASE " + dbName;
@@ -63,11 +98,14 @@ public class SQLUtils implements mySQLhandler {
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
-                "  `title` varchar(50) default NULL," +
                 "  `author` varchar(50) default NULL," +
                 "  `year` int(11) default NULL," +
+                "  `name` varchar(45) default NULL," +
+                "  `path` varchar(45) default NULL," +
                 "  `type` varchar(45) default NULL," +
-                "  `link` varchar(45) default NULL," +
+                "  `format` varchar(45) default NULL," +
+                "  `description` varchar(45) default NULL," +
+                "  `size` int(11) default NULL," +
                 "  PRIMARY KEY  (`id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -84,8 +122,8 @@ public class SQLUtils implements mySQLhandler {
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
-                "  `title` varchar(50) default NULL," +
-                "  `link` varchar(45) default NULL," +
+                "  `name` varchar(50) default NULL," +
+                "  `parent` varchar(45) default NULL," +
                 "  PRIMARY KEY  (`id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
@@ -102,8 +140,9 @@ public class SQLUtils implements mySQLhandler {
 
         String createCommand = "CREATE TABLE " + tableName + " (" +
                 "  `id` int(11) NOT NULL auto_increment," +
-                "  `title` varchar(50) default NULL," +
-                "  PRIMARY KEY  (`id`)" +
+                "  `tag_id` int(11) default NULL," +
+                "  `book_id` int(11) default NULL," +
+                "  PRIMARY KEY  (`link_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
         try {
@@ -115,7 +154,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteDBTable() {
         //подготавливаю запрос на DROP Table
-        System.out.println("Для удаления таблицы введите её название(books):");
+        System.out.println("Для удаления таблицы введите её название(books, tags, links):");
         String tableName = sc.nextLine();
         String createCommand = ("DROP TABLE " + tableName);
 
@@ -195,15 +234,15 @@ public class SQLUtils implements mySQLhandler {
         String title = book.setName(sc.nextLine());
         System.out.println("Введите язык книги:");
         String language = book.setLanguage(sc.nextLine());
-        System.out.println("Введите path книги:");
+        System.out.println("Введите путь к книге:");
         String path = book.setPath(sc.nextLine());
-        System.out.println("Введите type книги:");
+        System.out.println("Введите тип книги (книга, журнал...):");
         String type = book.setType(sc.nextLine());
-        System.out.println("Введите тип (pdf, djvu...) книги:");
+        System.out.println("Введите формат (pdf, djvu...) книги:");
         String format = book.setFormat(sc.nextLine());
         System.out.println("Введите description книги:");
         String description = book.setDescription(sc.nextLine());
-        System.out.println("Введите размер книги:");
+        System.out.println("Введите размер книги (Мб):");
         int size = book.setSize(Integer.parseInt(sc.nextLine()));
 
         //передаю запрос обновить книгу (поле книги)
