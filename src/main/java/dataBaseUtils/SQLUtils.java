@@ -129,12 +129,12 @@ public class SQLUtils implements mySQLhandler {
         }
 
         //раздаю права
-        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';";
+        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'localhost';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandPrivileges);
-            System.out.println("Права пользователю '" + userName + " успешно назначены!" );
+            System.out.println("Права 'All Privileges' пользователю '" + userName + " успешно назначены!" );
         } catch (SQLException e) {
             e.printStackTrace();
         }
