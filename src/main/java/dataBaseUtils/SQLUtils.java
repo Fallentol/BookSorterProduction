@@ -17,7 +17,7 @@ import java.util.List;
 public class SQLUtils implements mySQLhandler {
 
     private static Connection sqlConnection;
-    private static final String sqlHost = "jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true";
+    private static final String sqlHost = "jdbc:mysql://localhost/mysql?user=admin&password=214926341&useSSL=true";
 
     static {
         try {
@@ -154,8 +154,8 @@ public class SQLUtils implements mySQLhandler {
 
     public void createDB(String dbName) {
         //подготавливаю запрос на создание БД
-        dbName = "BookSorterPro";
-        String createCommand = "CREATE DATABASE '" + dbName + "' CHARACTER SET utf8 COLLATE utf8_general_ci";
+        //dbName = "BookSorterPro";
+        String createCommand = "CREATE DATABASE " + dbName + " CHARACTER SET utf8 COLLATE utf8_general_ci";
 
         try {
             Statement stCR = sqlConnection.createStatement();
@@ -168,7 +168,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteDB(String dbName) {
         //подготавливаю запрос на удаление БД
-        dbName = "BookSorterPro";
+        //dbName = "BookSorterPro";
         String createCommand = "DROP DATABASE " + dbName;
 
         try {
@@ -182,9 +182,10 @@ public class SQLUtils implements mySQLhandler {
 
     public void createDBTableBooks(String tableName) {
         //подготавливаю запрос на создание таблицы
-        tableName = "books";
+        String dbName = "BookSorterPro";
+        //tableName = "books";
 
-        String createCommand = "CREATE TABLE " + tableName + " (" +
+        String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `book_id` int(11) NOT NULL auto_increment," +
                 "  `bookName` varchar(255) default NULL," +
                 "  `bookAuthor` varchar(255) default NULL," +
@@ -195,7 +196,7 @@ public class SQLUtils implements mySQLhandler {
                 "  `bookDescription` varchar(45) default NULL," +
                 "  `bookYear` int(11) default NULL," +
                 "  `bookSize` int(11) default NULL," +
-                "  PRIMARY KEY  (`id`)" +
+                "  PRIMARY KEY  (`book_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
         try {
@@ -207,13 +208,14 @@ public class SQLUtils implements mySQLhandler {
 
     public void createDBTableTags(String tableName) {
         //подготавливаю запрос на создание таблицы
-        tableName = "tags";
+        String dbName = "BookSorterPro";
+        //tableName = "tags";
 
-        String createCommand = "CREATE TABLE " + tableName + " (" +
+        String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `tag_id` int(11) NOT NULL auto_increment," +
                 "  `tagName` varchar(50) default NULL," +
                 "  `tagParent` varchar(45) default NULL," +
-                "  PRIMARY KEY  (`id`)" +
+                "  PRIMARY KEY  (`tag_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
         try {
@@ -225,9 +227,10 @@ public class SQLUtils implements mySQLhandler {
 
     public void createDBTableLinks(String tableName) {
         //подготавливаю запрос на создание таблицы
-        tableName = "links";
+        String dbName = "BookSorterPro";
+        //tableName = "links";
 
-        String createCommand = "CREATE TABLE " + tableName + " (" +
+        String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `link_id` int(11) NOT NULL auto_increment," +
                 "  `tagId` int(11) default NULL," +
                 "  `bookId` int(11) default NULL," +

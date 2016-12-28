@@ -18,7 +18,7 @@ public class SQLConnection {
 
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=root&password=root&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class SQLConnection {
 
         Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
 
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/booksorterpro?user=admin&password=214926341&useSSL=true");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=root&password=root&useSSL=true");
         SQLUtils sqlUtilsObject = new SQLUtils();
         ArrayList<Book> books = sqlUtilsObject.getAllBooks();
         for (Book b : books) {
