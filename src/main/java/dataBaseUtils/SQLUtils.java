@@ -180,9 +180,9 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableBooks(String tableName) {
+    public void createDBTableBooks(String dbName, String tableName) {
         //подготавливаю запрос на создание таблицы
-        String dbName = "BookSorterPro";
+        dbName = "BookSorterPro";
         //tableName = "books";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
@@ -206,9 +206,9 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableTags(String tableName) {
+    public void createDBTableTags(String dbName, String tableName) {
         //подготавливаю запрос на создание таблицы
-        String dbName = "BookSorterPro";
+        dbName = "BookSorterPro";
         //tableName = "tags";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
@@ -225,9 +225,9 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableLinks(String tableName) {
+    public void createDBTableLinks(String dbName, String tableName) {
         //подготавливаю запрос на создание таблицы
-        String dbName = "BookSorterPro";
+        dbName = "BookSorterPro";
         //tableName = "links";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
@@ -471,9 +471,7 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        if (tableName == "Tags") {
+        } else if (tableName == "Tags") {
             try (Statement st = sqlConnection.createStatement()) {
                 ResultSet resultSet;
                 resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
@@ -488,9 +486,7 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        if (tableName == "links") {
+        }else if (tableName == "links") {
             try (Statement st = sqlConnection.createStatement()){
                 ResultSet resultSet;
                 resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
@@ -505,6 +501,8 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            System.out.println("Такой БД пока не создано!");
         }
 
     }
