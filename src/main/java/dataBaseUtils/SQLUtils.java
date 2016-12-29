@@ -471,7 +471,7 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (tableName == "Tags") {
+        }else if (tableName == "Tags") {
             try (Statement st = sqlConnection.createStatement()) {
                 ResultSet resultSet;
                 resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
@@ -502,7 +502,7 @@ public class SQLUtils implements mySQLhandler {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Такой БД пока не создано!");
+            System.out.println("Такой таблицы или БД пока не создано!");
         }
 
     }
