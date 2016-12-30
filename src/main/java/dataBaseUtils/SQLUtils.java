@@ -1,6 +1,7 @@
 package dataBaseUtils;
 
 
+import config.Configurator;
 import essence.Book;
 import essence.Link;
 import essence.Tag;
@@ -17,7 +18,7 @@ import java.util.List;
 public class SQLUtils implements mySQLhandler {
 
     private static Connection sqlConnection;
-    private static final String sqlHost = "jdbc:mysql://localhost/mysql?user=admin&password=214926341&useSSL=true";
+    private static final String sqlHost = "jdbc:mysql://localhost/mysql?user="+ Configurator.userName +"&password=" + Configurator.userPass + "&useSSL=true";
 
     static {
         try {
@@ -115,10 +116,8 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createUserAP(String userName, int userPass) {
+    public void createUserAP(String userName, String userPass) {
         //создаю нового пользователя и пароль
-        userName = "admin";
-        userPass = 214926341;
         String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass +"';";
 
         try {
@@ -446,65 +445,41 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public void readDB(String dbName, String tableName) {
-        dbName = "BookSorterPro";
-        tableName = "Books";
-
+        //нужно сделать метод выводящим любой массив по определенному запросу!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //по входящим названию БД и таблице читаю
         if (tableName == "Books") {
-            try (Statement st = sqlConnection.createStatement()) {
-                ResultSet resultSet;
-                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+            ArrayList<Book> result = new ArrayList<>();
+            try {
+                ResultSet resultSet = sqlConnection.createStatement().executeQuery("SELECT * FROM " + dbName + "." + tableName);
                 while (resultSet.next()) {
-                    Book book = new Book();
-                    book.id = resultSet.getInt("book_id");
-                    book.name = resultSet.getString("bookName");
-                    book.author = resultSet.getString("bookAuthor");
-                    book.language = resultSet.getString("bookLanguage");
-                    book.type = resultSet.getString("bookType");
-                    book.format = resultSet.getString("bookFormat");
-                    book.path = resultSet.getString("bookPath");
-                    book.description = resultSet.getString("bookDescription");
-                    book.year = Integer.valueOf(resultSet.getString("bookYear"));
-                    book.size = Integer.valueOf(resultSet.getString("bookSize"));
-                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
-                    System.out.println(book);
+                    result.add(allocateBookFields(resultSet));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if (tableName == "Tags") {
-            try (Statement st = sqlConnection.createStatement()) {
-                ResultSet resultSet;
-                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+            ArrayList<Tag> result = new ArrayList<>();
+            try {
+                ResultSet resultSet = sqlConnection.createStatement().executeQuery("SELECT * FROM " + dbName + "." + tableName);
                 while (resultSet.next()) {
-                    Tag tag = new Tag();
-                    tag.id = resultSet.getInt("tag_id");
-                    tag.name = resultSet.getString("tagName");
-                    tag.parent = resultSet.getInt("tagParent");
-                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
-                    System.out.println(tag);
+                    result.add(allocateTagFields(resultSet));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if (tableName == "links") {
-            try (Statement st = sqlConnection.createStatement()){
-                ResultSet resultSet;
-                resultSet = st.executeQuery("SELECT * FROM " + dbName + "." + tableName);
+            ArrayList<Link> result = new ArrayList<>();
+            try {
+                ResultSet resultSet = sqlConnection.createStatement().executeQuery("SELECT * FROM " + dbName + "." + tableName);
                 while (resultSet.next()) {
-                    Link link = new Link();
-                    link.id = resultSet.getInt("link_id");
-                    link.tag_id = resultSet.getInt("tagId");
-                    link.book_id = resultSet.getInt("bookId");
-                    System.out.println("Читаю таблицу: " + tableName + " из БД: " + dbName);
-                    System.out.println(link);
+                    result.add(allocateLinkFields(resultSet));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Такой таблицы или БД пока не создано!");
+            System.out.println("Такой таблицы или БД еще не создано!");
         }
-
     }
 
     public ArrayList<Book> getBooksFromTo(int from, int to, int quantity) {
