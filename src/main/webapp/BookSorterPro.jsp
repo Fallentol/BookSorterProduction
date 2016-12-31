@@ -14,7 +14,7 @@
     <%@ page isELIgnored="false" %>
     <html>
     <head>
-        <title>Title</title>
+        <title>BookSorterPro</title>
     </head>
     <style>
         body {
@@ -80,10 +80,10 @@
             <a href="/fileStore">File Store</a>
         </div>
         <div class="btn">
-            <a href="/fileStore">Books</a>
+            <a href="/bookStore">Books</a>
         </div>
         <div class="btn">
-            <a href="/fileStore">Tags</a>
+            <a href="/tagStore">Tags</a>
         </div>
     </div>
     <div>
@@ -93,28 +93,47 @@
         <table>
             <tr>
                 <td width="150px" class="headerRow">
+                    ID
+                </td>
+                <td width="150px" class="headerRow">
                     Name
                 </td>
                 <td width="150px;" class="headerRow">
                     Author
                 </td>
-                <td width="150px;" class="headerRow">
-                    Year
-                </td>
                 <td width="150px;" width="15px" class="headerRow">
                     Language
+                </td>
+                <td width="150px" class="headerRow">
+                    Type
                 </td>
                 <td width="150px;" class="headerRow">
                     Format
                 </td>
+                <td width="150px" class="headerRow">
+                    Path
+                </td>
+                <td width="150px" class="headerRow">
+                    Description
+                </td>
+                <td width="150px;" class="headerRow">
+                    Year
+                </td>
+                <td width="150px" class="headerRow">
+                    Size
+                </td>
             </tr>
             <c:forEach items="${booksSort}" var="bo">
                 <tr>
+                    <td>${bo.getId()}</td>
                     <td>${bo.getName()}</td>
                     <td>${bo.getAuthor()}</td>
-                    <td>${bo.getYear()}</td>
                     <td>${bo.getLanguage()}</td>
+                    <td>${bo.getType()}</td>
                     <td>${bo.getFormat()}</td>
+                    <td>${bo.getDescription()}</td>
+                    <td>${bo.getYear()}</td>
+                    <td>${bo.getSize()}</td>
                 </tr>
             </c:forEach>
         </table>
