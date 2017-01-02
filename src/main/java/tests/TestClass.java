@@ -1,5 +1,7 @@
 package tests;
 
+import dataBaseUtils.SQLConnection;
+import essence.Book;
 import fileUtils.FileController;
 
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public class TestClass {
 
     public static void main(String[] args) {
         runFileControllerTest();
-
+        runSQLConnectionTest();
 
     }
 
@@ -21,6 +23,14 @@ public class TestClass {
         for(String s : filesName) {
             System.out.println(s);
         }
+        System.out.println("///////////////////////////////////////////");
     }
+
+    public static void runSQLConnectionTest() {
+        SQLConnection sqlCon = new SQLConnection();
+        ArrayList<Book> books = sqlCon.getBooks();
+        System.out.println(books);
+    }
+
 
 }

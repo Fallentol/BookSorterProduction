@@ -49,11 +49,13 @@
             padding: 5px;
             border: 1px solid #0b0b0b;
         }
-        .headerRow{
+
+        .headerRow {
             font-weight: bold;
             color: floralwhite;
         }
-        .btn{
+
+        .btn {
             display: inline-block;
             background-color: cornflowerblue;
             color: #525252;
@@ -61,15 +63,49 @@
             padding: 15px;
             border: 2px solid #525252;
         }
+
         .btn:hover {
             background-color: ivory;
             color: green;
         }
+
         .btn:active {
             border: 1px solid red;
         }
+        /*.not-active {
+            pointer-events: none;
+            cursor: default;
+        }*/
 
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('.not-active').bind('click', false);
+            $(".not-active").css('opacity', '0.4');
+
+
+            $("#sub").click(function () {
+                var name = $("#userName").val();
+                var pass = $("#userPass").val();
+                var base = $("#baseName").val();
+                $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base}, function (result) {
+                    $("#saveResult").text(result);
+                    if (result == 'All parameters are correct') {
+                        $("#saveResult").css("color", "green");
+                        $('.not-active').unbind('click', false);
+                        $(".not-active").css('opacity', '1');
+                    } else {
+                        $("#saveResult").css("color", "red");
+                    }
+                });
+            });
+        });
+
+    </script>
 <body>
 <div class="bodyDiv">
     <div class="mainDiv">
@@ -80,63 +116,25 @@
             <a href="/fileStore">File Store</a>
         </div>
         <div class="btn">
-            <a href="/bookStore">Books</a>
+            <a href="/bookStore" class="not-active" >Books</a>
         </div>
         <div class="btn">
-            <a href="/tagStore">Tags</a>
+            <a href="/tagStore" class="not-active">Tags</a>
         </div>
     </div>
     <div>
 
         <%--${message}--%>
 
-        <table>
-            <tr>
-                <td width="150px" class="headerRow">
-                    ID
-                </td>
-                <td width="150px" class="headerRow">
-                    Name
-                </td>
-                <td width="150px;" class="headerRow">
-                    Author
-                </td>
-                <td width="150px;" width="15px" class="headerRow">
-                    Language
-                </td>
-                <td width="150px" class="headerRow">
-                    Type
-                </td>
-                <td width="150px;" class="headerRow">
-                    Format
-                </td>
-                <td width="150px" class="headerRow">
-                    Path
-                </td>
-                <td width="150px" class="headerRow">
-                    Description
-                </td>
-                <td width="150px;" class="headerRow">
-                    Year
-                </td>
-                <td width="150px" class="headerRow">
-                    Size
-                </td>
-            </tr>
-            <c:forEach items="${booksSort}" var="bo">
-                <tr>
-                    <td>${bo.getId()}</td>
-                    <td>${bo.getName()}</td>
-                    <td>${bo.getAuthor()}</td>
-                    <td>${bo.getLanguage()}</td>
-                    <td>${bo.getType()}</td>
-                    <td>${bo.getFormat()}</td>
-                    <td>${bo.getDescription()}</td>
-                    <td>${bo.getYear()}</td>
-                    <td>${bo.getSize()}</td>
-                </tr>
-            </c:forEach>
-        </table>
+        <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
+            <form action="/fileStore" method="POST">
+                <input type="text" placeholder="User Name" name="userName" id="userName">
+                <input type="text" placeholder="User Password" name="userPass" id="userPass">
+                <input type="text" placeholder="SQL Base" name="baseName" id="baseName">
+                <input type="button" id="sub" value="Remember">
+            </form>
+            <div style="font-size: 0.7em;" id="saveResult"></div>
+        </div>
 
         <%--<c:set var="myName" value="Alex"/>
         ${myName}

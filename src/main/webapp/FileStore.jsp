@@ -11,7 +11,6 @@
 <script type="text/javascript">
     function sendPost() {
         var findText = $(".findText").val();
-        console.log('findText='+findText);
         $('<form action="/fileStore" method="POST"/>')
                 .append($('<input type="hidden" name="findText" value="' + findText + '">'))
                 .appendTo($(document.body)) //it has to be added somewhere into the <body>

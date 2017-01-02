@@ -1,7 +1,6 @@
 package dataBaseUtils;
 
 
-import config.Configurator;
 import essence.Book;
 import essence.Link;
 import essence.Tag;
@@ -15,10 +14,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static config.Configurator.*;
+
 public class SQLUtils implements mySQLhandler {
 
-    private static Connection sqlConnection;
-    private static final String sqlHost = "jdbc:mysql://localhost/mysql?user="+ Configurator.userName +"&password=" + Configurator.userPass + "&useSSL=true";
+    public static Connection sqlConnection;
+    /*private static String sqlHost = "jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
 
     static {
         try {
@@ -26,9 +27,26 @@ public class SQLUtils implements mySQLhandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }*/
+
+    public static String testConnection() {
+        String result = "All parameters are correct";
+        try {
+            Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
+        } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
+            return "DataBase is not installed";
+        }
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+        } catch (SQLException e) {
+            //e.printStackTrace();
+            return "User's Name or Password are not valid";
+        }
+        return result;
     }
 
-    public void refreshLocalRoot () {
+    public void refreshLocalRoot() {
         //задаю пароль для локального root пустого сервера MySQL для дальнейшей работы
         try {
             //исполняющий файл
@@ -97,19 +115,19 @@ public class SQLUtils implements mySQLhandler {
             System.out.println("Батник выполнил");
 
             //удаляю исполняющий файл rootpass.bat
-            if(CMDfile.delete()){
+            if (CMDfile.delete()) {
                 System.out.println("temp/rootpass.bat файл был удален");
-            }else System.out.println("Файл temp/rootpass.bat не был найден");
+            } else System.out.println("Файл temp/rootpass.bat не был найден");
 
             //удаляю файл запроса SQL.txt
-            if(SQLfile.delete()){
+            if (SQLfile.delete()) {
                 System.out.println("temp/SQL.txt файл был удален");
-            }else System.out.println("Файл temp/SQL.txt не был найден");
+            } else System.out.println("Файл temp/SQL.txt не был найден");
 
             //удаляю файл остановки службы stopS.bat
-            if(stopSfile.delete()){
+            if (stopSfile.delete()) {
                 System.out.println("temp/stopS.bat файл был удален");
-            }else System.out.println("Файл temp/stopS.bat не был найден");
+            } else System.out.println("Файл temp/stopS.bat не был найден");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,12 +136,12 @@ public class SQLUtils implements mySQLhandler {
 
     public void createUserAP(String userName, String userPass) {
         //создаю нового пользователя и пароль
-        String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass +"';";
+        String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass + "';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandUser);
-            System.out.println("пользователь '" + userName + "' с паролем " + userPass + "' успешно добавлен!" );
+            System.out.println("пользователь '" + userName + "' с паролем " + userPass + "' успешно добавлен!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -134,7 +152,7 @@ public class SQLUtils implements mySQLhandler {
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandPrivileges);
-            System.out.println("Права 'All Privileges' пользователю '" + userName + " успешно назначены!" );
+            System.out.println("Права 'All Privileges' пользователю '" + userName + " успешно назначены!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -145,7 +163,7 @@ public class SQLUtils implements mySQLhandler {
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandFlush);
-            System.out.println("Права пользователей успешно обновлены!" );
+            System.out.println("Права пользователей успешно обновлены!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -260,6 +278,7 @@ public class SQLUtils implements mySQLhandler {
         ArrayList<Book> result = new ArrayList<Book>();
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books");
+            System.out.println("RS=" + rs);
             while (rs.next()) {
                 result.add(allocateBookFields(rs));
             }
@@ -314,14 +333,14 @@ public class SQLUtils implements mySQLhandler {
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, book.getName());
-            preStatement.setString(2,book.getAuthor());
+            preStatement.setString(2, book.getAuthor());
             preStatement.setString(3, book.getLanguage());
-            preStatement.setString(4,book.getType());
-            preStatement.setString(5,book.getFormat());
+            preStatement.setString(4, book.getType());
+            preStatement.setString(5, book.getFormat());
             preStatement.setString(6, book.getPath());
-            preStatement.setString(7,book.getDescription());
+            preStatement.setString(7, book.getDescription());
             preStatement.setInt(8, book.getYear());
-            preStatement.setInt(9,book.getSize());
+            preStatement.setInt(9, book.getSize());
             preStatement.execute();
         } catch (SQLException e) {
             System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
@@ -333,7 +352,7 @@ public class SQLUtils implements mySQLhandler {
         String createCommand = "insert into BookStorePro.Tags (tagName, tagParent) values (?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            preStatement.setString(1,tag.getName());
+            preStatement.setString(1, tag.getName());
             preStatement.setInt(2, tag.getParent());
             preStatement.execute();
         } catch (SQLException e) {
@@ -346,8 +365,8 @@ public class SQLUtils implements mySQLhandler {
         String createCommand = "insert into BookStorePro.Links (tagId, bookId) values (?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            preStatement.setInt(1,link.getTag_id());
-            preStatement.setInt(2,link.getBook_id());
+            preStatement.setInt(1, link.getTag_id());
+            preStatement.setInt(2, link.getBook_id());
             preStatement.execute();
         } catch (SQLException e) {
             System.err.println("insertNewLink WARNING!! " + e.getStackTrace());
@@ -361,14 +380,14 @@ public class SQLUtils implements mySQLhandler {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, book.getId());
             preStatement.setString(2, book.getName());
-            preStatement.setString(3,book.getAuthor());
+            preStatement.setString(3, book.getAuthor());
             preStatement.setString(4, book.getLanguage());
-            preStatement.setString(5,book.getType());
-            preStatement.setString(6,book.getFormat());
+            preStatement.setString(5, book.getType());
+            preStatement.setString(6, book.getFormat());
             preStatement.setString(7, book.getPath());
-            preStatement.setString(8,book.getDescription());
+            preStatement.setString(8, book.getDescription());
             preStatement.setInt(9, book.getYear());
-            preStatement.setInt(10,book.getSize());
+            preStatement.setInt(10, book.getSize());
             preStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("updateBook WARNING!! " + e.getStackTrace());
@@ -382,7 +401,7 @@ public class SQLUtils implements mySQLhandler {
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, tag.getId()); //определяю элемент для обновления по ID таблицы БД
-            preStatement.setString(2,tag.getName());
+            preStatement.setString(2, tag.getName());
             preStatement.setInt(3, tag.getParent());
             preStatement.executeUpdate();
         } catch (SQLException e) {
@@ -396,8 +415,8 @@ public class SQLUtils implements mySQLhandler {
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, link.getId()); //определяю элемент для обновления по ID таблицы БД
-            preStatement.setInt(2,link.getTag_id());
-            preStatement.setInt(3,link.getBook_id());
+            preStatement.setInt(2, link.getTag_id());
+            preStatement.setInt(3, link.getBook_id());
             preStatement.executeUpdate();
         } catch (SQLException e) {
             System.err.println("updateLink WARNING!! " + e.getStackTrace());
@@ -408,8 +427,9 @@ public class SQLUtils implements mySQLhandler {
         //передаю запрос
         String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
-            preStatement.setString(1,Id);
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            ;
+            preStatement.setString(1, Id);
             preStatement.execute();
             System.out.println("Book с id: " + Id + " успешно удалена из bookstore.books");
         } catch (SQLException e) {
@@ -422,8 +442,9 @@ public class SQLUtils implements mySQLhandler {
         //передаю запрос
         String createCommand = "DELETE FROM BookBorterPro.Tags WHERE id=?";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
-            preStatement.setString(1,Id);
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            ;
+            preStatement.setString(1, Id);
             preStatement.execute();
             System.out.println("Tag с id: " + Id + " успешно удален из BookSorterPro.Tags");
         } catch (SQLException e) {
@@ -435,8 +456,9 @@ public class SQLUtils implements mySQLhandler {
         //передаю запрос
         String createCommand = "DELETE FROM BookBorterPro.Links WHERE id=?";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);;
-            preStatement.setString(1,Id);
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            ;
+            preStatement.setString(1, Id);
             preStatement.execute();
             System.out.println("Link с id: " + Id + " успешно удален из BookSorterPro.Links");
         } catch (SQLException e) {
@@ -457,7 +479,7 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (tableName == "Tags") {
+        } else if (tableName == "Tags") {
             ArrayList<Tag> result = new ArrayList<>();
             try {
                 ResultSet resultSet = sqlConnection.createStatement().executeQuery("SELECT * FROM " + dbName + "." + tableName);
@@ -467,7 +489,7 @@ public class SQLUtils implements mySQLhandler {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (tableName == "links") {
+        } else if (tableName == "links") {
             ArrayList<Link> result = new ArrayList<>();
             try {
                 ResultSet resultSet = sqlConnection.createStatement().executeQuery("SELECT * FROM " + dbName + "." + tableName);
@@ -531,7 +553,7 @@ public class SQLUtils implements mySQLhandler {
         return link;
     }
 
-    private static void allocateTableField (String createCommand, String tableName) throws SQLException {
+    private static void allocateTableField(String createCommand, String tableName) throws SQLException {
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommand);

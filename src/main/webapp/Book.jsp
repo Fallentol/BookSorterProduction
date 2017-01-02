@@ -92,7 +92,7 @@
         <input type="button" value="Search" onclick="sendPost();">
     </fieldset>
     <div>
-        <table>
+        <%--<table>
             <tr>
                 <td width="250px" class="headerRow">
                     File Names
@@ -101,6 +101,53 @@
             <c:forEach items="${fileTable}" var="file">
                 <tr>
                     <td>${file}</td>
+                </tr>
+            </c:forEach>
+        </table>--%>
+        <table>
+            <tr>
+                <td width="150px" class="headerRow">
+                    ID
+                </td>
+                <td width="150px" class="headerRow">
+                    Name
+                </td>
+                <td width="150px;" class="headerRow">
+                    Author
+                </td>
+                <td width="150px;" width="15px" class="headerRow">
+                    Language
+                </td>
+                <td width="150px" class="headerRow">
+                    Type
+                </td>
+                <td width="150px;" class="headerRow">
+                    Format
+                </td>
+                <td width="150px" class="headerRow">
+                    Path
+                </td>
+                <td width="150px" class="headerRow">
+                    Description
+                </td>
+                <td width="150px;" class="headerRow">
+                    Year
+                </td>
+                <td width="150px" class="headerRow">
+                    Size
+                </td>
+            </tr>
+            <c:forEach items="${booksSort}" var="bo">
+                <tr>
+                    <td>${bo.getId()}</td>
+                    <td>${bo.getName()}</td>
+                    <td>${bo.getAuthor()}</td>
+                    <td>${bo.getLanguage()}</td>
+                    <td>${bo.getType()}</td>
+                    <td>${bo.getFormat()}</td>
+                    <td>${bo.getDescription()}</td>
+                    <td>${bo.getYear()}</td>
+                    <td>${bo.getSize()}</td>
                 </tr>
             </c:forEach>
         </table>

@@ -7,9 +7,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static config.Configurator.*;
+
 public class SQLConnection {
 
-    public ArrayList<Book> getBooks() {
+        public ArrayList<Book> getBooks() {
         try {
             Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
         } catch (ClassNotFoundException e) {
@@ -18,7 +20,7 @@ public class SQLConnection {
 
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=root&password=root&useSSL=true");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
         }
