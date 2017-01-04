@@ -29,5 +29,4 @@ public class BookServlet extends HttpServlet {
         request.setAttribute("booksSort", sqlCon.getBooks());
         request.getRequestDispatcher("/Book.jsp").forward(request, response);
     }
-
 }

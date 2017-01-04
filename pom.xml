@@ -63,6 +63,7 @@
                 </configuration>
             </plugin>
 
+            <!-- разрешает собирать мавен без web.xml -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
