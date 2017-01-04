@@ -10,7 +10,7 @@ public class FileController {
 
     public ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
-        File fileObject = new File(Configurator.WORK_DIRECTORY);
+        File fileObject = new File(Configurator.filePath);
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)
         for (String currentFile : fileArray) {
             if (currentFile.contains(name)) {

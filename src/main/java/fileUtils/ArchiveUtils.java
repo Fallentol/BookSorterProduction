@@ -18,7 +18,7 @@ public class ArchiveUtils {
         unArchivesMap.put("zip", zu);
         unArchivesMap.put("rar", ru);
 
-        File fileObject = new File(Configurator.WORK_DIRECTORY);
+        File fileObject = new File(Configurator.filePath);
         System.out.println("fileObject is " + (fileObject.isDirectory() ? "Directory" : "File"));
         System.out.println("/////////////////////////////////////////");
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)

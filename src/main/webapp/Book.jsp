@@ -7,22 +7,17 @@
     <%@ page isELIgnored="false" %>
 </head>
 
-<link href="Style.css" rel="stylesheet" type="text/css">
+<link href="styles/Style.css" rel="stylesheet" type="text/css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript">
     function sendPost() {
         var findText = $(".findText").val();
-        console.log('findText='+findText);
         $('<form action="/fileStore" method="POST"/>')
             .append($('<input type="hidden" name="findText" value="' + findText + '">'))
             .appendTo($(document.body)) //it has to be added somewhere into the <body>
             .submit();
-    }
-    function test() {
-        var findText = $(".findText").val();
-        console.log('findText='+findText);
     }
 </script>
 </head>

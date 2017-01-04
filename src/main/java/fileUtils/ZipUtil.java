@@ -12,12 +12,12 @@ public class ZipUtil implements UnArchive {
     public String unpack(String fileName, String targetDirectory) {
         if (fileName == null || "".equals(fileName)) return "FileName is nor correct";
         if (targetDirectory == null) {
-            targetDirectory = Configurator.WORK_DIRECTORY;
+            targetDirectory = Configurator.filePath;
         }
-        File fileObject = new File(Configurator.WORK_DIRECTORY, fileName);
+        File fileObject = new File(Configurator.filePath, fileName);
         if (!isNormalFile(fileObject)) return "File " + fileName + " with error";
         try {
-            ZipFile zip = new ZipFile(Configurator.WORK_DIRECTORY + fileName);
+            ZipFile zip = new ZipFile(Configurator.filePath + fileName);
             Enumeration entries = zip.entries();
 
             while (entries.hasMoreElements()) {

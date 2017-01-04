@@ -5,7 +5,7 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ page isELIgnored="false" %>
-        <link href="Style.css" rel="stylesheet" type="text/css">
+        <link href="styles/Style.css" rel="stylesheet" type="text/css">
 
         <head>
             <title>BookSorterPro</title>
@@ -25,7 +25,8 @@
                     var name = $("#userName").val();
                     var pass = $("#userPass").val();
                     var base = $("#baseName").val();
-                    $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base}, function (result) {
+                    var filePath = $("#filePath").val();
+                    $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base, filePath: filePath}, function (result) {
                         $("#saveResult").text(result);
                         if (result == 'All parameters are correct') {
                             $("#saveResult").css("color", "green");
@@ -62,10 +63,11 @@
 
                     <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
                         <form action="/fileStore" method="POST">
-                            <input type="text" placeholder="User Name" name="userName" id="userName">
-                            <input type="text" placeholder="User Password" name="userPass" id="userPass">
-                            <input type="text" placeholder="SQL Base" name="baseName" id="baseName">
-                            <input type="button" id="sub" value="Remember">
+                            <input type="text" placeholder="User Name" name="userName" id="userName" class="authInput"></br>
+                            <input type="text" placeholder="User Password" name="userPass" id="userPass" class="authInput"></br>
+                            <input type="text" placeholder="SQL Base" name="baseName" id="baseName" class="authInput"></br>
+                            <input type="text" placeholder="Folder path (E:\LIBRARY\Техническая литература\)" name="filePath" id="filePath" class="authInput"></br>
+                            <input type="button" id="sub" value="Submit info">
                         </form>
                         <div style="font-size: 0.7em;" id="saveResult"></div>
                     </div>

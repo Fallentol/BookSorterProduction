@@ -12,13 +12,13 @@ public class RarUtil implements UnArchive {
     public String unpack(String fileName, String targetDirectory) {
         if (fileName == null || "".equals(fileName)) return "FileName is nor correct";
         if (targetDirectory == null) {
-            targetDirectory = Configurator.WORK_DIRECTORY;
+            targetDirectory = Configurator.filePath;
         }
-        File fileObject = new File(Configurator.WORK_DIRECTORY, fileName);
+        File fileObject = new File(Configurator.filePath, fileName);
         if (!isNormalFile(fileObject)) return "File " + fileName + " with error";
 
         try {
-            String exect = Configurator.UNRAR_PATH + " X \"" + Configurator.WORK_DIRECTORY+fileName + "\" " + targetDirectory;
+            String exect = Configurator.UNRAR_PATH + " X \"" + Configurator.filePath +fileName + "\" " + targetDirectory;
             Runtime.getRuntime().exec(exect);
             Thread.sleep(4000);
             fileObject.delete();

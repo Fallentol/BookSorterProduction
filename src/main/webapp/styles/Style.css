@@ -12,6 +12,10 @@ body {
     background: linear-gradient(to top, #fefcea, mediumseagreen);
 }
 
+.authInput {
+    width: 350px;
+}
+
 .mainDiv {
     background-color: antiquewhite;
     color: blue;
