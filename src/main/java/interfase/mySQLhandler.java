@@ -10,6 +10,7 @@ import java.util.List;
 public interface mySQLhandler {
 
     public ArrayList<Book> getAllBooks();
+    public ArrayList<Tag> getAllTags();
 
     public void refreshLocalRoot ();
     public void createUserAP(String userName, String userPass); //создаю нового пользователя и назначаю ему права All Privileges

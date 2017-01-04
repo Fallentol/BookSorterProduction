@@ -1,6 +1,7 @@
 package dataBaseUtils;
 
 import essence.Book;
+import essence.Tag;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,6 +29,24 @@ public class SQLConnection {
         ArrayList<Book> books = sqlUtilsObject.getAllBooks();
         return books;
     }
+
+        public ArrayList<Tag> getTags() {
+            try {
+                Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Connection conn = null;
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            SQLUtils sqlUtilsObject = new SQLUtils();
+            ArrayList<Tag> tags = sqlUtilsObject.getAllTags();
+            return tags;
+        }
 
     public static String getAnyValue() {
         return "Fuck";

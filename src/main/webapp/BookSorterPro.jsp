@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: New
-  Date: 12/17/2016
-  Time: 6:26 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -12,72 +5,13 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ page isELIgnored="false" %>
+
     <html>
-    <head>
-        <title>BookSorterPro</title>
+        <link href="Style.css" rel="stylesheet" type="text/css">
+<head>
+     <title>BookSorterPro</title>
     </head>
-    <style>
-        body {
-            margin: 0px;
-            padding: 0px;
-            background-color: #0b0b0b;
-        }
 
-        .bodyDiv {
-            margin: auto;
-            margin-top: 0px;
-            width: 70%;
-            height: 100%;
-            background: linear-gradient(to top, #fefcea, mediumseagreen);
-        }
-
-        .mainDiv {
-            background-color: antiquewhite;
-            color: blue;
-            font-weight: bold;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin: 10px;
-            background-color: #525252;
-            color: aliceblue;
-            box-shadow: 2px 2px 6px black;
-        }
-
-        td {
-            padding: 5px;
-            border: 1px solid #0b0b0b;
-        }
-
-        .headerRow {
-            font-weight: bold;
-            color: floralwhite;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: cornflowerblue;
-            color: #525252;
-            font-weight: bold;
-            padding: 15px;
-            border: 2px solid #525252;
-        }
-
-        .btn:hover {
-            background-color: ivory;
-            color: green;
-        }
-
-        .btn:active {
-            border: 1px solid red;
-        }
-        /*.not-active {
-            pointer-events: none;
-            cursor: default;
-        }*/
-
-    </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>

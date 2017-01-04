@@ -7,9 +7,10 @@
     <%@ page isELIgnored="false" %>
 </head>
 
+<link href="Style.css" rel="stylesheet" type="text/css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-
 <script type="text/javascript">
     function sendPost() {
         var findText = $(".findText").val();
@@ -24,61 +25,7 @@
         console.log('findText='+findText);
     }
 </script>
-
 </head>
-    <style>
-        body {
-            margin: 0px;
-            padding: 0px;
-            background-color: #0b0b0b;
-        }
-
-        .bodyDiv {
-            margin: auto;
-            margin-top: 0px;
-            width: 70%;
-            height: 100%;
-            background: linear-gradient(to top, #fefcea, mediumseagreen);
-        }
-
-        .mainDiv {
-            background-color: antiquewhite;
-            color: blue;
-            font-weight: bold;
-        }
-
-        table {
-            border-collapse: collapse;
-            margin: 10px;
-            background-color: #525252;
-            color: aliceblue;
-            box-shadow: 2px 2px 6px black;
-        }
-
-        td {
-            padding: 5px;
-            border: 1px solid #0b0b0b;
-        }
-        .headerRow{
-            font-weight: bold;
-            color: floralwhite;
-        }
-        .btn{
-            display: inline-block;
-            background-color: cornflowerblue;
-            color: #525252;
-            font-weight: bold;
-            padding: 15px;
-            border: 2px solid #525252;
-        }
-        .btn:hover {
-            background-color: ivory;
-            color: green;
-        }
-        .btn:active {
-            border: 1px solid red;
-        }
-    </style>
 
 <body>
 <div class="bodyDiv">

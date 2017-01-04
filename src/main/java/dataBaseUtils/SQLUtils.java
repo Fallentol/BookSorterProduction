@@ -301,6 +301,20 @@ public class SQLUtils implements mySQLhandler {
         return result;
     }
 
+    public ArrayList<Tag> getAllTags() {
+        ArrayList<Tag> result = new ArrayList<>();
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books");
+            System.out.println("RS=" + rs);
+            while (rs.next()) {
+                result.add(allocateTagFields(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public Tag getTagFromId(String id) {
         Tag result = new Tag();
         if (id == null || "".equals(id)) return result;
