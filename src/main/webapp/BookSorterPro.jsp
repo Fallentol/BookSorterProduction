@@ -1,102 +1,101 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>Book Sorter Pro</title>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ page isELIgnored="false" %>
-
-    <html>
+    <head>
+        <title>Book Sorter Pro</title>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+        <%@ page isELIgnored="false" %>
         <link href="Style.css" rel="stylesheet" type="text/css">
-<head>
-     <title>BookSorterPro</title>
-    </head>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script>
-        $(document).ready(function () {
+        <head>
+            <title>BookSorterPro</title>
+        </head>
 
-            $('.not-active').bind('click', false);
-            $(".not-active").css('opacity', '0.4');
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $('.not-active').bind('click', false);
+                $(".not-active").css('opacity', '0.4');
 
 
-            $("#sub").click(function () {
-                var name = $("#userName").val();
-                var pass = $("#userPass").val();
-                var base = $("#baseName").val();
-                $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base}, function (result) {
-                    $("#saveResult").text(result);
-                    if (result == 'All parameters are correct') {
-                        $("#saveResult").css("color", "green");
-                        $('.not-active').unbind('click', false);
-                        $(".not-active").css('opacity', '1');
-                    } else {
-                        $("#saveResult").css("color", "red");
-                    }
+                $("#sub").click(function () {
+                    var name = $("#userName").val();
+                    var pass = $("#userPass").val();
+                    var base = $("#baseName").val();
+                    $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base}, function (result) {
+                        $("#saveResult").text(result);
+                        if (result == 'All parameters are correct') {
+                            $("#saveResult").css("color", "green");
+                            $('.not-active').unbind('click', false);
+                            $(".not-active").css('opacity', '1');
+                        } else {
+                            $("#saveResult").css("color", "red");
+                        }
+                    });
                 });
             });
-        });
 
-    </script>
-<body>
-<div class="bodyDiv">
-    <div class="mainDiv">
-        <h2>BOOK SORTER</h2>
-    </div>
-    <div class="mainDiv">
-        <div class="btn">
-            <a href="/fileStore">File Store</a>
-        </div>
-        <div class="btn">
-            <a href="/bookStore" class="not-active" >Books</a>
-        </div>
-        <div class="btn">
-            <a href="/tagStore" class="not-active">Tags</a>
-        </div>
-    </div>
-    <div>
+        </script>
 
-        <%--${message}--%>
+        <body>
+            <div class="bodyDiv">
+                <div class="mainDiv">
+                    <h2>BOOK SORTER</h2>
+                </div>
+                <div class="mainDiv">
+                    <div class="btn">
+                        <a href="/fileStore">File Store</a>
+                    </div>
+                    <div class="btn">
+                        <a href="/bookStore" class="not-active" >Books</a>
+                    </div>
+                    <div class="btn">
+                        <a href="/tagStore" class="not-active">Tags</a>
+                    </div>
+                </div>
+                <div>
 
-        <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
-            <form action="/fileStore" method="POST">
-                <input type="text" placeholder="User Name" name="userName" id="userName">
-                <input type="text" placeholder="User Password" name="userPass" id="userPass">
-                <input type="text" placeholder="SQL Base" name="baseName" id="baseName">
-                <input type="button" id="sub" value="Remember">
-            </form>
-            <div style="font-size: 0.7em;" id="saveResult"></div>
-        </div>
+                    <%--${message}--%>
 
-        <%--<c:set var="myName" value="Alex"/>
-        ${myName}
+                    <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
+                        <form action="/fileStore" method="POST">
+                            <input type="text" placeholder="User Name" name="userName" id="userName">
+                            <input type="text" placeholder="User Password" name="userPass" id="userPass">
+                            <input type="text" placeholder="SQL Base" name="baseName" id="baseName">
+                            <input type="button" id="sub" value="Remember">
+                        </form>
+                        <div style="font-size: 0.7em;" id="saveResult"></div>
+                    </div>
 
-        <c:if test="${10 > 9}">
-        <p>True<p>
-        </c:if>
-        <c:if test="${10 < 9}">
-        <p>False<p>
-        </c:if>
+                    <%--<c:set var="myName" value="Alex"/>
+                    ${myName}
 
-            <% if (Math.random() < 0.5) { %>
-        <B>Удачного</B> Вам дня!
-            <% } else { %>
-        <B>Не удачного</B> Вам дня!
-            <% } %>
+                    <c:if test="${10 > 9}">
+                    <p>True<p>
+                    </c:if>
+                    <c:if test="${10 < 9}">
+                    <p>False<p>
+                    </c:if>
 
-        .<%String name = (String) request.getAttribute("message"); %>
-            <%= name%>
+                        <% if (Math.random() < 0.5) { %>
+                    <B>Удачного</B> Вам дня!
+                        <% } else { %>
+                    <B>Не удачного</B> Вам дня!
+                        <% } %>
 
-            <%= request.getAttribute("message") %>.--%>
-    </div>
-</div>
-</body>
-</html>
+                    .<%String name = (String) request.getAttribute("message"); %>
+                        <%= name%>
 
-</head>
-<body>
+                        <%= request.getAttribute("message") %>.--%>
+                </div>
+            </div>
+        </body>
 
-</body>
+    </head>
+    <body>
+
+    </body>
 </html>
