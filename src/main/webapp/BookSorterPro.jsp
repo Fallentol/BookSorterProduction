@@ -59,8 +59,6 @@
                 </div>
                 <div>
 
-                    <%--${message}--%>
-
                     <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
                         <form action="/fileStore" method="POST">
                             <input type="text" placeholder="User Name" name="userName" id="userName" class="authInput"></br>
@@ -72,26 +70,6 @@
                         <div style="font-size: 0.7em;" id="saveResult"></div>
                     </div>
 
-                    <%--<c:set var="myName" value="Alex"/>
-                    ${myName}
-
-                    <c:if test="${10 > 9}">
-                    <p>True<p>
-                    </c:if>
-                    <c:if test="${10 < 9}">
-                    <p>False<p>
-                    </c:if>
-
-                        <% if (Math.random() < 0.5) { %>
-                    <B>Удачного</B> Вам дня!
-                        <% } else { %>
-                    <B>Не удачного</B> Вам дня!
-                        <% } %>
-
-                    .<%String name = (String) request.getAttribute("message"); %>
-                        <%= name%>
-
-                        <%= request.getAttribute("message") %>.--%>
                 </div>
             </div>
         </body>

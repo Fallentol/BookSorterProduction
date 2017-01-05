@@ -4,6 +4,8 @@ public class Configurator {
 
     public static final String UNRAR_PATH = "\"C:\\Program Files\\WinRAR\\Unrar.exe\""; // путь к винрару в системе
     public static String filePath = "E:\\LIBRARY\\Техническая литература\\"; // путь к рабочей папке
+
+    public static String findFileName = "test";
     //public static final String filePath = "f:\\LIBRARY\\"; // путь к рабочей папке
 
     /*public static String baseName = "booksorterpro";

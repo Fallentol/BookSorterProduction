@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class FileController {
 
-    public ArrayList<String> getFileBooksByName(String name) {
+    public static ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
         File fileObject = new File(Configurator.filePath);
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)

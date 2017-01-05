@@ -16,8 +16,16 @@
                 .appendTo($(document.body)) //it has to be added somewhere into the <body>
                 .submit();
     }
-    function showDialog() {
-        $('.dialogDiv').fadeIn();
+    function showDialog(item) {
+        var listIndex = $(item).attr("class");
+        $.post("/fileDialog", {listIndex: listIndex}, function (resp) {
+            $(".dialogDiv").fadeIn();
+            var object = JSON.parse(resp);
+            $("#dialogFileName").val(object.fileName);
+            $("#dialogFileAuthor").val(object.fileAuthor);
+            $("#dialogFileYear").val(object.fileYear);
+            $("#dialogFileFormat").val(object.fileFormat);
+        });
     }
     function closeDialog() {
         $('.dialogDiv').fadeOut();
@@ -77,6 +85,7 @@
         <input type="button" value="Search" onclick="sendPost();">
     </fieldset>
     <div>
+        <% int counter = 0; %>
         <table>
             <tr>
                 <td width="250px" class="headerRow">
@@ -89,7 +98,8 @@
             <c:forEach items="${fileTable}" var="file">
                 <tr>
                     <td>${file}</td>
-                    <td><input type="button" value="Create Card" onclick="showDialog();"></td>
+                    <td><input type="button" value="Create Card" class="item<%=counter%>" onclick="showDialog(this);"></td>
+                    <% counter++; %>
                 </tr>
             </c:forEach>
         </table>
@@ -97,15 +107,15 @@
 </div>
 
 <div class="dialogDiv">
-    <h4 style="text-shadow: 2px 2px #303030;" >DIALOG PANEL</h4>
+    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">DIALOG PANEL</h2>
     <table>
         <tr>
-            <td><input class="dialogInput" type="text" placeholder="Book's name"></td>
-            <td><input class="dialogInput" type="text" placeholder="Author"></td>
+            <td><input id="dialogFileName" class="dialogInput" type="text" placeholder="Book's name"></td>
+            <td><input id="dialogFileAuthor" class="dialogInput" type="text" placeholder="Author"></td>
         </tr>
         <tr>
-            <td><input class="dialogInput" type="text" placeholder="Year"></td>
-            <td><input class="dialogInput" type="text" placeholder="Format"></td>
+            <td><input id="dialogFileYear" class="dialogInput" type="text" placeholder="Year"></td>
+            <td><input id="dialogFileFormat" class="dialogInput" type="text" placeholder="Format"></td>
         </tr>
     </table>
     <div>

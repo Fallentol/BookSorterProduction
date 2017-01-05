@@ -1,5 +1,6 @@
 package servlet;
 
+import config.Configurator;
 import fileUtils.FileController;
 
 import javax.servlet.ServletException;
@@ -16,20 +17,17 @@ public class FileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        String str = request.getParameter("findText");
-        System.out.println("S T R =" + str);
-        FileController fileController = new FileController();
-        request.setAttribute("fileTable", fileController.getFileBooksByName(str));
+        Configurator.findFileName = request.getParameter("findText");
+        request.setAttribute("fileTable", FileController.getFileBooksByName(Configurator.findFileName));
         request.getRequestDispatcher("/FileStore.jsp").forward(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html");
         FileController fileController = new FileController();
-        request.setAttribute("fileTable", fileController.getFileBooksByName("test"));
+        request.setAttribute("fileTable", fileController.getFileBooksByName(Configurator.findFileName));
         request.getRequestDispatcher("/FileStore.jsp").forward(request, response);
     }
 }
