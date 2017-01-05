@@ -1,0 +1,18 @@
+.dialogDiv {
+    display:none;
+    z-index: 5000;
+    box-shadow: 1px 1px 4px #808080;
+    position: absolute;
+    left:300px;
+    top:300px;
+    background-color: white;
+    border:2px solid #043014;
+    border-radius: 8px;
+    text-align: center;
+}
+.dialogInput {
+    width:160px;
+    margin:8px;
+    background-color:ivory;
+    border-radius:4px;
+}

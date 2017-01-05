@@ -16,9 +16,11 @@
                 .appendTo($(document.body)) //it has to be added somewhere into the <body>
                 .submit();
     }
-    function test() {
-        var findText = $(".findText").val();
-        console.log('findText='+findText);
+    function showDialog() {
+        $('.dialogDiv').fadeIn();
+    }
+    function closeDialog() {
+        $('.dialogDiv').fadeOut();
     }
 </script>
 <style>
@@ -61,13 +63,14 @@
     }
 
 </style>
+<link href="styles/dialogStyle.css" rel="stylesheet" type="text/css">
 <body>
 
 <div class="bodyDiv">
     <div class="mainDiv">
         <h2>File Store</h2>
     </div>
-    <a href="/s" >Back to start page</a>
+    <a href="/s">Back to start page</a>
     <fieldset>
         <legend>Search</legend>
         <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">
@@ -79,14 +82,37 @@
                 <td width="250px" class="headerRow">
                     File Names
                 </td>
+                <td width="100px" class="headerRow">
+                    Action
+                </td>
             </tr>
             <c:forEach items="${fileTable}" var="file">
                 <tr>
                     <td>${file}</td>
+                    <td><input type="button" value="Create Card" onclick="showDialog();"></td>
                 </tr>
             </c:forEach>
         </table>
     </div>
+</div>
+
+<div class="dialogDiv">
+    <h4 style="text-shadow: 2px 2px #303030;" >DIALOG PANEL</h4>
+    <table>
+        <tr>
+            <td><input class="dialogInput" type="text" placeholder="Book's name"></td>
+            <td><input class="dialogInput" type="text" placeholder="Author"></td>
+        </tr>
+        <tr>
+            <td><input class="dialogInput" type="text" placeholder="Year"></td>
+            <td><input class="dialogInput" type="text" placeholder="Format"></td>
+        </tr>
+    </table>
+    <div>
+        <input type="button" value="Save">
+        <input type="button" value="Close" onclick="closeDialog();">
+    </div>
+
 </div>
 
 </body>
