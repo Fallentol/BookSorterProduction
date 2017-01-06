@@ -13,10 +13,11 @@ public interface mySQLhandler {
     public ArrayList<Tag> getAllTags();
 
     public void refreshLocalRoot ();
-    public void createUserAP(String userName, String userPass); //создаю нового пользователя и назначаю ему права All Privileges
+    public void createUserAP(String userName, String userPass, String userDirectory); //создаю нового пользователя и назначаю ему права All Privileges, добавляю настройки пользователя в БД
 
     public void createDB(String dbName); //создаю БД на сервере (поумолчанию:BookSorterPro)
     public void deleteDB(String dbName); //удаляю БД из сервера (поумолчанию:BookSorterPro)
+    public void createSYSTableUserData(String userName, String userPass, String userDirectory);
     public void createDBTableBooks(String dbName, String tableName);
     public void createDBTableTags(String dbName, String tableName);
     public void createDBTableLinks(String dbName, String tableName);

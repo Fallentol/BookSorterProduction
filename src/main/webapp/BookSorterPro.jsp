@@ -20,7 +20,6 @@
                 $('.not-active').bind('click', false);
                 $(".not-active").css('opacity', '0.4');
 
-
                 $("#sub").click(function () {
                     var name = $("#userName").val();
                     var pass = $("#userPass").val();

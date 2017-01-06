@@ -134,7 +134,7 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createUserAP(String userName, String userPass) {
+    public void createUserAP(String userName, String userPass, String userDirectory) {
         //создаю нового пользователя и пароль
         String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass + "';";
 
@@ -167,6 +167,18 @@ public class SQLUtils implements mySQLhandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //добавляю запись в БД с настройками пользователя
+        String createCommand = "insert into sys.UserData (userName, userPassword, userDirectory) values (?, ?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            preStatement.setString(1, userName);
+            preStatement.setString(2, userPass);
+            preStatement.setString(3, userDirectory);
+            preStatement.execute();
+        } catch (SQLException e) {
+            System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
+        }
     }
 
     public void createDB(String dbName) {
@@ -195,6 +207,26 @@ public class SQLUtils implements mySQLhandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void createSYSTableUserData(String userName, String userPassword, String userDirectory) {
+        //подготавливаю запрос на создание таблицы
+        final String dbName = "sys"; //системная БД, живет уже при создании сервера
+        final String tableName = "UserData";
+        String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
+                "  `user_id` int(11) NOT NULL auto_increment," +
+                "  `userName` varchar(255) default NULL," +
+                "  `userPassword` varchar(45) default NULL," +
+                "  `userDirectory` varchar(255) default NULL," +
+                "  PRIMARY KEY  (`user_id`)" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+        try {
+            allocateTableField(createCommand, tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //таблица создана, нужно условие для проверки существования таблицы
     }
 
     public void createDBTableBooks(String dbName, String tableName) {
@@ -567,7 +599,7 @@ public class SQLUtils implements mySQLhandler {
         return link;
     }
 
-    private static void allocateTableField(String createCommand, String tableName) throws SQLException {
+    static void allocateTableField(String createCommand, String tableName) throws SQLException {
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommand);
