@@ -1,9 +1,11 @@
 package essence;
 
+import java.io.Serializable;
+
 /**
  * Created by New on 12/17/2016.
  */
-public class Book {
+public class Book implements Serializable {
 
     public int id;
     public String name;

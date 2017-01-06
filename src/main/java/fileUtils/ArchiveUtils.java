@@ -19,12 +19,9 @@ public class ArchiveUtils {
         unArchivesMap.put("rar", ru);
 
         File fileObject = new File(Configurator.filePath);
-        System.out.println("fileObject is " + (fileObject.isDirectory() ? "Directory" : "File"));
-        System.out.println("/////////////////////////////////////////");
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)
         Set<String> as = new TreeSet<String>(new ArrayList<String>(Arrays.asList(fileArray)));
         int count = 0;
-        System.out.println("Size=" + as.size());
         ArrayList<String> listAfterSort = new ArrayList<String>();
         for (String currentFile : fileArray) {
             if ((currentFile.contains("rar") || currentFile.contains("zip")) && currentFile.contains("150")) {
