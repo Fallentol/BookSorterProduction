@@ -23,6 +23,7 @@ public class FileDialogServlet extends HttpServlet {
         String param = request.getParameter("listIndex").replace("item", "");
         int listIndex = Integer.valueOf(param);
         String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
+        String filePath = fileName;
         String fileYear = "n/a";
         String fileAuthor = "n/a";
         String fileFormat = "n/a";
@@ -53,6 +54,7 @@ public class FileDialogServlet extends HttpServlet {
             json.put("fileAuthor", fileAuthor);
             json.put("fileYear", fileYear);
             json.put("fileFormat", fileFormat);
+            json.put("filePath", filePath);
         } catch (Exception e) {
             System.out.println("JSONObject json Exception=" + e);
         }

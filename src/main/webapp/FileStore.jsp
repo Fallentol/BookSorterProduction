@@ -25,53 +25,35 @@
             $("#dialogFileAuthor").val(object.fileAuthor);
             $("#dialogFileYear").val(object.fileYear);
             $("#dialogFileFormat").val(object.fileFormat);
+            $("#dialogFilePath").val(object.filePath);
         });
     }
     function closeDialog() {
         $('.dialogDiv').fadeOut();
     }
 </script>
-<style>
-    body {
-        margin: 0px;
-        padding: 0px;
-        background-color: #0b0b0b;
-    }
 
-    .bodyDiv {
-        margin: auto;
-        margin-top: 0px;
-        width: 70%;
-        height: 100%;
-        background: linear-gradient(to top, #fefcea, mediumseagreen);
-    }
-
-    .mainDiv {
-        background-color: antiquewhite;
-        color: blue;
-        font-weight: bold;
-    }
-
-    table {
-        border-collapse: collapse;
-        margin: 10px;
-        background-color: #525252;
-        color: aliceblue;
-        box-shadow: 2px 2px 6px black;
-    }
-
-    td {
-        padding: 5px;
-        border: 1px solid #0b0b0b;
-    }
-
-    .headerRow {
-        font-weight: bold;
-        color: floralwhite;
-    }
-
-</style>
 <link href="styles/dialogStyle.css" rel="stylesheet" type="text/css">
+<link href="styles/Style.css" rel="stylesheet" type="text/css">
+
+<style>
+    .dialogButton {
+        display: inline-block;
+        padding: 5px;
+        margin-bottom: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #525252;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 3px #999;
+    }
+</style>
+
 <body>
 
 <div class="bodyDiv">
@@ -107,20 +89,42 @@
 </div>
 
 <div class="dialogDiv">
-    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">DIALOG PANEL</h2>
-    <table>
+    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD</h2>
+    <table style="border-radius: 8px; border: none;">
         <tr>
-            <td><input id="dialogFileName" class="dialogInput" type="text" placeholder="Book's name"></td>
-            <td><input id="dialogFileAuthor" class="dialogInput" type="text" placeholder="Author"></td>
+            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFileName" class="dialogInput" type="text" placeholder="Book's name"></td>
         </tr>
         <tr>
-            <td><input id="dialogFileYear" class="dialogInput" type="text" placeholder="Year"></td>
-            <td><input id="dialogFileFormat" class="dialogInput" type="text" placeholder="Format"></td>
+            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFilePath" class="dialogInput" type="text" placeholder="File Path"></td>
+        </tr>
+        <tr>
+            <td style="border: none;"><input id="dialogFileAuthor" class="dialogInput" type="text" placeholder="Author"></td>
+            <td style="border: none;"><input id="dialogFileYear" class="dialogInput" type="text" placeholder="Year"></td>
+        </tr>
+        <tr>
+            <td style="border: none;">
+                <select name='language' class="dialogInput">
+                    <c:forEach items="${bookLanguage}" var="language">
+                        <option value="${language}">${language}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td style="border: none;"><input id="dialogFileFormat" class="dialogInput" type="text" placeholder="Format"></td>
+        </tr>
+        <tr>
+            <td style="border: none;">
+                <select name='type' class="dialogInput">
+                    <c:forEach items="${bookTypes}" var="type">
+                            <option value="${type}">${type}</option>
+                    </c:forEach>
+                </select>
+            </td>
+            <td style="border: none;"><input id="dialogFileDescription" class="dialogInput" type="text" placeholder="Description"></td>
         </tr>
     </table>
     <div>
-        <input type="button" value="Save">
-        <input type="button" value="Close" onclick="closeDialog();">
+        <input type="button" class="dialogButton" value="Save">
+        <input type="button" class="dialogButton" value="Close" onclick="closeDialog();">
     </div>
 
 </div>
