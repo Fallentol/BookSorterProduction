@@ -1,6 +1,8 @@
 package servlet;
 
 import config.Configurator;
+import dataBaseUtils.SQLUtils;
+import essence.Book;
 import fileUtils.FileController;
 import org.json.JSONObject;
 
@@ -20,6 +22,46 @@ public class FileDialogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        /// обработка кнопки SAVE
+        if ("saveCard".equals(request.getParameter("action"))) {
+            try {
+
+
+                String name = request.getParameter("name");
+                String path = request.getParameter("path");
+                String type = request.getParameter("type");
+                String description = request.getParameter("description");
+                String author = request.getParameter("author");
+                int year;
+                try {
+                    year = Integer.valueOf(request.getParameter("year"));
+                } catch (Exception e) {
+                    year = 0;
+                }
+                String language = request.getParameter("language");
+                String format = request.getParameter("format");
+                Book book = new Book(0, name, author, language, type, format, path, description, year, 0);
+                SQLUtils sqlUtils = new SQLUtils();
+                int bookId = sqlUtils.insertNewBook(book);
+                if (bookId == -1) try {
+                    throw new Exception("SQL INSERT ERROR");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                book.setId(bookId);
+                FileController.saveFileWithIdenty(book);
+                FileController.reserveBook(book);
+
+                response.setContentType("text/html;charset=utf-8");
+                PrintWriter pw = response.getWriter();
+                pw.write("Success saved");
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         String param = request.getParameter("listIndex").replace("item", "");
         int listIndex = Integer.valueOf(param);
         String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);

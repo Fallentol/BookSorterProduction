@@ -28,6 +28,31 @@
             $("#dialogFilePath").val(object.filePath);
         });
     }
+    function saveCard() {
+        var name = $("#dialogFileName").val();
+        var author = $("#dialogFileAuthor").val();
+        var year = $("#dialogFileYear").val();
+        var format = $("#dialogFileFormat").val();
+        var path = $("#dialogFilePath").val();
+        var description = $("#dialogFileDescription").val();
+        var language = $("#dialogFileLanguage").val();
+        var type = $("#dialogFileType").val();
+        console.log("console log path="+path);
+        $.post( "/fileDialog", {
+            action: "saveCard",
+            name:"name",
+            author: "author",
+            year: "year",
+            format: "format",
+            path: "path",
+            type: "type",
+            description:"description",
+            language:"language"},
+            function (resp) {
+                console.log(resp);
+                $("#dialogWarning").text(resp);
+        } );
+    }
     function closeDialog() {
         $('.dialogDiv').fadeOut();
     }
@@ -90,6 +115,7 @@
 
 <div class="dialogDiv">
     <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD</h2>
+    <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none;">
         <tr>
             <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFileName" class="dialogInput" type="text" placeholder="Book's name"></td>
@@ -123,7 +149,7 @@
         </tr>
     </table>
     <div>
-        <input type="button" class="dialogButton" value="Save">
+        <input type="button" class="dialogButton" value="Save" onclick="saveCard();">
         <input type="button" class="dialogButton" value="Close" onclick="closeDialog();">
     </div>
 
