@@ -26,8 +26,6 @@ public class FileDialogServlet extends HttpServlet {
         /// обработка кнопки SAVE
         if ("saveCard".equals(request.getParameter("action"))) {
             try {
-
-
                 String name = request.getParameter("name");
                 String path = request.getParameter("path");
                 String type = request.getParameter("type");
@@ -50,7 +48,7 @@ public class FileDialogServlet extends HttpServlet {
                     e.printStackTrace();
                 }
                 book.setId(bookId);
-                FileController.saveFileWithIdenty(book);
+                FileController.saveFileWithIdentity(book);
                 FileController.reserveBook(book);
 
                 response.setContentType("text/html;charset=utf-8");

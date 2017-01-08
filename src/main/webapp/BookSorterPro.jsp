@@ -50,6 +50,9 @@
                         <a href="/fileStore">File Store</a>
                     </div>
                     <div class="btn">
+                        <a href="/fileUtility">File Utils</a>
+                    </div>
+                    <div class="btn">
                         <a href="/bookStore" class="not-active" >Books</a>
                     </div>
                     <div class="btn">

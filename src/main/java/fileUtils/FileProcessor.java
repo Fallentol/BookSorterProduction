@@ -9,6 +9,8 @@ public class FileProcessor {
 
     private final static String filePath = "E:\\LIBRARY\\Техн литра\\"; // папка для тестов
 
+    public static boolean alredyInProcess = false;
+
     public static void main(String[] args) {
         //deleteOldFileIdentity();
         /*addLineIntoReservedFile("First String");
@@ -119,6 +121,17 @@ public class FileProcessor {
 
     private static String oldIdentityDelete(String oldName) {
         return oldName.replaceAll("^\\[(\\d+)?\\]", "");
+    }
+
+    public static boolean folderPathIsCorrectly() {
+        if (Configurator.filePath == null || "".equals(Configurator.filePath)) {
+            return false;
+        }
+        File file = new File(Configurator.filePath);
+        if (!file.exists() || !file.isDirectory()) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -16,21 +16,27 @@ public class FileController {
         for (String currentFile : fileArray) {
             if (currentFile.contains(name)) {
                 result.add(currentFile);
-                if(result.size()>20) break;
+                if (result.size() > 20) break;
             }
         }
         return result;
     }
 
-    public static void saveFileWithIdenty (Book book) {
+    public static void deleteOldFileIdentity() {
+        if (FileProcessor.folderPathIsCorrectly() && !FileProcessor.alredyInProcess) {
+            FileProcessor.alredyInProcess = true;
+            FileProcessor.deleteOldFileIdentity();
+            FileProcessor.alredyInProcess = false;
+        }
+    }
+
+    public static void saveFileWithIdentity(Book book) {
         // метод открывает файл по его пути, инсертит файл в формате [00021]filename.pdf
     }
 
-    public static void reserveBook (Book book) {
+    public static void reserveBook(Book book) {
         FileProcessor.addLineIntoReservedFile(book.toString());
     }
-
-
 
 
 }
