@@ -22,6 +22,18 @@ public class FileUtilityServlet extends HttpServlet  {
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
+                return;
+            }
+        }
+
+        /// обработка кнопки Abort All Threads
+        if ("abortAllThreads".equals(request.getParameter("action"))) {
+            try {
+                FileController.abortDeletingOldFileIdentity();
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
             }
         }
     }

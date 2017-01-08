@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class FileController {
 
+    private static Thread delOldFileIdThread;
+
     public static ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
         File fileObject = new File(Configurator.filePath);
@@ -23,11 +25,29 @@ public class FileController {
     }
 
     public static void deleteOldFileIdentity() {
-        if (FileProcessor.folderPathIsCorrectly() && !FileProcessor.alredyInProcess) {
-            FileProcessor.alredyInProcess = true;
-            FileProcessor.deleteOldFileIdentity();
-            FileProcessor.alredyInProcess = false;
+        if (FileProcessor.folderPathIsCorrectly() && delOldFileIdThread == null) {
+            delOldFileIdThread = new DeleteOldFileIdentityThread();
+            delOldFileIdThread.start();
+            while (delOldFileIdThread != null && delOldFileIdThread.isAlive()) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            delOldFileIdThread = null;
         }
+    }
+
+    public static void abortDeletingOldFileIdentity() {
+        System.out.println("abortWorked");
+        System.out.println("delOldFileIdThread=" + delOldFileIdThread);
+        if (delOldFileIdThread != null) {
+            System.out.println("interrupt()");
+            delOldFileIdThread.interrupt();
+        }
+        System.out.println("delOldFileIdThread = null;");
+        delOldFileIdThread = null;
     }
 
     public static void saveFileWithIdentity(Book book) {
