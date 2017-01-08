@@ -114,38 +114,38 @@
 </div>
 
 <div class="dialogDiv">
-    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD</h2>
+    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD (${bookId})</h2>
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none;">
         <tr>
-            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFileName" class="dialogInput" type="text" placeholder="Book's name"></td>
+            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFileName" class="dialogInput" type="text" title="Book's name" placeholder="Book's name"></td>
         </tr>
         <tr>
-            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFilePath" class="dialogInput" type="text" placeholder="File Path"></td>
+            <td colspan="2" style="border: none;"><input  style="width:727px;" id="dialogFilePath" class="dialogInput" type="text" title="File Path" placeholder="File Path"></td>
         </tr>
         <tr>
-            <td style="border: none;"><input id="dialogFileAuthor" class="dialogInput" type="text" placeholder="Author"></td>
-            <td style="border: none;"><input id="dialogFileYear" class="dialogInput" type="text" placeholder="Year"></td>
+            <td style="border: none;"><input id="dialogFileAuthor" class="dialogInput" type="text" title="Author" placeholder="Author"></td>
+            <td style="border: none;"><input id="dialogFileYear" class="dialogInput" type="text" title="Year" placeholder="Year"></td>
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='language' class="dialogInput">
+                <select name='language' class="dialogInput" title="Language">
                     <c:forEach items="${bookLanguage}" var="language">
                         <option value="${language}">${language}</option>
                     </c:forEach>
                 </select>
             </td>
-            <td style="border: none;"><input id="dialogFileFormat" class="dialogInput" type="text" placeholder="Format"></td>
+            <td style="border: none;"><input id="dialogFileFormat" class="dialogInput" type="text" title="Format" placeholder="Format"></td>
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='type' class="dialogInput">
+                <select name='type' class="dialogInput" title="Type">
                     <c:forEach items="${bookTypes}" var="type">
                             <option value="${type}">${type}</option>
                     </c:forEach>
                 </select>
             </td>
-            <td style="border: none;"><input id="dialogFileDescription" class="dialogInput" type="text" placeholder="Description"></td>
+            <td style="border: none;"><input id="dialogFileDescription" class="dialogInput" type="text" title="Description" placeholder="Description"></td>
         </tr>
     </table>
     <div>

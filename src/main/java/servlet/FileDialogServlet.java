@@ -60,9 +60,20 @@ public class FileDialogServlet extends HttpServlet {
             }
         }
 
+
+
         String param = request.getParameter("listIndex").replace("item", "");
         int listIndex = Integer.valueOf(param);
         String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
+
+        JSONObject resultJSON = getJSONObjectForNewFile (fileName);
+
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter pw = response.getWriter();
+        pw.write(resultJSON.toString());
+    }
+
+    private JSONObject getJSONObjectForNewFile (String fileName) {
         String filePath = fileName;
         String fileYear = "n/a";
         String fileAuthor = "n/a";
@@ -98,10 +109,8 @@ public class FileDialogServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println("JSONObject json Exception=" + e);
         }
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter pw = response.getWriter();
-        System.out.println("json.toString()=" + json.toString());
-        pw.write(json.toString());
+
+        return json;
     }
 
 }

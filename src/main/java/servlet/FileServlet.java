@@ -28,6 +28,7 @@ public class FileServlet extends HttpServlet {
         response.setContentType("text/html");
         FileController fileController = new FileController();
         request.setAttribute("fileTable", fileController.getFileBooksByName(Configurator.findFileName));
+        //request.setAttribute("bookId", "Some Number");
         request.setAttribute("bookTypes", new String[]{"n/a", "article", "book", "magazine", "encyclopedia"});
         request.setAttribute("bookLanguage", new String[]{"n/a", "ru", "en", "ua"});
 
