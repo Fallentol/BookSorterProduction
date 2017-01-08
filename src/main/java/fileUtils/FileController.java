@@ -2,6 +2,7 @@ package fileUtils;
 
 
 import config.Configurator;
+import essence.Book;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +20,14 @@ public class FileController {
             }
         }
         return result;
+    }
+
+    public static void saveFileWithIdenty (Book book) {
+        // метод открывает файл по его пути, инсертит файл в формате [00021]filename.pdf
+    }
+
+    public static void reserveBook (Book book) {
+        FileProcessor.addLineIntoReservedFile(book.toString());
     }
 
 

@@ -373,11 +373,11 @@ public class SQLUtils implements mySQLhandler {
         return result;
     }
 
-    public void insertNewBook(Book book) {
+    public int insertNewBook(Book book) {
         //найденная и расшифрованная книга на ПК передается в prepInsert
-        String createCommand = "insert into BookStorePro.books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            String query = "insert into BookStorePro.books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preStatement = sqlConnection.prepareStatement(query);
             preStatement.setString(1, book.getName());
             preStatement.setString(2, book.getAuthor());
             preStatement.setString(3, book.getLanguage());
@@ -388,8 +388,13 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(8, book.getYear());
             preStatement.setInt(9, book.getSize());
             preStatement.execute();
+
+            query = "SELECT book_id FROM books WHERE bookPath =" + book.getPath();
+            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            return rs.getInt("book_id");
         } catch (SQLException e) {
             System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
+            return -1;
         }
     }
 

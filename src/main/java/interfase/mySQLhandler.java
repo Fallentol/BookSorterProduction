@@ -30,8 +30,8 @@ public interface mySQLhandler {
 
     public Link getLinkFromId(String id);
 
-    // получает аргументом Book и инсертит в базу данных
-    public void insertNewBook(Book book);
+    // получает аргументом Book и инсертит в базу данных, возвращает айдишник записи
+    public int insertNewBook(Book book);
 
     public void insertNewTag(Tag tag);
 
