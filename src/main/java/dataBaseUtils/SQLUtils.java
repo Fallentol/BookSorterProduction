@@ -12,22 +12,46 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static config.Configurator.*;
 
 public class SQLUtils implements mySQLhandler {
 
     public static Connection sqlConnection;
-    /*private static String sqlHost = "jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
+
+
+    public static Map<String, Integer> fileBaseIdMap; // мапа, где ключ -путь к файлу, а значение Айдишник book из базы данных
 
     static {
+
         try {
-            sqlConnection = DriverManager.getConnection(sqlHost);
+            Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("ОШИБКА ЗАГРУЗКИ ДРАЙВЕРА");
+        }
+        try {
+            sqlConnection = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("ОШИБКА ПОДКЛЮЧЕНИЯ К БД");
         }
-    }*/
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT book_Id, bookPath FROM books");
+            fileBaseIdMap = new HashMap<>();
+            while (rs.next()) {
+                String bookPA = rs.getString("bookPath");
+                int bookId = rs.getInt("book_Id");
+                fileBaseIdMap.put(bookPA, bookId);
+            }
+        } catch (Exception e) {
+            System.out.println("ОШИБКА НАПОЛНЕНИЯ МАПЫ");
+            e.printStackTrace();
+        }
+    }
 
     public static String testConnection() {
         String result = "All parameters are correct";

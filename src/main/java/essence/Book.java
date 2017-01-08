@@ -13,7 +13,7 @@ public class Book implements Serializable {
     public String language;
     public String type;
     public String format;
-    public String path;
+    public String path; /// в базе данных будет хранится путь к файлу, без [13264] айди базы сначала названия
     public String description;
     public int year;
     public int size;

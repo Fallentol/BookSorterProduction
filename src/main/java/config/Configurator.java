@@ -7,16 +7,16 @@ public class Configurator {
     public static String findFileName = "test";
     public static final String reservedFilePath = "C:\\reservedBD.dat";
 
-    public static String baseName;
+    /*public static String baseName;
     public static String userName;
-    public static String userPass;
+    public static String userPass;*/
 
 
 
 
     //public static final String filePath = "f:\\LIBRARY\\"; // путь к рабочей папке
 
-    /*public static String baseName = "booksorterpro";
+    public static String baseName = "booksorterpro";
     public static String userName = "admin";
-    public static String userPass = "214926341";*/
+    public static String userPass = "214926341";
 }

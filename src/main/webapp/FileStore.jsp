@@ -11,7 +11,7 @@
 <script type="text/javascript">
     function sendPost() {
         var findText = $(".findText").val();
-        $('<form action="/fileStore" method="POST"/>')
+        $('<form action="/fileStore" method="GET"/>')
                 .append($('<input type="hidden" name="findText" value="' + findText + '">'))
                 .appendTo($(document.body)) //it has to be added somewhere into the <body>
                 .submit();
@@ -98,13 +98,17 @@
                 <td width="250px" class="headerRow">
                     File Names
                 </td>
-                <td width="100px" class="headerRow">
+                <td width="80px" class="headerRow">
+                    Book Id
+                </td>
+                <td width="60px" class="headerRow">
                     Action
                 </td>
             </tr>
             <c:forEach items="${fileTable}" var="file">
                 <tr>
-                    <td>${file}</td>
+                    <td>${file.getFileName()}</td>
+                    <td>${file.getBaseId()}</td>
                     <td><input type="button" value="Create Card" class="item<%=counter%>" onclick="showDialog(this);"></td>
                     <% counter++; %>
                 </tr>
