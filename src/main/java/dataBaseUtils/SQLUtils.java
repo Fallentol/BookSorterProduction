@@ -22,8 +22,22 @@ public class SQLUtils implements mySQLhandler {
 
     public static Connection sqlConnection;
 
-
     public static Map<String, Integer> fileBaseIdMap; // мапа, где ключ -путь к файлу, а значение Айдишник book из базы данных
+
+    public static void initFileBaseIdMap() {
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT book_Id, bookPath FROM books");
+            fileBaseIdMap = new HashMap<>();
+            while (rs.next()) {
+                String bookPA = rs.getString("bookPath");
+                int bookId = rs.getInt("book_Id");
+                fileBaseIdMap.put(bookPA, bookId);
+            }
+        } catch (Exception e) {
+            System.out.println("ОШИБКА НАПОЛНЕНИЯ МАПЫ");
+            e.printStackTrace();
+        }
+    }
 
     static {
 
@@ -39,18 +53,7 @@ public class SQLUtils implements mySQLhandler {
             e.printStackTrace();
             System.out.println("ОШИБКА ПОДКЛЮЧЕНИЯ К БД");
         }
-        try {
-            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT book_Id, bookPath FROM books");
-            fileBaseIdMap = new HashMap<>();
-            while (rs.next()) {
-                String bookPA = rs.getString("bookPath");
-                int bookId = rs.getInt("book_Id");
-                fileBaseIdMap.put(bookPA, bookId);
-            }
-        } catch (Exception e) {
-            System.out.println("ОШИБКА НАПОЛНЕНИЯ МАПЫ");
-            e.printStackTrace();
-        }
+        initFileBaseIdMap();
     }
 
     public static String testConnection() {
@@ -334,7 +337,6 @@ public class SQLUtils implements mySQLhandler {
         ArrayList<Book> result = new ArrayList<Book>();
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books");
-            System.out.println("RS=" + rs);
             while (rs.next()) {
                 result.add(allocateBookFields(rs));
             }
@@ -349,7 +351,9 @@ public class SQLUtils implements mySQLhandler {
         if (id == null || "".equals(id)) return result;
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE book_id = " + id);
-            result = allocateBookFields(rs);
+            while (rs.next()) {
+                result = allocateBookFields(rs);
+            }
         } catch (SQLException e) {
             System.err.println("getBookFromId WARNING!! " + e.getStackTrace());
             return result;
@@ -400,7 +404,7 @@ public class SQLUtils implements mySQLhandler {
     public int insertNewBook(Book book) {
         //найденная и расшифрованная книга на ПК передается в prepInsert
         try {
-            String query = "insert into BookStorePro.books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preStatement = sqlConnection.prepareStatement(query);
             preStatement.setString(1, book.getName());
             preStatement.setString(2, book.getAuthor());
@@ -412,10 +416,14 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(8, book.getYear());
             preStatement.setInt(9, book.getSize());
             preStatement.execute();
+            preStatement.close();
 
-            query = "SELECT book_id FROM books WHERE bookPath =" + book.getPath();
+            query = "SELECT book_id FROM books WHERE bookPath = '" + book.getPath() + "'";
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
-            return rs.getInt("book_id");
+            while (rs.next()) {
+                return rs.getInt("book_id");
+            }
+            return -1;
         } catch (SQLException e) {
             System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
             return -1;

@@ -40,40 +40,52 @@ public class FileDialogServlet extends HttpServlet {
                 String language = request.getParameter("language");
                 String format = request.getParameter("format");
                 Book book = new Book(0, name, author, language, type, format, path, description, year, 0);
+                int cardId = SQLUtils.fileBaseIdMap.get(path) == null ? -1 : SQLUtils.fileBaseIdMap.get(path);
                 SQLUtils sqlUtils = new SQLUtils();
-                int bookId = sqlUtils.insertNewBook(book);
-                if (bookId == -1) try {
-                    throw new Exception("SQL INSERT ERROR");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (cardId == -1) { // книги еще нет в базе
+                    int bookId = sqlUtils.insertNewBook(book);
+                    if (bookId == -1) try {
+                        throw new Exception("SQL INSERT ERROR");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    book.setId(bookId);
+                } else { // книга уже была в базе
+                    book.setId(cardId);
+                    sqlUtils.updateBook(book);
                 }
-                book.setId(bookId);
-                FileController.saveFileWithIdentity(book);
                 FileController.reserveBook(book);
 
-                response.setContentType("text/html;charset=utf-8");
-                PrintWriter pw = response.getWriter();
-                pw.write("Success saved");
+                /*FileServlet fileServlet = new FileServlet();
+                fileServlet.doGet(request, response);*/
                 return;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-
-
         String param = request.getParameter("listIndex").replace("item", "");
         int listIndex = Integer.valueOf(param);
         String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
-
-        JSONObject resultJSON = getJSONObjectForNewFile (fileName);
+        System.out.println("fileName=" + fileName);
+        for (String str : SQLUtils.fileBaseIdMap.keySet()) {
+            System.out.println("Map key = " + str);
+        }
+        int cardId = SQLUtils.fileBaseIdMap.get(fileName) == null ? 0 : SQLUtils.fileBaseIdMap.get(fileName);
+        JSONObject resultJSON = null;
+        if (cardId == 0) {
+            resultJSON = getJSONObjectForNewFile(fileName);
+        } else {
+            resultJSON = getJSONObjectFromBook(cardId);
+        }
 
         response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
         pw.write(resultJSON.toString());
     }
 
-    private JSONObject getJSONObjectForNewFile (String fileName) {
+    private JSONObject getJSONObjectForNewFile(String fileName) {
         String filePath = fileName;
         String fileYear = "n/a";
         String fileAuthor = "n/a";
@@ -110,6 +122,27 @@ public class FileDialogServlet extends HttpServlet {
             System.out.println("JSONObject json Exception=" + e);
         }
 
+        return json;
+    }
+
+    private JSONObject getJSONObjectFromBook(int identity) {
+        SQLUtils sqlUtilsObj = new SQLUtils();
+        Book book = sqlUtilsObj.getBookFromId(String.valueOf(identity));
+        System.out.println("Book=" + book);
+        JSONObject json = new JSONObject();
+        try {
+            json.put("fileId", book.getId());
+            json.put("filePath", book.getPath());
+            json.put("fileName", book.getName());
+            json.put("fileAuthor", book.getAuthor());
+            json.put("fileYear", book.getYear());
+            json.put("fileFormat", book.getFormat());
+            json.put("fileLanguage", book.getLanguage());
+            json.put("fileDescription", book.getDescription());
+            json.put("fileType", book.getType());
+        } catch (Exception e) {
+            System.out.println("JSONObject json Exception=" + e);
+        }
         return json;
     }
 

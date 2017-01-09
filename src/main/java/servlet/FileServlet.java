@@ -28,10 +28,12 @@ public class FileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("FILE SERVLET START");
         response.setContentType("text/html");
 
         Configurator.findFileName = request.getParameter("findText") == null ? "test" : request.getParameter("findText");
         FileController fileController = new FileController();
+        SQLUtils.initFileBaseIdMap();
         ArrayList<FileBookLink> fileBookLinks = new ArrayList<>();
         for (String filePath : fileController.getFileBooksByName(Configurator.findFileName)) {
             FileBookLink fileBookLink = new FileBookLink();
@@ -42,7 +44,6 @@ public class FileServlet extends HttpServlet {
         }
 
         request.setAttribute("fileTable", fileBookLinks);
-        //request.setAttribute("bookId", "Some Number");
         request.setAttribute("bookTypes", new String[]{"n/a", "article", "book", "magazine", "encyclopedia"});
         request.setAttribute("bookLanguage", new String[]{"n/a", "ru", "en", "ua"});
 

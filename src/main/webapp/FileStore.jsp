@@ -16,7 +16,7 @@
             .appendTo($(document.body)) //it has to be added somewhere into the <body>
             .submit();
     }
-    function showDialog(item) {
+    function showDialogCard(item) {
         var listIndex = $(item).attr("class");
         $.post("/fileDialog", {listIndex: listIndex}, function (resp) {
             $(".dialogDiv").fadeIn();
@@ -26,8 +26,16 @@
             $("#dialogFileYear").val(object.fileYear);
             $("#dialogFileFormat").val(object.fileFormat);
             $("#dialogFilePath").val(object.filePath);
+            $("#dialogFileDescription").val(object.fileDescription);
+            console.log("object.fileType="+object.fileType);
+            $("#dialogFileType").val(object.fileType);
+            $("#dialogFileLanguage").val(object.fileLanguage);
+            if (object.fileId != null) {
+                $("#dialogTitle").text("BOOK CARD (" + object.fileId + ")");
+            }
         });
     }
+
     function saveCard() {
         var name = $("#dialogFileName").val();
         var author = $("#dialogFileAuthor").val();
@@ -37,22 +45,21 @@
         var description = $("#dialogFileDescription").val();
         var language = $("#dialogFileLanguage").val();
         var type = $("#dialogFileType").val();
-        console.log("console log path=" + path);
+
         $.post("/fileDialog", {
                 action: "saveCard",
-                name: "name",
-                author: "author",
-                year: "year",
-                format: "format",
-                path: "path",
-                type: "type",
-                description: "description",
-                language: "language"
-            },
-            function (resp) {
-                console.log(resp);
-                $("#dialogWarning").text(resp);
+                name: name,
+                author: author,
+                year: year,
+                format: format,
+                path: path,
+                type: type,
+                description: description,
+                language: language
             });
+
+        setTimeout('window.location.reload()', 2000)
+        closeDialog();
     }
     function closeDialog() {
         $('.dialogDiv').fadeOut();
@@ -112,14 +119,16 @@
             <c:forEach items="${fileTable}" var="file">
                 <tr>
                     <td>${file.getFileName()}</td>
-                    <td>${file.getBaseId()}</td>
+
                     <c:if test="${file.getBaseId() == '000000'}">
-                        <td><input type="button" value="Create Card"  class="item<%=counter%>"
-                                   onclick="showDialog(this);" style="width:100%; background-color: #ffa718;"></td>
+                        <td>-//-</td>
+                        <td><input type="button" value="Create Card" class="item<%=counter%>"
+                                   onclick="showDialogCard(this);" style="width:100%; background-color: #ffa718;"></td>
                     </c:if>
                     <c:if test="${file.getBaseId() != '000000'}">
+                        <td>${file.getBaseId()}</td>
                         <td><input type="button" value="Edit Card" class="item<%=counter%>"
-                                   onclick="showDialog(this);" style="width:100%; background-color: #baedba;"></td>
+                                   onclick="showDialogCard(this);" style="width:100%; background-color: #baedba;"></td>
                     </c:if>
 
                     <% counter++; %>
@@ -130,7 +139,7 @@
 </div>
 
 <div class="dialogDiv">
-    <h2 style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD (${bookId})</h2>
+    <h2 id="dialogTitle" style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD</h2>
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none;">
         <tr>
@@ -149,7 +158,7 @@
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='language' class="dialogInput" title="Language">
+                <select name='language' class="dialogInput" title="Language" id="dialogFileLanguage">
                     <c:forEach items="${bookLanguage}" var="language">
                         <option value="${language}">${language}</option>
                     </c:forEach>
@@ -160,7 +169,7 @@
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='type' class="dialogInput" title="Type">
+                <select name='type' class="dialogInput" title="Type" id="dialogFileType">
                     <c:forEach items="${bookTypes}" var="type">
                         <option value="${type}">${type}</option>
                     </c:forEach>
