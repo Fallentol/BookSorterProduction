@@ -36,6 +36,22 @@
                         }
                     });
                 });
+                $("#cr").click(function () {
+                    var name = $("#userName").val();
+                    var pass = $("#userPass").val();
+                    var base = $("#baseName").val();
+                    var filePath = $("#filePath").val();
+                    $.post("/CreateUserServlet", {userName: name, userPass: pass, baseName: base, filePath: filePath}, function (result) {
+                        $("#saveResult").text(result);
+                        if (result == 'New profile created') {
+                            $("#saveResult").css("color", "green");
+                            $('.not-active').unbind('click', false);
+                            $(".not-active").css('opacity', '1');
+                        } else {
+                            $("#saveResult").css("color", "red");
+                        }
+                    });
+                });
             });
 
         </script>
@@ -68,6 +84,7 @@
                             <input type="text" placeholder="SQL Base" name="baseName" id="baseName" class="authInput"></br>
                             <input type="text" placeholder="Folder path (E:\LIBRARY\Техническая литература\)" name="filePath" id="filePath" class="authInput"></br>
                             <input type="button" id="sub" value="Submit info">
+                            <input type="button" id="cr" value="Create Profile">
                         </form>
                         <div style="font-size: 0.7em;" id="saveResult"></div>
                     </div>
