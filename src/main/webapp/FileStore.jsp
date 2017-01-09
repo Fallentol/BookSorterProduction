@@ -27,13 +27,18 @@
             $("#dialogFileFormat").val(object.fileFormat);
             $("#dialogFilePath").val(object.filePath);
             $("#dialogFileDescription").val(object.fileDescription);
-            console.log("object.fileType="+object.fileType);
+            console.log("object.fileType=" + object.fileType);
             $("#dialogFileType").val(object.fileType);
             $("#dialogFileLanguage").val(object.fileLanguage);
             if (object.fileId != null) {
                 $("#dialogTitle").text("BOOK CARD (" + object.fileId + ")");
             }
         });
+    }
+
+    function openFile(item) {
+        var listIndex = $(item).attr("class");
+        $.post("/fileStore", {listIndex: listIndex, action: "openFile"});
     }
 
     function saveCard() {
@@ -47,16 +52,16 @@
         var type = $("#dialogFileType").val();
 
         $.post("/fileDialog", {
-                action: "saveCard",
-                name: name,
-                author: author,
-                year: year,
-                format: format,
-                path: path,
-                type: type,
-                description: description,
-                language: language
-            });
+            action: "saveCard",
+            name: name,
+            author: author,
+            year: year,
+            format: format,
+            path: path,
+            type: type,
+            description: description,
+            language: language
+        });
 
         setTimeout('window.location.reload()', 2000)
         closeDialog();
@@ -105,6 +110,7 @@
             <col width="700px" valign="top">
             <col width="70px" valign="top">
             <col width="55px" valign="top">
+            <col width="55px" valign="top">
             <tr>
                 <td class="headerRow">
                     File Names
@@ -112,7 +118,7 @@
                 <td class="headerRow">
                     Book Id
                 </td>
-                <td class="headerRow">
+                <td class="headerRow" colspan="2">
                     Action
                 </td>
             </tr>
@@ -130,7 +136,8 @@
                         <td><input type="button" value="Edit Card" class="item<%=counter%>"
                                    onclick="showDialogCard(this);" style="width:100%; background-color: #baedba;"></td>
                     </c:if>
-
+                    <td><input type="button" value="Open File" class="item<%=counter%>"
+                               onclick="openFile(this);" style="width:100%; background-color: #1cb7ff;"></td>
                     <% counter++; %>
                 </tr>
             </c:forEach>
@@ -147,7 +154,8 @@
                                                          type="text" title="Book's name" placeholder="Book's name"></td>
         </tr>
         <tr>
-            <td colspan="2" style="border: none;"><input style="width:727px;" id="dialogFilePath" class="dialogInput"
+            <td colspan="2" style="border: none;"><input disabled="true" style="width:727px;" id="dialogFilePath"
+                                                         class="dialogInput"
                                                          type="text" title="File Path" placeholder="File Path"></td>
         </tr>
         <tr>

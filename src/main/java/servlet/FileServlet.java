@@ -19,10 +19,19 @@ public class FileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /*response.setContentType("text/html");
-        Configurator.findFileName = request.getParameter("findText");
-        request.setAttribute("fileTable", FileController.getFileBooksByName(Configurator.findFileName));
-        request.getRequestDispatcher("/FileStore.jsp").forward(request, response);*/
+        if ("openFile".equals(request.getParameter("action"))) {
+            System.out.println("OPEN FILE START");
+            try {
+                String param = request.getParameter("listIndex").replace("item", "");
+                int listIndex = Integer.valueOf(param);
+                System.out.println("listIndex=" + listIndex);
+                String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
+                System.out.println("fileName=" + fileName);
+                FileController.openFile(fileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

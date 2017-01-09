@@ -3,6 +3,7 @@ package fileUtils;
 import config.Configurator;
 import essence.Book;
 
+import java.awt.*;
 import java.io.*;
 
 public class FileProcessor {
@@ -73,6 +74,19 @@ public class FileProcessor {
             return false;
         }
         return true;
+    }
+
+    public static void openFile(String filename) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(Configurator.filePath + filename);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                System.out.println("ОШИБКА ОТКРЫТИЯ");
+            }
+        } else {
+            System.out.println("НЕ ПОДДЕРЖИВАЕТСЯ");
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import dataBaseUtils.SQLConnection;
 import dataBaseUtils.SQLUtils;
 import essence.Book;
 import fileUtils.FileController;
+import fileUtils.FileProcessor;
 
 import java.util.ArrayList;
 
@@ -17,8 +18,13 @@ public class TestClass {
     public static void main(String[] args) {
         //runFileControllerTest();
         //runSQLConnectionTest();
-        runSQLUtilsTest();
+        //runSQLUtilsTest();
+        fileProcessorTest();
 
+    }
+
+    private static void fileProcessorTest() {
+        FileProcessor.openFile("Akulin V.M. Coherent dynamics of complex quantum systems (Springer, 2006)(476s)_PQm_.pdf");
     }
 
     private static void runSQLUtilsTest() {

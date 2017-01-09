@@ -54,6 +54,10 @@ public class FileController {
         // метод открывает файл по его пути, инсертит файл в формате [00021]filename.pdf
     }
 
+    public static void openFile(String fileName) {
+        FileProcessor.openFile(fileName);
+    }
+
     public static void reserveBook(Book book) {
         FileProcessor.addLineIntoReservedFile(book.toString());
     }

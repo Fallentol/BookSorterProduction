@@ -68,10 +68,7 @@ public class FileDialogServlet extends HttpServlet {
         String param = request.getParameter("listIndex").replace("item", "");
         int listIndex = Integer.valueOf(param);
         String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
-        System.out.println("fileName=" + fileName);
-        for (String str : SQLUtils.fileBaseIdMap.keySet()) {
-            System.out.println("Map key = " + str);
-        }
+
         int cardId = SQLUtils.fileBaseIdMap.get(fileName) == null ? 0 : SQLUtils.fileBaseIdMap.get(fileName);
         JSONObject resultJSON = null;
         if (cardId == 0) {
