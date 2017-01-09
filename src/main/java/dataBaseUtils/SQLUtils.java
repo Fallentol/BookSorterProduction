@@ -158,7 +158,8 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createUserAP(String userName, String userPass, String userDirectory) {
+    public String createUserAP(String userName, String userPass, String userPath) {
+        String result = "New profile created";
         //создаю нового пользователя и пароль
         String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass + "';";
 
@@ -168,6 +169,7 @@ public class SQLUtils implements mySQLhandler {
             System.out.println("пользователь '" + userName + "' с паролем " + userPass + "' успешно добавлен!");
         } catch (SQLException e) {
             e.printStackTrace();
+            return "User's Name or Password are not valid";
         }
 
         //раздаю права
@@ -179,6 +181,7 @@ public class SQLUtils implements mySQLhandler {
             System.out.println("Права 'All Privileges' пользователю '" + userName + " успешно назначены!");
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Can`t grant AP for new User";
         }
 
         //обновляю права
@@ -190,19 +193,22 @@ public class SQLUtils implements mySQLhandler {
             System.out.println("Права пользователей успешно обновлены!");
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Flush is not done";
         }
 
         //добавляю запись в БД с настройками пользователя
-        String createCommand = "insert into sys.UserData (userName, userPassword, userDirectory) values (?, ?, ?)";
+        String createCommand = "insert into sys.UserData (userName, userPass, userPath) values (?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, userName);
             preStatement.setString(2, userPass);
-            preStatement.setString(3, userDirectory);
+            preStatement.setString(3, userPath);
             preStatement.execute();
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
+            return "Can`t insert to sys.UserData new User. Table is created?";
         }
+        return result;
     }
 
     public void createDB(String dbName) {
