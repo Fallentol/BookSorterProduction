@@ -27,7 +27,6 @@
             $("#dialogFileFormat").val(object.fileFormat);
             $("#dialogFilePath").val(object.filePath);
             $("#dialogFileDescription").val(object.fileDescription);
-            console.log("object.fileType=" + object.fileType);
             $("#dialogFileType").val(object.fileType);
             $("#dialogFileLanguage").val(object.fileLanguage);
             if (object.fileId != null) {

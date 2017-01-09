@@ -20,13 +20,10 @@ public class FileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if ("openFile".equals(request.getParameter("action"))) {
-            System.out.println("OPEN FILE START");
             try {
                 String param = request.getParameter("listIndex").replace("item", "");
                 int listIndex = Integer.valueOf(param);
-                System.out.println("listIndex=" + listIndex);
                 String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
-                System.out.println("fileName=" + fileName);
                 FileController.openFile(fileName);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -37,10 +34,14 @@ public class FileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("FILE SERVLET START");
         response.setContentType("text/html");
-
-        Configurator.findFileName = request.getParameter("findText") == null ? "test" : request.getParameter("findText");
+        String findName = null;
+        try {
+            findName = new String(request.getParameter("findText").getBytes("ISO-8859-1"), "UTF-8");
+        } catch (Exception e) {
+            findName = "test";
+        }
+        Configurator.findFileName = findName;
         FileController fileController = new FileController();
         SQLUtils.initFileBaseIdMap();
         ArrayList<FileBookLink> fileBookLinks = new ArrayList<>();
