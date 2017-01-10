@@ -25,12 +25,6 @@ public class CreateUserServlet extends HttpServlet {
         userPass = request.getParameter("userPass");
         baseName = request.getParameter("baseName");
         filePath = request.getParameter("filePath");
-        String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + Configurator.userName + "&password=" + Configurator.userPass + "&useSSL=true";
-        try {
-            SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         String result = SQLUtils.createProfile(userName, userPass, filePath);
         response.setContentType("text/html;charset=utf-8");

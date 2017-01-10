@@ -76,7 +76,7 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public static String createProfile(String userName, String userPass, String filePath) {
-        String result = "Created";
+        String result = null;
         SQLUtils s = new SQLUtils();
         s.createUserAP(Configurator.userName, Configurator.userPass, filePath);
         return result;
