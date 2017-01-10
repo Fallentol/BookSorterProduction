@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class FileController {
 
     private static Thread delOldFileIdThread;
+    private static Thread unzipThread;
 
     public static ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
@@ -22,6 +23,13 @@ public class FileController {
             }
         }
         return result;
+    }
+
+    public static void unzipAllFiles() {
+        if (unzipThread == null) {
+            unzipThread = new UnzipThread();
+            unzipThread.start();
+        }
     }
 
     public static void deleteOldFileIdentity() {
@@ -40,19 +48,11 @@ public class FileController {
     }
 
     public static void abortDeletingOldFileIdentity() {
-        System.out.println("abortWorked");
-        System.out.println("delOldFileIdThread=" + delOldFileIdThread);
-        if (delOldFileIdThread != null) {
-            System.out.println("interrupt()");
-            delOldFileIdThread.interrupt();
-        }
-        System.out.println("delOldFileIdThread = null;");
-        delOldFileIdThread = null;
+        if (delOldFileIdThread != null) delOldFileIdThread.interrupt();
+        if (unzipThread != null) unzipThread.interrupt();
+        unzipThread = delOldFileIdThread = null;
     }
 
-    public static void saveFileWithIdentity(Book book) {
-        // метод открывает файл по его пути, инсертит файл в формате [00021]filename.pdf
-    }
 
     public static void openFile(String fileName) {
         FileProcessor.openFile(fileName);

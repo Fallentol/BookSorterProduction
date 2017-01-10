@@ -47,13 +47,7 @@ public class FileProcessor {
     public static void readBookFromFile() {
         try {
             ObjectInputStream file = new ObjectInputStream(new FileInputStream(Configurator.reservedFilePath));
-            System.out.println(file.available());
             Book book1 = (Book) file.readObject();
-            //Book book2 = (Book) file.readObject();
-            System.out.println("I have read:");
-            System.out.println("A Date object: " + book1);
-            //System.out.println("A Date object: " + book2);
-            System.out.println("Two Group of randoms");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

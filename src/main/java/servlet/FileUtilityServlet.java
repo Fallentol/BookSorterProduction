@@ -36,6 +36,17 @@ public class FileUtilityServlet extends HttpServlet  {
                 return;
             }
         }
+
+        /// обработка кнопки UNZIP
+        if ("unzip".equals(request.getParameter("action"))) {
+            try {
+                FileController.unzipAllFiles();
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
     }
 
 

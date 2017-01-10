@@ -28,6 +28,16 @@
                 console.log("aborted");
             });
     }
+    function unzip() {
+        showWaiter();
+        $.post("/fileUtility", {
+                action: "unzip"
+            },
+            function (resp) {
+                console.log("Unzip Finished");
+                hideWaiter();
+            });
+    }
     function showWaiter() {
         $(".waiter").fadeIn();
     }
@@ -79,10 +89,11 @@
         <input type="button" id="deleteOldIdentity" value="Delete Old File Identity" class="dialogButton"
                onclick="deleteOldIdentity();">
         <input type="button" value="Reset File Base" onclick="" class="dialogButton">
-        <input type="button" id="abortAllThreads" value="Abort All Threads" class="dialogButton"
+        <input type="button" value="Unzip All the Files" onclick="unzip();" class="dialogButton">
+        <input type="button" id="abortAllThreads" value="Abort all the Threads" class="dialogButton"
                onclick="abortAllThreads();" style="background-color: #770000; ">
         <div class="waiter" style="display: none;">
-            <img src="animation/GCNyjJY.gif" width="150" height="150" alt="WAITER">
+            <img src="animations/GCNyjJY.gif" width="150" height="150" alt="WAITER">
         </div>
     </fieldset>
 
