@@ -3,7 +3,8 @@
 body {
     margin: 0px;
     padding: 0px;
-    background-color: #0b0b0b;
+    background-image: url("/images/books2.jpg");
+    /*background-color: #0b0b0b;*/
 
 }
 
@@ -12,7 +13,6 @@ body {
     margin-top: 0px;
     width: 70%;
     height: 100%;
-    background-image: url("/images/books2.jpg");
     /*background: linear-gradient(to top, #fefcea, mediumseagreen);*/
 }
 
