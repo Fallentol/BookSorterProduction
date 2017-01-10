@@ -21,7 +21,7 @@ public class SQLConnection {
 
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+            conn = DriverManager.getConnection("jdbc:mysql://" + serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class SQLConnection {
 
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+            conn = DriverManager.getConnection("jdbc:mysql://" + serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
         }

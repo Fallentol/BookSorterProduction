@@ -16,6 +16,7 @@ public class Configurator {
 
     //public static final String filePath = "f:\\LIBRARY\\"; // путь к рабочей папке
 
+    public static String serverURL = "localhost";
     public static String baseName = "booksorterpro";
     public static String userName = "admin";
     public static String userPass = "214926341";

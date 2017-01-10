@@ -1,5 +1,6 @@
 package servlet;
 
+import config.Configurator;
 import dataBaseUtils.SQLUtils;
 
 import javax.servlet.ServletException;
@@ -14,9 +15,6 @@ import java.sql.SQLException;
 
 import static config.Configurator.*;
 
-/**
- * Created by New on 1/2/2017.
- */
 @WebServlet("/AuthorizationServlet")
 public class AuthorizationServlet extends HttpServlet {
 
@@ -27,7 +25,7 @@ public class AuthorizationServlet extends HttpServlet {
         userPass = request.getParameter("userPass");
         baseName = request.getParameter("baseName");
         filePath = request.getParameter("filePath");
-        String sqlHost = "jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
+        String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
         try {
             SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
         } catch (SQLException e) {

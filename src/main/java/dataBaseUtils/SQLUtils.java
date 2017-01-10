@@ -1,10 +1,12 @@
 package dataBaseUtils;
 
 
+import config.Configurator;
 import essence.Book;
 import essence.Link;
 import essence.Tag;
 import interfase.mySQLhandler;
+import servlet.CreateUserServlet;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -48,7 +50,7 @@ public class SQLUtils implements mySQLhandler {
             System.out.println("ОШИБКА ЗАГРУЗКИ ДРАЙВЕРА");
         }
         try {
-            sqlConnection = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+            sqlConnection = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("ОШИБКА ПОДКЛЮЧЕНИЯ К БД");
@@ -65,11 +67,18 @@ public class SQLUtils implements mySQLhandler {
             return "DataBase is not installed";
         }
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
             //e.printStackTrace();
             return "User's Name or Password are not valid";
         }
+        return result;
+    }
+
+    public static String createProfile(String userName, String userPass, String filePath) {
+        String result = "Created";
+        SQLUtils s = new SQLUtils();
+        s.createUserAP(Configurator.userName, Configurator.userPass, filePath);
         return result;
     }
 
@@ -97,7 +106,7 @@ public class SQLUtils implements mySQLhandler {
 
 
             //файл SQL запроса
-            String contentSQL = "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('root');";
+            String contentSQL = "SET PASSWORD FOR 'root'@'" + Configurator.serverURL + "' = PASSWORD('root');";
             String pathNameSQL = "C:/Users/All Users/Temp/SQL.txt";
 
             File SQLfile = new File(pathNameSQL);
@@ -161,10 +170,10 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public String createUserAP(String userName, String userPass, String userPath) {
+    public String createUserAP(String userName, String userPass, String filePath) {
         String result = "New profile created";
         //создаю нового пользователя и пароль
-        String createCommandUser = "CREATE USER '" + userName + "'@'localhost' IDENTIFIED BY '" + userPass + "';";
+        String createCommandUser = "CREATE USER '" + userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + userPass + "';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
@@ -176,7 +185,7 @@ public class SQLUtils implements mySQLhandler {
         }
 
         //раздаю права
-        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'localhost';";
+        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'" + Configurator.serverURL + "';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
@@ -200,18 +209,56 @@ public class SQLUtils implements mySQLhandler {
         }
 
         //добавляю запись в БД с настройками пользователя
-        String createCommand = "insert into sys.UserData (userName, userPass, userPath) values (?, ?, ?)";
+        String createCommand = "insert into sys.UserData (userName, userPass, filePath) values (?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, userName);
             preStatement.setString(2, userPass);
-            preStatement.setString(3, userPath);
+            preStatement.setString(3, filePath);
             preStatement.execute();
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserData new User. Table is created?";
         }
         return result;
+    }
+
+    public void createAdminServer(String serverURL, String userName, String userPass) {
+        //создаю нового пользователя и пароль
+        String createCommandUser = "CREATE USER '" + Configurator.userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + Configurator.userPass + "';";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandUser);
+            System.out.println("АДМИН '" + Configurator.userName + "' с паролем " + Configurator.userPass + "' успешно добавлен!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("User's Name or Password are not valid");
+        }
+
+        //раздаю права
+        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + Configurator.userName + "'@'" + Configurator.serverURL + "';";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandPrivileges);
+            System.out.println("Права 'All Privileges' АДМИНУ '" + Configurator.userName + " успешно назначены!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Can`t grant AP for new User");
+        }
+
+        //обновляю права
+        String createCommandFlush = "FLUSH PRIVILEGES;";
+
+        try {
+            Statement stCR = sqlConnection.createStatement();
+            stCR.execute(createCommandFlush);
+            System.out.println("Права АДМИНА успешно обновлены!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Flush is not done");
+        }
     }
 
     public void createDB(String dbName) {
