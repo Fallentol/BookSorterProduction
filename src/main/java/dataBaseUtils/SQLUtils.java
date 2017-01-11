@@ -290,19 +290,29 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public void createSYSTableUserData(String userName, String userPassword, String userDirectory) {
-        //подготавливаю запрос на создание таблицы
+        //таблица списка пользователей
         final String dbName = "sys"; //системная БД, живет уже при создании сервера
-        final String tableName = "UserData";
-        String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
+        final String tableNameList = "UserList";
+        String createCommandList = "CREATE TABLE " + dbName + "." + tableNameList + " (" +
                 "  `user_id` int(11) NOT NULL auto_increment," +
                 "  `userName` varchar(255) default NULL," +
-                "  `userPass` varchar(45) default NULL," +
-                "  `userPath` varchar(255) default NULL," +
                 "  PRIMARY KEY  (`user_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-
         try {
-            allocateTableField(createCommand, tableName);
+            allocateTableField(createCommandList, tableNameList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //таблица данных пользователей
+        final String tableNameProf = "UserProfile";
+        String createCommandProf = "CREATE TABLE " + dbName + "." + tableNameProf + " (" +
+                "  `prof_id` int(11) NOT NULL auto_increment," +
+                "  `profPass` varchar(45) default NULL," +
+                "  `profPath` varchar(255) default NULL," +
+                "  PRIMARY KEY  (`prof_id`)" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        try {
+            allocateTableField(createCommandProf, tableNameProf);
         } catch (SQLException e) {
             e.printStackTrace();
         }

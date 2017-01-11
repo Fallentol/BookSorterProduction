@@ -1,0 +1,75 @@
+<?php
+/**
+ *  Функция для получения перечня настроек пользователей
+ */
+function getUsers() {
+
+    // Подключаемся к СУБД MySQL
+    connect();
+
+    // Выбираем всех производителей из таблицы
+    $sql = "SELECT * FROM `sys.UserList` ORDER BY `userName`";
+
+    // Выполняем запрос
+    $query = mysql_query( $sql ) or die ( mysql_error() );
+
+    // Поместим данные, которые будет возвращать функция, в массив
+    // Пока что он будет пустым
+    $array = array();
+
+    // Инициализируем счетчик
+    $i = 0;
+
+    while ( $row = mysql_fetch_assoc( $query ) ) {
+
+        $array[ $i ][ 'id' ] = $row[ 'id' ];				// Идентификатор производителя
+        $array[ $i ][ 'userName' ] = $row[ 'userName' ];	// Имя производителя
+
+        // После каждой итерации цикла увеличиваем счетчик
+        $i++;
+
+    }
+
+    // Возвращаем вызову функции массив с данными
+    return $array;
+
+}
+
+// Функция, которая выбирает Path по переданному
+// ей идентификатору производителя
+function getProfiles( array $array ) {
+
+    // Сохраняем идентификатор производителя из переданного массива
+    $sUserId = htmlspecialchars( trim ( $array[ 'user_id' ] ) );
+
+    // Подключаемся к MySQL
+    connect();
+
+    // Строка запроса из базы данных
+    $sql = "SELECT `id`, `profPath` FROM `UserProf` WHERE `user_id` = '" . $sUserId . "' ORDER BY `profPath`";
+
+    // Выполняем запрос
+    $query = mysql_query( $sql ) or die ( mysql_error() );
+
+    // Поместим данные, которые будет возвращать функция, в массив
+    // Пока что он будет пустым
+    $array = array();
+
+    // Инициализируем счетчик
+    $i = 0;
+
+    while ( $row = mysql_fetch_assoc( $query ) ) {
+
+        $array[ $i ][ 'id' ] = $row[ 'id' ];		// Идентификатор модели
+        $array[ $i ][ 'userPath' ] = $row[ 'userPath' ];	// Наименование модели
+
+        // После каждой итерации цикла увеличиваем счетчик
+        $i++;
+
+    }
+
+    // Возвращаем вызову функции массив с данными
+    return $array;
+
+}
+?>
