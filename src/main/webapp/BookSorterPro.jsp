@@ -1,19 +1,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
+<?php
+// Подключаем файл для соединения с СУБД MySQL
+require_once( '/PHP/database.php' );
+// Подключаем файл, в котором будем объявлять пользовательские функции
+require_once( '/PHP/functions.php' );
+?>
+
     <head>
         <title>Book Sorter Pro</title>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <%@ page contentType="text/html;charset=UTF-8" language="java" %>
         <%@ page isELIgnored="false" %>
+        <!-- Подключаем библиотеку jQuery -->
+        <script src="//libs.raltek.ru/libs/jquery/1.8.3/js/jquery-1.8.3.js"></script>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Подключаем таблицу стилей -->
         <link href="styles/Style.css" rel="stylesheet" type="text/css">
+        <!-- Подключаем скрипты -->
+        <script src="/JS/script.js"></script>
 
         <head>
             <title>BookSorterPro</title>
         </head>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script>
             $(document).ready(function () {
 

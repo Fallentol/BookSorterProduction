@@ -41,5 +41,16 @@
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.39" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-util:6.1.25" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20140107" level="project" />
+    <orderEntry type="module-library">
+      <library name="PHP Runtime" type="php">
+        <CLASSES>
+          <root url="jar://$APPLICATION_PLUGINS_DIR$/php/lib/php.jar!/stubs/standard" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$APPLICATION_PLUGINS_DIR$/php/lib/php.jar!/stubs/standard" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
