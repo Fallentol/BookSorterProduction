@@ -37,6 +37,7 @@ td {
 .headerRow{
     font-weight: bold;
     color: floralwhite;
+    background-color: #323232;
 }
 .btn{
     display: inline-block;

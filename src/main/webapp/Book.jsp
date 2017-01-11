@@ -34,49 +34,31 @@
         <input type="button" value="Search" onclick="sendPost();">
     </fieldset>
     <div>
-        <%--<table>
+        <table style="table-layout: fixed; width: 98%;">
             <tr>
-                <td width="250px" class="headerRow">
-                    File Names
-                </td>
-            </tr>
-            <c:forEach items="${fileTable}" var="file">
-                <tr>
-                    <td>${file}</td>
-                </tr>
-            </c:forEach>
-        </table>--%>
-        <table>
-            <tr>
-                <td width="150px" class="headerRow">
+                <td width="3%" class="headerRow">
                     ID
                 </td>
-                <td width="150px" class="headerRow">
+                <td width="29%" class="headerRow">
                     Name
                 </td>
-                <td width="150px;" class="headerRow">
+                <td width="29%" class="headerRow">
                     Author
                 </td>
-                <td width="150px;" width="15px" class="headerRow">
-                    Language
-                </td>
-                <td width="150px" class="headerRow">
-                    Type
-                </td>
-                <td width="150px;" class="headerRow">
-                    Format
-                </td>
-                <td width="150px" class="headerRow">
-                    Path
-                </td>
-                <td width="150px" class="headerRow">
-                    Description
-                </td>
-                <td width="150px;" class="headerRow">
+                <td width="3%" class="headerRow">
                     Year
                 </td>
-                <td width="150px" class="headerRow">
-                    Size
+                <td width="4%" class="headerRow">
+                    Type
+                </td>
+                <td width="4%" class="headerRow">
+                    Format
+                </td>
+                <td width="4%" width="15px" class="headerRow">
+                    Lang
+                </td>
+                <td class="headerRow">
+                    Description
                 </td>
             </tr>
             <c:forEach items="${booksSort}" var="bo">
@@ -84,12 +66,11 @@
                     <td>${bo.getId()}</td>
                     <td>${bo.getName()}</td>
                     <td>${bo.getAuthor()}</td>
-                    <td>${bo.getLanguage()}</td>
+                    <td>${bo.getYear()}</td>
                     <td>${bo.getType()}</td>
                     <td>${bo.getFormat()}</td>
+                    <td>${bo.getLanguage()}</td>
                     <td>${bo.getDescription()}</td>
-                    <td>${bo.getYear()}</td>
-                    <td>${bo.getSize()}</td>
                 </tr>
             </c:forEach>
         </table>
