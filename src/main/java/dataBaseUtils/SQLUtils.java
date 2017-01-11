@@ -296,8 +296,8 @@ public class SQLUtils implements mySQLhandler {
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `user_id` int(11) NOT NULL auto_increment," +
                 "  `userName` varchar(255) default NULL," +
-                "  `userPassword` varchar(45) default NULL," +
-                "  `userDirectory` varchar(255) default NULL," +
+                "  `userPass` varchar(45) default NULL," +
+                "  `userPath` varchar(255) default NULL," +
                 "  PRIMARY KEY  (`user_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 

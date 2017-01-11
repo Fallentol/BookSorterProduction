@@ -76,8 +76,8 @@
                     </div>
                 </div>
                 <div>
-
                     <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
+
                         <form action="/fileStore" method="POST">
                             <input type="text" placeholder="User Name" name="userName" id="userName" class="authInput"></br>
                             <input type="text" placeholder="User Password" name="userPass" id="userPass" class="authInput"></br>
@@ -87,8 +87,36 @@
                             <input type="button" id="cr" value="Create Profile">
                         </form>
                         <div style="font-size: 0.7em;" id="saveResult"></div>
-                    </div>
+                        <form name="userProfile" id="userProfile" >
+                        <!-- Контейнер для поля выбора -->
+                        <div class="row">
+                            <!-- Метка поля пользователей -->
+                            <label for="userName">Выбор пользователя:</label>
+                            <!-- Раскрывающийся список пользователей -->
+                            <select id="userNames">
+                                <option value="0">Выберите из списка</option>
+                                <?php
+                                $userNames = getUserName();
 
+                                foreach ( $userNames as $userName ) {
+                                print '<option value="' . $userName[ 'id' ] . '">' . $userName[ 'userName' ] . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <!-- Контейнер для поля выбора Path пользователя выбранного пользователя -->
+                        <div class="row">
+                            <!-- Метка поля выбора Path пользователя -->
+                            <label for="userPath">Рабочая папка:</label>
+                            <!-- Раскрывающийся список выбора Path пользователя выбранного пользователя -->
+                            <!-- Изначально список пуст и неактивен -->
+                            <!-- Данные в нем появятся полсле выбора пользователя -->
+                            <select id="userPath" disabled >
+                                <option value="0">Выберите из списка</option>
+                            </select>
+                        </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </body>
