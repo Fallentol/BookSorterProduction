@@ -1,13 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-
-<?php
-// Подключаем файл для соединения с СУБД MySQL
-require_once( '/PHP/database.php' );
-// Подключаем файл, в котором будем объявлять пользовательские функции
-require_once( '/PHP/functions.php' );
-?>
-
     <head>
         <title>Book Sorter Pro</title>
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -73,8 +65,8 @@ require_once( '/PHP/functions.php' );
                     </div>
                 </div>
                 <div>
-                    <div style="margin: 50px; background-color: #fefcea; padding: 30px;">
 
+                    <div class="submitForm" style="margin: 50px; background-color: #fefcea; padding: 30px;">
                         <form action="/fileStore" method="POST">
                             <input type="text" placeholder="User Name" name="userName" id="userName" class="authInput"></br>
                             <input type="text" placeholder="User Password" name="userPass" id="userPass" class="authInput"></br>
@@ -84,38 +76,23 @@ require_once( '/PHP/functions.php' );
                             <input type="button" id="cr" value="Create Profile">
                         </form>
                         <div style="font-size: 0.7em;" id="saveResult"></div>
+                    </div>
 
-                        <form name="userProfile" id="userProfile" >
-                        <!-- Контейнер для поля выбора пользователей -->
-                        <div class="row">
-                            <!-- Метка поля пользователей -->
-                            <label for="userName">Выбор пользователя:</label>
-                            <!-- Раскрывающийся список пользователей -->
-                            <select id="selectProfile">
-                                <option value="0">Выберите из списка</option>
-                                <?php
-                                $userNames = getUsers();
-
-                                foreach ( $userNames as $userName ) {
-                                print '<option value="' . $userName[ 'id' ] . '">' . $userName[ 'userName' ] . '</option>';
-                                }
-                                ?>
+                    <div class="selectForm" style="margin: 50px; background-color: #fefcea; padding: 30px;">
+                        <form action="#" method="get">
+                            Пользователь:<br />
+                            <select name="user_id" id="user_id" class="StyleSelectBox">
+                                <option value="0">- выберите Пользователя -</option>
+                            </select><td></td><br />
+                            Рабочая папка:<br />
+                            <select name="profile_id" id="profile_id" disabled="disabled" class="StyleSelectBox">
+                                <option value="0">- выберите рабочую папку -</option>
+                            </select><td></td>
                             </select>
-                        </div>
-                        <!-- Контейнер для поля выбора Path пользователя выбранного пользователя -->
-                        <div class="row">
-                            <!-- Метка поля выбора Path пользователя -->
-                            <label for="userPath">Рабочая папка:</label>
-                            <!-- Раскрывающийся список выбора Path пользователя выбранного пользователя -->
-                            <!-- Изначально список пуст и неактивен -->
-                            <!-- Данные в нем появятся полсле выбора пользователя -->
-                            <select id="userPath" disabled >
-                                <option value="0">Выберите из списка</option>
-                            </select>
-                        </div>
                         </form>
                         <div style="font-size: 0.7em;" id="selectResult"></div>
                     </div>
+
                 </div>
             </div>
         </body>
