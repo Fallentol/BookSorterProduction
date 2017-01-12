@@ -58,10 +58,10 @@
                         <a href="/fileUtility">File Utils</a>
                     </div>
                     <div class="btn">
-                        <a href="/bookStore" class="not-active" >Books</a>
+                        <a href="/bookStore">Books</a><!--class="not-active"-->
                     </div>
                     <div class="btn">
-                        <a href="/tagStore" class="not-active">Tags</a>
+                        <a href="/tagStore">Tags</a><!--class="not-active"-->
                     </div>
                 </div>
                 <div>
