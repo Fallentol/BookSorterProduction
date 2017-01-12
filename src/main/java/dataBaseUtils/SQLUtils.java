@@ -5,8 +5,8 @@ import config.Configurator;
 import essence.Book;
 import essence.Link;
 import essence.Tag;
+import essence.UserList;
 import interfase.mySQLhandler;
-import servlet.CreateUserServlet;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -78,7 +78,7 @@ public class SQLUtils implements mySQLhandler {
     public static String createProfile(String userName, String userPass, String filePath) {
         String result = null;
         SQLUtils s = new SQLUtils();
-        s.createUserAP(Configurator.userName, Configurator.userPass, filePath);
+        s.createUserAP(userName,userPass, filePath);
         return result;
     }
 
@@ -170,7 +170,7 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public String createUserAP(String userName, String userPass, String filePath) {
+    public String createUserAP(String userName, String userPass, String userPath) {
         String result = "New profile created";
         //создаю нового пользователя и пароль
         String createCommandUser = "CREATE USER '" + userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + userPass + "';";
@@ -207,18 +207,46 @@ public class SQLUtils implements mySQLhandler {
             e.printStackTrace();
             return "Flush is not done";
         }
-
-        //добавляю запись в БД с настройками пользователя
-        String createCommand = "insert into sys.UserData (userName, userPass, filePath) values (?, ?, ?)";
+        ////////////////////////////////////////User DB//////////////////////////////////////////
+        //добавляю запись в БД с пользователем
+        String createCommandList = "insert into sys.UserList (userName, userPass) values (?, ?)";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandList);
             preStatement.setString(1, userName);
             preStatement.setString(2, userPass);
-            preStatement.setString(3, filePath);
             preStatement.execute();
+            preStatement.close();
+
+            String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
+            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            while (rs.next()) {
+                rs.getInt("user_id");
+            }
+            insertUserProfile(rs.getInt("user_id"), userPath);
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
-            return "Can`t insert to sys.UserData new User. Table is created?";
+            return "Can`t insert to sys.UserList new User. Table is created?";
+        }
+
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        return result;
+    }
+
+    public String insertUserProfile(int prof_id, String profPath) {
+        String result = "User`s profile inserted";
+
+        String createCommandProfile = "insert into sys.UserProfile (prof_id, profPath) values (?, ?)";
+        try {
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandProfile);
+            preStatement.setInt(1, prof_id);
+            preStatement.setString(2, profPath);
+            preStatement.execute();
+            preStatement.close();
+
+        } catch (SQLException e) {
+            System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
+            return "Can`t insert to sys.UserProfile new userPath. Table is created?";
         }
         return result;
     }
@@ -296,6 +324,7 @@ public class SQLUtils implements mySQLhandler {
         String createCommandList = "CREATE TABLE " + dbName + "." + tableNameList + " (" +
                 "  `user_id` int(11) NOT NULL auto_increment," +
                 "  `userName` varchar(255) default NULL," +
+                "  `userPass` varchar(255) default NULL," +
                 "  PRIMARY KEY  (`user_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         try {
@@ -307,7 +336,6 @@ public class SQLUtils implements mySQLhandler {
         final String tableNameProf = "UserProfile";
         String createCommandProf = "CREATE TABLE " + dbName + "." + tableNameProf + " (" +
                 "  `prof_id` int(11) NOT NULL auto_increment," +
-                "  `profPass` varchar(45) default NULL," +
                 "  `profPath` varchar(255) default NULL," +
                 "  PRIMARY KEY  (`prof_id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";

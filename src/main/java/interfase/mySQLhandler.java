@@ -13,7 +13,8 @@ public interface mySQLhandler {
     public ArrayList<Tag> getAllTags();
 
     public void refreshLocalRoot ();
-    public String createUserAP(String userName, String userPass, String filePath); //создаю нового пользователя и назначаю ему права All Privileges, добавляю настройки пользователя в БД
+    public String createUserAP(String userName, String userPass, String userPath); //создаю нового пользователя и назначаю ему права All Privileges, добавляю настройки пользователя в БД
+    public String insertUserProfile(int prof_id, String profPath);
     public void createAdminServer(String serverURL, String userName, String userPass); //создаю нового пользователя и назначаю ему права All Privileges, добавляю настройки пользователя в БД
 
     public void createDB(String dbName); //создаю БД на сервере (поумолчанию:BookSorterPro)

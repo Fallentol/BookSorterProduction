@@ -15,8 +15,8 @@ import java.sql.SQLException;
 
 import static config.Configurator.*;
 
-@WebServlet("/CreateUserServlet")
-public class CreateUserServlet extends HttpServlet {
+@WebServlet("/CreateProfileServlet")
+public class CreateProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

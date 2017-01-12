@@ -19,32 +19,6 @@
             <title>BookSorterPro</title>
         </head>
 
-        <script>
-            $(document).ready(function () {
-
-                $('.not-active').bind('click', false);
-                $(".not-active").css('opacity', '0.4');
-
-                $("#sub").click(function () {
-                    var name = $("#userName").val();
-                    var pass = $("#userPass").val();
-                    var base = $("#baseName").val();
-                    var filePath = $("#filePath").val();
-                    $.post("/AuthorizationServlet", {userName: name, userPass: pass, baseName: base, filePath: filePath}, function (result) {
-                        $("#saveResult").text(result);
-                        if (result == 'All parameters are correct') {
-                            $("#saveResult").css("color", "green");
-                            $('.not-active').unbind('click', false);
-                            $(".not-active").css('opacity', '1');
-                        } else {
-                            $("#saveResult").css("color", "red");
-                        }
-                    });
-                });
-            });
-
-        </script>
-
         <body>
             <div class="bodyDiv">
                 <div class="mainDiv">
@@ -64,7 +38,7 @@
                         <a href="/tagStore">Tags</a><!--class="not-active"-->
                     </div>
                 </div>
-                <div>
+                <div class="form">
 
                     <div class="submitForm" style="margin: 50px; background-color: #fefcea; padding: 30px;">
                         <form action="/fileStore" method="POST">
@@ -78,19 +52,25 @@
                         <div style="font-size: 0.7em;" id="saveResult"></div>
                     </div>
 
-                    <div class="selectForm" style="margin: 50px; background-color: #fefcea; padding: 30px;">
-                        <form action="#" method="get">
-                            Пользователь:<br />
-                            <select name="user_id" id="user_id" class="StyleSelectBox">
+                    <div class="selectorProfile" style="margin: 50px; background-color: #fefcea; padding: 30px;">
+                        <form action="#" method="POST" name="form" id="formSelect">
+                            База данных:</br>
+                            <select name="baseNameS" id="baseNameS" class="StyleSelectBox">
+                                <option value="0">- выберите БД -</option>
+                            </select><td></td></br>
+                            Пользователь:</br>
+                            <select name="user_idS" id="user_idS" class="StyleSelectBox">
                                 <option value="0">- выберите Пользователя -</option>
-                            </select><td></td><br />
+                            </select><td></td></br>
+                            <input type="text" placeholder="User Password" name="userPassS" id="userPassS" class="authInput"></br>
                             Рабочая папка:<br />
-                            <select name="profile_id" id="profile_id" disabled="disabled" class="StyleSelectBox">
+                            <select name="profile_idS" id="profile_idS" disabled="disabled" class="StyleSelectBox">
                                 <option value="0">- выберите рабочую папку -</option>
-                            </select><td></td>
-                            </select>
+                            </select><td></td></br>
+                            <input type="button" onclick="valid(document.getElementById('formSelect'))" value="Use Profile">
                         </form>
                         <div style="font-size: 0.7em;" id="selectResult"></div>
+
                     </div>
 
                 </div>
