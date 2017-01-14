@@ -2,9 +2,7 @@ package dataBaseUtils;
 
 
 import config.Configurator;
-import essence.Book;
-import essence.Link;
-import essence.Tag;
+import essence.*;
 import interfase.mySQLhandler;
 
 import java.io.BufferedWriter;
@@ -62,11 +60,13 @@ public class SQLUtils implements mySQLhandler {
         try {
             Class.forName("com.mysql.jdbc.Driver"); // в загрузчик попадает класс из драйвера. Драйвер скачивается и устанавливается бибиотекой к проекту
         } catch (ClassNotFoundException e) {
+            //e.printStackTrace();
             return "DataBase is not installed";
         }
         try {
             Connection conn = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
         } catch (SQLException e) {
+            //e.printStackTrace();
             return "User's Name or Password are not valid";
         }
         return result;
@@ -75,7 +75,7 @@ public class SQLUtils implements mySQLhandler {
     public static String createProfile(String userName, String userPass, String filePath) {
         String result = null;
         SQLUtils s = new SQLUtils();
-        s.createUserAP(userName, userPass, filePath);
+        s.createUserAP(userName,userPass, filePath);
         return result;
     }
 
@@ -596,16 +596,15 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteBook(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookSorterPro.Books WHERE book_id=?";
+        String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            System.out.println("preStatement=" + preStatement);
+            ;
             preStatement.setString(1, Id);
-            System.out.println("before execute()");
             preStatement.execute();
             System.out.println("Book с id: " + Id + " успешно удалена из bookstore.books");
         } catch (SQLException e) {
-            System.err.println("deleteBook WARNING!! " + e.getMessage());
+            System.err.println("deleteBook WARNING!! " + e.getStackTrace());
         }
 
     }

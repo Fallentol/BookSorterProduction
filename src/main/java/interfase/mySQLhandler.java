@@ -3,6 +3,7 @@ package interfase;
 import essence.Book;
 import essence.Link;
 import essence.Tag;
+import essence.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
