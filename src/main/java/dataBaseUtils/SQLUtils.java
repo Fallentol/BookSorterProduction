@@ -2,7 +2,10 @@ package dataBaseUtils;
 
 
 import config.Configurator;
-import essence.*;
+import essence.Book;
+import essence.Link;
+import essence.Tag;
+import essence.UserProfile;
 import interfase.mySQLhandler;
 
 import java.io.BufferedWriter;
@@ -609,15 +612,14 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteBook(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?" + Id;
+        String createCommand = "DELETE FROM BookSorterPro.Books WHERE book_id=?" + Id;
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            ;
             preStatement.setString(1, Id);
             preStatement.execute();
             System.out.println("Book с id: " + Id + " успешно удалена из bookstore.books");
         } catch (SQLException e) {
-            System.err.println("deleteBook WARNING!! " + e.getStackTrace());
+            System.err.println("deleteBook WARNING!! " + e.getMessage());
         }
 
     }
