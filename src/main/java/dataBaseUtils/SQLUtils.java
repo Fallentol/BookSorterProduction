@@ -508,7 +508,7 @@ public class SQLUtils implements mySQLhandler {
     public int insertNewBook(Book book) {
         //найденная и расшифрованная книга на ПК передается в prepInsert
         try {
-            String query = "INSERT INTO books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO " + Configurator.baseName + ".books (bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preStatement = sqlConnection.prepareStatement(query);
             preStatement.setString(1, book.getName());
             preStatement.setString(2, book.getAuthor());
@@ -522,7 +522,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.execute();
             preStatement.close();
 
-            query = "SELECT book_id FROM books WHERE bookPath = '" + book.getPath() + "'";
+            query = "SELECT book_id FROM " + Configurator.baseName + ".books WHERE bookPath = '" + book.getPath() + "'";
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
             while (rs.next()) {
                 return rs.getInt("book_id");
@@ -536,7 +536,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void insertNewTag(Tag tag) {
         //навый Tag передается в prepInsert
-        String createCommand = "insert into BookStorePro.Tags (tagName, tagParent) values (?, ?)";
+        String createCommand = "insert into " + Configurator.baseName + ".Tags (tagName, tagParent) values (?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, tag.getName());
@@ -549,7 +549,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void insertNewLink(Link link) {
         //навый Link передается в prepInsert
-        String createCommand = "insert into BookStorePro.Links (tagId, bookId) values (?, ?)";
+        String createCommand = "insert into " + Configurator.baseName + ".Links (tagId, bookId) values (?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, link.getTag_id());
@@ -562,7 +562,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void updateBook(Book book) {
         //передаю запрос обновить книгу (поле книги)
-        String createCommand = "insert into BookStorePro.books (book_id, bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String createCommand = "insert into " + Configurator.baseName + ".books (book_id, bookName, bookAuthor, bookLanguage, bookType, bookFormat, bookPath, bookDescription, bookYear, bookSize) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, book.getId());
@@ -584,7 +584,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void updateTag(Tag tag) {
         //передаю запрос обновить книгу (поле книги)
-        String createCommand = "insert into BookStorePro.Tags (tag_id, tagName, tagParent) values (?, ?, ?)";
+        String createCommand = "insert into " + Configurator.baseName + ".Tags (tag_id, tagName, tagParent) values (?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, tag.getId()); //определяю элемент для обновления по ID таблицы БД
@@ -598,7 +598,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void updateLink(Link link) {
         //передаю запрос обновить книгу (поле книги)
-        String createCommand = "insert into BookStorePro.Links (link_id, tagId, bookId) values (?, ?, ?)";
+        String createCommand = "insert into " + Configurator.baseName + ".Links (link_id, tagId, bookId) values (?, ?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, link.getId()); //определяю элемент для обновления по ID таблицы БД
@@ -612,7 +612,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteBook(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookSorterPro.Books WHERE book_id=?" + Id;
+        String createCommand = "DELETE FROM " + Configurator.baseName + ".books WHERE book_id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, Id);
@@ -626,7 +626,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteTag(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookBorterPro.Tags WHERE id=?";
+        String createCommand = "DELETE FROM " + Configurator.baseName + ".Tags WHERE id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             ;
@@ -640,7 +640,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteLink(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookBorterPro.Links WHERE id=?";
+        String createCommand = "DELETE FROM " + Configurator.baseName + ".Links WHERE id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             ;

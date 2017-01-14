@@ -37,6 +37,10 @@ public class ProfileDialogServlet extends HttpServlet {
         //подключившись высыпаю перечень профилей данного пользователя
         ArrayList listProfile = SQLUtils.collectorUserProfile(userName);
 
+        for (int i = 0; i < listProfile.size(); i++) {
+
+
+        }
         /*response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
         pw.write(result);*/
