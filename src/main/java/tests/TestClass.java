@@ -8,9 +8,11 @@ import fileUtils.FileProcessor;
 
 import java.util.ArrayList;
 
-/**
- * Created by New on 12/24/2016.
- */
+import org.hibernate.Session;
+import essence.BooksEntity;
+import dataBaseUtils.HibernateSessionFactory;
+
+
 public class TestClass {
 
     private static Book testBook = new Book(18, "Name", "Author", "ru", "book", "pdf", "Path", "test", 1997, 18);
@@ -19,7 +21,30 @@ public class TestClass {
         //runFileControllerTest();
         //runSQLConnectionTest();
         //runSQLUtilsTest();
-        fileProcessorTest();
+        //fileProcessorTest();
+
+        System.out.println("Hibernate tutorial");
+
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        BooksEntity contactEntity = new BooksEntity();
+
+        contactEntity.setBookName("rte");
+        contactEntity.setBookAuthor("Nick");
+        contactEntity.setBookDescription("VN");
+        contactEntity.setBookFormat("pdf");
+        contactEntity.setBookSize(55);
+        contactEntity.setBookLanguage("Ru");
+        contactEntity.setBookPath("Path");
+        contactEntity.setBookType("Jork");
+        contactEntity.setBookYear(2008);
+
+        session.save(contactEntity);
+        session.getTransaction().commit();
+
+        session.close();
 
     }
 
