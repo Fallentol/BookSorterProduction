@@ -39,12 +39,18 @@ document.ready(function () {
 
     $("#useProfile").click(function () {
         var fail = false;
+        var base = selectForm.baseNameS.value;
+        var name = selectForm.user_idS.value;
         var pass = selectForm.userPassS.value;
+        var filePath = null;
         if (pass == "")
             fail = "Вы не ввели пароль!";
         if (fail)
             alert(fail);
+        $.post("/ProfileDialogServlet", {baseName: base, userName: name, userPass: pass}, function (result) {
+            $("#profile_idS").text(result);
 
+        });
     });
 
 })(jQuery); // Используем немедленно вызываемую анонимную функцию

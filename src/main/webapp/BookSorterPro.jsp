@@ -57,12 +57,15 @@
                             База данных:</br>
                             <select name="baseNameS" id="baseNameS" class="StyleSelectBox">
                                 <option value="0">- выберите БД -</option>
+                                <option value="1">BookSorterPro</option>
                             </select><td></td></br>
                             Пользователь:</br>
                             <select name="user_idS" id="user_idS" class="StyleSelectBox">
                                 <option value="0">- выберите Пользователя -</option>
+                                <option value="1">admin</option>
                             </select><td></td></br>
                             <input type="text" placeholder="User Password" name="userPassS" id="userPassS" class="authInput"></br>
+                            <input type="button" id="check" onclick="valid(document.getElementById('formSelect'))" value="Check Info"></br></br>
                             Рабочая папка:<br />
                             <select name="profile_idS" id="profile_idS" disabled="disabled" class="StyleSelectBox">
                                 <option value="0">- выберите рабочую папку -</option>

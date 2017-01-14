@@ -2,10 +2,7 @@ package dataBaseUtils;
 
 
 import config.Configurator;
-import essence.Book;
-import essence.Link;
-import essence.Tag;
-import essence.UserList;
+import essence.*;
 import interfase.mySQLhandler;
 
 import java.io.BufferedWriter;
@@ -80,6 +77,20 @@ public class SQLUtils implements mySQLhandler {
         SQLUtils s = new SQLUtils();
         s.createUserAP(userName,userPass, filePath);
         return result;
+    }
+
+    public static ArrayList<UserProfile> collectorUserProfile (String userName){
+
+        /*String query = "SELECT profPath FROM UserProfile WHERE prof_id = '" + user_id + "'";
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            while (rs.next()) {
+                return null;
+            }
+        } catch (SQLException e) {
+            System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
+        }*/
+        return null;
     }
 
     public void refreshLocalRoot() {
@@ -227,8 +238,6 @@ public class SQLUtils implements mySQLhandler {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserList new User. Table is created?";
         }
-
-
         //////////////////////////////////////////////////////////////////////////////////////////
         return result;
     }
@@ -335,9 +344,10 @@ public class SQLUtils implements mySQLhandler {
         //таблица данных пользователей
         final String tableNameProf = "UserProfile";
         String createCommandProf = "CREATE TABLE " + dbName + "." + tableNameProf + " (" +
-                "  `prof_id` int(11) NOT NULL auto_increment," +
+                "  `id` int(11) NOT NULL auto_increment," +
+                "  `prof_id` int(11) default NULL," +
                 "  `profPath` varchar(255) default NULL," +
-                "  PRIMARY KEY  (`prof_id`)" +
+                "  PRIMARY KEY  (`id`)" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
         try {
             allocateTableField(createCommandProf, tableNameProf);
@@ -599,7 +609,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void deleteBook(String Id) {
         //передаю запрос
-        String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?";
+        String createCommand = "DELETE FROM BookSorterPro.Books WHERE id=?" + Id;
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             ;
