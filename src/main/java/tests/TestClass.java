@@ -30,7 +30,6 @@ public class TestClass {
         session.beginTransaction();
 
         BooksEntity contactEntity = new BooksEntity();
-
         contactEntity.setBookName("rte");
         contactEntity.setBookAuthor("Nick");
         contactEntity.setBookDescription("VN");
@@ -40,10 +39,8 @@ public class TestClass {
         contactEntity.setBookPath("Path");
         contactEntity.setBookType("Jork");
         contactEntity.setBookYear(2008);
-
         session.save(contactEntity);
         session.getTransaction().commit();
-
         session.close();
 
     }
