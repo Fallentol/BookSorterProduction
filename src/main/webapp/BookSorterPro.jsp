@@ -65,7 +65,7 @@
                                 <option value="1">admin</option>
                             </select><td></td></br>
                             <input type="text" placeholder="User Password" name="userPassS" id="userPassS" class="authInput"></br>
-                            <input type="button" id="check" onclick="valid(document.getElementById('formSelect'))" value="Check Info"></br></br>
+                            <input type="button" id="checkUser" onclick="valid(document.getElementById('formSelect'))" value="Check Info"></br></br>
                             Рабочая папка:<br />
                             <select name="profile_idS" id="profile_idS" disabled="disabled" class="StyleSelectBox">
                                 <option value="0">- выберите рабочую папку -</option>

@@ -35,7 +35,8 @@ public class ProfileDialogServlet extends HttpServlet {
             e.printStackTrace();
         }
         //подключившись высыпаю перечень профилей данного пользователя
-        ArrayList result = SQLUtils.collectorUserProfile(userName);
+        ArrayList listProfile = SQLUtils.collectorUserProfile(userName);
+
         /*response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
         pw.write(result);*/

@@ -72,25 +72,32 @@ public class SQLUtils implements mySQLhandler {
         return result;
     }
 
-    public static String createProfile(String userName, String userPass, String filePath) {
-        String result = null;
-        SQLUtils s = new SQLUtils();
-        s.createUserAP(userName,userPass, filePath);
-        return result;
-    }
+    public static ArrayList collectorUserProfile (String userName) {
+        int prof_id = 0;
+        ArrayList list = new ArrayList();
 
-    public static ArrayList<UserProfile> collectorUserProfile (String userName){
-
-        /*String query = "SELECT profPath FROM UserProfile WHERE prof_id = '" + user_id + "'";
+        //определею по имени ID
         try {
+            String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
             while (rs.next()) {
-                return null;
+                prof_id = rs.getInt("user_id");
+            }
+        } catch (SQLException e) {
+            System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
+        }
+
+        //вывожу list с Path по ID
+        try {
+            String query = "SELECT profPath FROM UserProfile WHERE prof_id = '" + prof_id + "'";
+            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            while (rs.next()) {
+                list.add(rs.next());
             }
         } catch (SQLException e) {
             System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
-        }*/
-        return null;
+        }
+        return list;
     }
 
     public void refreshLocalRoot() {
@@ -230,10 +237,11 @@ public class SQLUtils implements mySQLhandler {
 
             String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            int prof_id = 0;
             while (rs.next()) {
-                rs.getInt("user_id");
+                prof_id = rs.getInt("user_id");
             }
-            insertUserProfile(rs.getInt("user_id"), userPath);
+            insertUserProfile(prof_id, userPath);
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserList new User. Table is created?";
@@ -244,15 +252,13 @@ public class SQLUtils implements mySQLhandler {
 
     public String insertUserProfile(int prof_id, String profPath) {
         String result = "User`s profile inserted";
-
-        String createCommandProfile = "insert into sys.UserProfile (prof_id, profPath) values (?, ?)";
+        String createCommand = "insert into sys.UserProfile (prof_id, profPath) values (?, ?)";
         try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandProfile);
+            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setInt(1, prof_id);
             preStatement.setString(2, profPath);
             preStatement.execute();
             preStatement.close();
-
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserProfile new userPath. Table is created?";
