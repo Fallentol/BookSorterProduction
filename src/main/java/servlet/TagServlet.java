@@ -1,6 +1,11 @@
 package servlet;
 
 import dataBaseUtils.SQLConnection;
+import dataBaseUtils.SQLUtils;
+import essence.Book;
+import essence.TagsEntity;
+import fileUtils.FileController;
+import hibernate.HibernateController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +20,18 @@ public class TagServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        super.doPost(request, response);
+        if ("saveCard".equals(request.getParameter("action"))) {
+            try {
+                String name = request.getParameter("name");
+                int parent = Integer.valueOf(request.getParameter("parent"));
+                System.out.println("NAME PARENT : " + name + " " + parent);
+                TagsEntity te = new TagsEntity(name, parent);
+                HibernateController.insertNewTag(te);
+            } catch (Exception e) {
+                System.out.println("INSERT FAILED CUSTOM MESSAGE " + e);
+            }
+        }
+
     }
 
     @Override
@@ -26,8 +42,7 @@ public class TagServlet extends HttpServlet {
 
         String message = "Worked";
         request.setAttribute("message", message);
-        SQLConnection sqlCon = new SQLConnection();
-        request.setAttribute("tagsSort", sqlCon.getTags());
+        request.setAttribute("tagsSort", HibernateController.getAllTags());
         request.getRequestDispatcher("/Tag.jsp").forward(request, response);
     }
 }

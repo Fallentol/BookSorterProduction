@@ -8,6 +8,15 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tags", schema = "booksorterpro", catalog = "")
 public class TagsEntity {
+
+    public TagsEntity() {
+    }
+
+    public TagsEntity(String name, int parent) {
+        this.tagName = name;
+        this.tagParent = parent;
+    }
+
     private int tagId;
     private String tagName;
     private Integer tagParent;

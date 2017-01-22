@@ -32,6 +32,22 @@
         });
          */
     }
+    function saveTag() {
+        var name = $("#dialogTagName").val();
+        var parent = $("#dialogTagParents").val();
+
+        $.post("/tagStore", {
+            action: "saveCard",
+            name: name,
+            parent: parent
+        });
+
+        setTimeout('window.location.reload()', 2000)
+        closeDialog();
+    }
+    function closeDialog() {
+        $('.dialogDiv').fadeOut();
+    }
 </script>
 
 <link href="styles/dialogStyle.css" rel="stylesheet" type="text/css">
@@ -79,11 +95,11 @@
                     Parent
                 </td>
             </tr>
-            <c:forEach items="${tagsSort}" var="bo">
+            <c:forEach items="${tagsSort}" var="tag">
                 <tr>
-                    <td>${bo.getId()}</td>
-                    <td>${bo.getName()}</td>
-                    <td>${bo.getParent()}</td>
+                    <td>${tag.getTagId()}</td>
+                    <td>${tag.getTagName()}</td>
+                    <td>${tag.getTagParent()}</td>
                 </tr>
             </c:forEach>
         </table>
@@ -107,7 +123,7 @@
         </tr>
     </table>
     <div>
-        <input type="button" class="dialogButton" value="Save" onclick="saveCard();">
+        <input type="button" class="dialogButton" value="Save" onclick="saveTag();">
         <input type="button" class="dialogButton" value="Close" onclick="closeDialog();">
     </div>
 

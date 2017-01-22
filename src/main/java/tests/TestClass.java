@@ -7,7 +7,10 @@ import fileUtils.FileController;
 import fileUtils.FileProcessor;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import essence.BooksEntity;
 import dataBaseUtils.HibernateSessionFactory;
@@ -41,6 +44,16 @@ public class TestClass {
         contactEntity.setBookYear(2008);
         session.save(contactEntity);
         session.getTransaction().commit();
+
+        /// вот так делаются запросы
+        String foundname = "rte";
+        Query query = session.createQuery("FROM BooksEntity WHERE bookName =:paramName ");
+        query.setParameter("paramName", foundname);
+        List<BooksEntity> listOfBook = query.list();
+        for (BooksEntity name : listOfBook) {
+            System.out.println("Name=" + name.getBookAuthor());
+        }
+
         session.close();
 
     }
