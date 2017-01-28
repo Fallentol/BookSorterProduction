@@ -38,6 +38,7 @@
     function openFile(item) {
         var listIndex = $(item).attr("class");
         $.post("/fileStore", {listIndex: listIndex, action: "openFile"});
+
     }
 
     function saveCard() {

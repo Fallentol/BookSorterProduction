@@ -75,25 +75,32 @@ public class SQLUtils implements mySQLhandler {
         return result;
     }
 
-    public static String createProfile(String userName, String userPass, String filePath) {
-        String result = null;
-        SQLUtils s = new SQLUtils();
-        s.createUserAP(userName,userPass, filePath);
-        return result;
+
+
+    public static int getUserIdFromName(String userName) {
+        int user_id = 0;
+        String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
+        try {
+            Statement stID = sqlConnection.createStatement();
+            stID.execute(query);
+        } catch (SQLException e) {
+            System.err.println("getUserIdFromName WARNING!! " + e.getStackTrace());
+        }
+        return user_id;
     }
 
-    public static ArrayList<UserProfile> collectorUserProfile (String userName){
-
-        /*String query = "SELECT profPath FROM UserProfile WHERE prof_id = '" + user_id + "'";
+    public static ArrayList<String> collectorUserPath(String userName) {
+        ArrayList<String> results = new ArrayList<>();
+        String query = "SELECT profPath FROM sys.UserProfile WHERE prof_id = '" + getUserIdFromName(userName) + "'";
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
             while (rs.next()) {
-                return null;
+                    results.add(rs.getString(1)); //нужно проверить columnIndex
             }
         } catch (SQLException e) {
-            System.err.println("insertNewBook WARNING!! " + e.getStackTrace());
-        }*/
-        return null;
+            System.err.println("collectorUserPath WARNING!! " + e.getStackTrace());
+        }
+        return results;
     }
 
     public void refreshLocalRoot() {
@@ -233,10 +240,11 @@ public class SQLUtils implements mySQLhandler {
 
             String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+            int prof_id = 0;
             while (rs.next()) {
-                rs.getInt("user_id");
+                prof_id = rs.getInt("user_id");
             }
-            insertUserProfile(rs.getInt("user_id"), userPath);
+            insertUserProfile(prof_id, userPath);
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserList new User. Table is created?";
@@ -329,7 +337,7 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createSYSTableUserData(String userName, String userPassword, String userDirectory) {
+    public void createSYSTableUserData() {
         //таблица списка пользователей
         final String dbName = "sys"; //системная БД, живет уже при создании сервера
         final String tableNameList = "UserList";
@@ -360,10 +368,10 @@ public class SQLUtils implements mySQLhandler {
         //таблица создана, нужно условие для проверки существования таблицы
     }
 
-    public void createDBTableBooks(String dbName, String tableName) {
+    public void createDBTableBooks() {
         //подготавливаю запрос на создание таблицы
-        dbName = "BookSorterPro";
-        //tableName = "books";
+        String dbName = "BookSorterPro";
+        String tableName = "books";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `book_id` int(11) NOT NULL auto_increment," +
@@ -386,10 +394,10 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableTags(String dbName, String tableName) {
+    public void createDBTableTags() {
         //подготавливаю запрос на создание таблицы
-        dbName = "BookSorterPro";
-        //tableName = "tags";
+        String dbName = "BookSorterPro";
+        String tableName = "tags";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `tag_id` int(11) NOT NULL auto_increment," +
@@ -405,10 +413,10 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public void createDBTableLinks(String dbName, String tableName) {
+    public void createDBTableLinks() {
         //подготавливаю запрос на создание таблицы
-        dbName = "BookSorterPro";
-        //tableName = "links";
+        String dbName = "BookSorterPro";
+        String tableName = "links";
 
         String createCommand = "CREATE TABLE " + dbName + "." + tableName + " (" +
                 "  `link_id` int(11) NOT NULL auto_increment," +
@@ -542,6 +550,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setString(1, tag.getName());
             preStatement.setInt(2, tag.getParent());
             preStatement.execute();
+            preStatement.close();
         } catch (SQLException e) {
             System.err.println("insertNewTag WARNING!! " + e.getStackTrace());
         }
@@ -555,6 +564,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(1, link.getTag_id());
             preStatement.setInt(2, link.getBook_id());
             preStatement.execute();
+            preStatement.close();
         } catch (SQLException e) {
             System.err.println("insertNewLink WARNING!! " + e.getStackTrace());
         }
@@ -576,6 +586,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(9, book.getYear());
             preStatement.setInt(10, book.getSize());
             preStatement.executeUpdate();
+            preStatement.close();
         } catch (SQLException e) {
             System.err.println("updateBook WARNING!! " + e.getStackTrace());
         }
@@ -591,6 +602,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setString(2, tag.getName());
             preStatement.setInt(3, tag.getParent());
             preStatement.executeUpdate();
+            preStatement.close();
         } catch (SQLException e) {
             System.err.println("updateTag WARNING!! " + e.getStackTrace());
         }
@@ -605,6 +617,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.setInt(2, link.getTag_id());
             preStatement.setInt(3, link.getBook_id());
             preStatement.executeUpdate();
+            preStatement.close();
         } catch (SQLException e) {
             System.err.println("updateLink WARNING!! " + e.getStackTrace());
         }
@@ -617,6 +630,7 @@ public class SQLUtils implements mySQLhandler {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
             preStatement.setString(1, Id);
             preStatement.execute();
+            preStatement.close();
             System.out.println("Book с id: " + Id + " успешно удалена из bookstore.books");
         } catch (SQLException e) {
             System.err.println("deleteBook WARNING!! " + e.getMessage());
@@ -629,9 +643,9 @@ public class SQLUtils implements mySQLhandler {
         String createCommand = "DELETE FROM " + Configurator.baseName + ".Tags WHERE id=?";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommand);
-            ;
             preStatement.setString(1, Id);
             preStatement.execute();
+            preStatement.close();
             System.out.println("Tag с id: " + Id + " успешно удален из BookSorterPro.Tags");
         } catch (SQLException e) {
             System.err.println("deleteTag WARNING!! " + e.getStackTrace());
@@ -646,6 +660,7 @@ public class SQLUtils implements mySQLhandler {
             ;
             preStatement.setString(1, Id);
             preStatement.execute();
+            preStatement.close();
             System.out.println("Link с id: " + Id + " успешно удален из BookSorterPro.Links");
         } catch (SQLException e) {
             System.err.println("deleteLink WARNING!! " + e.getStackTrace());

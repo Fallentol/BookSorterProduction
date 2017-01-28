@@ -16,7 +16,7 @@ public class SQLPackTest {
         Book testBook = new Book(18, "Name", "Author", "ru", "book", "pdf", "Path", "test", 1997, 18);
 
         SQLUtils testObj = new SQLUtils();
-        assertNotNull("getBookFromId(\"2\") return NULL", testObj.getBookFromId("2"));
+        assertNotNull("getBookFromId(\"2\") return NULL", testObj.getBookFromId("50"));
         insertedBookId = testObj.insertNewBook(testBook);
         assertTrue("insertNewBook() return -1", insertedBookId != -1);
     }

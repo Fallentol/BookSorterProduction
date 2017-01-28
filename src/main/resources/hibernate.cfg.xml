@@ -16,6 +16,7 @@
         <mapping class="essence.BooksEntity"/>
         <mapping class="essence.LinksEntity"/>
         <mapping class="essence.TagsEntity"/>
+
         <!-- NOTE that after automapping with IDEA property username and password will delete -->
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->

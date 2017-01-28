@@ -20,10 +20,10 @@ public interface mySQLhandler {
 
     public void createDB(String dbName); //создаю БД на сервере (поумолчанию:BookSorterPro)
     public void deleteDB(String dbName); //удаляю БД из сервера (поумолчанию:BookSorterPro)
-    public void createSYSTableUserData(String userName, String userPass, String userDirectory);
-    public void createDBTableBooks(String dbName, String tableName);
-    public void createDBTableTags(String dbName, String tableName);
-    public void createDBTableLinks(String dbName, String tableName);
+    public void createSYSTableUserData();
+    public void createDBTableBooks();
+    public void createDBTableTags();
+    public void createDBTableLinks();
     public void deleteDBTable(String tableName); //удаляю БД с сервера
 
     // получает аргументом айдишник книги, возвращает наполненый полями экземпляр класса Book
