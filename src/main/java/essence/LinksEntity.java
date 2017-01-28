@@ -12,6 +12,36 @@ public class LinksEntity {
     private int tagId;
     private int bookId;
 
+
+    ///////////////////BOOK//////////////////////
+    private BooksEntity book;
+
+    @OneToOne
+    @JoinColumn(name = "bookId", referencedColumnName = "book_id")
+    public BooksEntity getBook() {
+        return this.book;
+    }
+
+    public void setBook(BooksEntity book) {
+        this.book = book;
+    }
+
+    /////////////////////////////////////////
+    ///////////////////TAG//////////////////////
+    private TagsEntity tag;
+
+    @OneToOne
+    @JoinColumn(name = "tagId", referencedColumnName = "tag_id")
+    public TagsEntity getTag() {
+        return this.tag;
+    }
+
+    public void setTag(TagsEntity tag) {
+        this.tag = tag;
+    }
+    /////////////////////////////////////////
+
+
     @Id
     @Column(name = "link_id", nullable = false)
     public int getLinkId() {
@@ -22,8 +52,8 @@ public class LinksEntity {
         this.linkId = linkId;
     }
 
-    @Basic
-    @Column(name = "tagId", nullable = false)
+    /*@Basic
+    @Column(name = "tagId", nullable = false*//*, insertable = false, updatable = false*//*)
     public int getTagId() {
         return tagId;
     }
@@ -33,14 +63,14 @@ public class LinksEntity {
     }
 
     @Basic
-    @Column(name = "bookId", nullable = false)
+    @Column(name = "bookId", nullable = false*//*, insertable = false, updatable = false*//*)
     public int getBookId() {
         return bookId;
     }
 
     public void setBookId(int bookId) {
         this.bookId = bookId;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {

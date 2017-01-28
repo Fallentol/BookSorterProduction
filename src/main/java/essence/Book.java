@@ -18,9 +18,7 @@ public class Book implements Serializable {
     public int year;
     public int size;
 
-    public Book(){
-
-    }
+    public Book(){}
 
     public Book(int id, String name, String author, String language, String type, String format, String path, String description, int year, int size) {
         this.id = id;

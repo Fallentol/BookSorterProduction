@@ -20,7 +20,19 @@ public class TagsEntity {
     private int tagId;
     private String tagName;
     private Integer tagParent;
+///////////////////////////////
+   /* private TagsEntity tagParentObj;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tags")
+    public TagsEntity getTagParentObj() {
+        return tagParentObj;
+    }
+
+    public void setTagParentObj(TagsEntity par) {
+        par.setTagParent(this);
+        this.tagParentObj = tagParentObj;
+    }*/
+///////////////////////////////
     @Id
     @Column(name = "tag_id", nullable = false)
     public int getTagId() {

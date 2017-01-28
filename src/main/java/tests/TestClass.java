@@ -3,6 +3,7 @@ package tests;
 import dataBaseUtils.SQLConnection;
 import dataBaseUtils.SQLUtils;
 import essence.Book;
+import essence.LinksEntity;
 import fileUtils.FileController;
 import fileUtils.FileProcessor;
 
@@ -32,7 +33,7 @@ public class TestClass {
 
         session.beginTransaction();
 
-        BooksEntity contactEntity = new BooksEntity();
+        /*BooksEntity contactEntity = new BooksEntity();
         contactEntity.setBookName("rte");
         contactEntity.setBookAuthor("Nick");
         contactEntity.setBookDescription("VN");
@@ -43,16 +44,51 @@ public class TestClass {
         contactEntity.setBookType("Jork");
         contactEntity.setBookYear(2008);
         session.save(contactEntity);
-        session.getTransaction().commit();
+        session.getTransaction().commit();*/
 
         /// вот так делаются запросы
-        String foundname = "rte";
+        /*String foundname = "rte";
         Query query = session.createQuery("FROM BooksEntity WHERE bookName =:paramName ");
         query.setParameter("paramName", foundname);
         List<BooksEntity> listOfBook = query.list();
         for (BooksEntity name : listOfBook) {
             System.out.println("Name=" + name.getBookAuthor());
+        }*/
+
+
+
+        /*Query query = session.createQuery("FROM LinksEntity WHERE linkId =:paramName ");
+        query.setParameter("paramName", 2);
+        List<LinksEntity> listOfLink = query.list();
+        for (LinksEntity name : listOfLink) {
+            System.out.println("Name=" + name.getBook().getBookName());
+        }*/
+
+        Query query = session.createQuery("FROM LinksEntity WHERE linkId =:paramName ");
+        query.setParameter("paramName", 2);
+        List<LinksEntity> listOfLink = query.list();
+        for (LinksEntity name : listOfLink) {
+            System.out.println("Name=" + name.getBook().getBookName());
         }
+
+        query = session.createQuery("FROM BooksEntity as book WHERE bookName =:paramName ");
+        query.setParameter("paramName", "rte");
+        List<BooksEntity> listOfBook = query.list();
+        for (BooksEntity name : listOfBook) {
+            //System.out.println("Name=" + name.getBookName());
+        }
+
+        query = session.createQuery("SELECT bookName, bookAuthor FROM BooksEntity WHERE bookName =:paramName ");
+        query.setParameter("paramName", "rte");
+        listOfBook = query.list();
+
+        for (Object name : listOfBook) {
+            System.out.println(name.getClass().getName()); // почему-то возварщает Object
+        }
+
+
+
+
 
         session.close();
 
