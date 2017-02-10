@@ -1,6 +1,8 @@
 package servlet;
 
 import config.Configurator;
+import dataBaseUtils.SQLUtils;
+import essence.Tag;
 import fileUtils.FileController;
 import org.json.JSONObject;
 
@@ -18,41 +20,28 @@ public class TagDialogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        /// обработка кнопки SAVE
-        if ("saveCard".equals(request.getParameter("action"))) {
-            try {
-
-                return;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        System.out.println("action=" + request.getParameter("action"));
+        if ("getTagInfo".equals(request.getParameter("action"))) {
+            String param = request.getParameter("listIndex").replace("item", "");
+            SQLUtils sq = new SQLUtils();
+            Tag tag = sq.getTagFromId(param);
+            JSONObject resultJSON = getJSONObjectForTag(tag);
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.write(resultJSON.toString());
         }
-
-        String param = request.getParameter("listIndex").replace("item", "");
-        int listIndex = Integer.valueOf(param);
-        String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
-
-        /*int cardId = SQLUtils.fileBaseIdMap.get(fileName) == null ? 0 : SQLUtils.fileBaseIdMap.get(fileName);
-        JSONObject resultJSON = null;
-        if (cardId == 0) {
-            resultJSON = getJSONObjectForNewFile(fileName);
-        } else {
-            resultJSON = getJSONObjectFromBook(cardId);
-        }*/
-
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter pw = response.getWriter();
-        pw.write("temp");
     }
 
-    private JSONObject getJSONObjectForNewFile(String fileName) {
-        return null;
-    }
-
-    private JSONObject getJSONObjectFromBook(int identity) {
-        return null;
+    private JSONObject getJSONObjectForTag(Tag tag) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("tagId", tag.getId());
+            json.put("tagName", tag.getName());
+            json.put("tagParent", tag.getParent());
+        } catch (Exception e) {
+            System.out.println("JSONObject json Exception=" + e);
+        }
+        return json;
     }
 
 }

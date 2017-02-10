@@ -76,7 +76,6 @@ public class SQLUtils implements mySQLhandler {
     }
 
 
-
     public static int getUserIdFromName(String userName) {
         int user_id = 0;
         String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
@@ -95,7 +94,7 @@ public class SQLUtils implements mySQLhandler {
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery(query);
             while (rs.next()) {
-                    results.add(rs.getString(1)); //нужно проверить columnIndex
+                results.add(rs.getString(1)); //нужно проверить columnIndex
             }
         } catch (SQLException e) {
             System.err.println("collectorUserPath WARNING!! " + e.getStackTrace());
@@ -476,7 +475,7 @@ public class SQLUtils implements mySQLhandler {
     public ArrayList<Tag> getAllTags() {
         ArrayList<Tag> result = new ArrayList<>();
         try {
-            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books");
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM tags");
             System.out.println("RS=" + rs);
             while (rs.next()) {
                 result.add(allocateTagFields(rs));
@@ -491,10 +490,12 @@ public class SQLUtils implements mySQLhandler {
         Tag result = new Tag();
         if (id == null || "".equals(id)) return result;
         try {
-            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE tag_id = " + id);
-            result = allocateTagFields(rs);
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM tags WHERE tag_id = " + id);
+            while (rs.next()) {
+                result = allocateTagFields(rs);
+            }
         } catch (SQLException e) {
-            System.err.println("getTagFromId WARNING!! " + e.getStackTrace());
+            System.err.println("getTagFromId WARNING!! " + e.toString());
             return result;
         }
         return result;
@@ -552,7 +553,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.execute();
             preStatement.close();
         } catch (SQLException e) {
-            System.err.println("insertNewTag WARNING!! " + e.getStackTrace());
+            System.err.println("insertNewTag WARNING!! " + e.toString());
         }
     }
 
@@ -566,7 +567,7 @@ public class SQLUtils implements mySQLhandler {
             preStatement.execute();
             preStatement.close();
         } catch (SQLException e) {
-            System.err.println("insertNewLink WARNING!! " + e.getStackTrace());
+            System.err.println("insertNewLink WARNING!! " + e.getMessage());
         }
     }
 
