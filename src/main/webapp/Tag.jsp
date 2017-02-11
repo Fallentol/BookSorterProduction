@@ -15,20 +15,17 @@
 
     <script type="text/javascript">
         function showDialogTag(item) {
-            $("#dialog").dialog();
-            console.log('item=' + item);
+            $("#dialog").dialog({
+                width: 400
+            });
             if (item == null) {
                 $("#dialogTagId").val('');
                 $("#dialogTagName").val('');
                 $("#dialogTagParents").val('');
-                console.log('New Item');
             } else {
                 var listIndex = $(item).attr("class");
-                console.log('listIndex' + listIndex);
                 $.post("/tagDialog", {listIndex: listIndex, action: "getTagInfo"}, function (resp) {
-                    console.log('resp=' + resp);
                     var object = JSON.parse(resp);
-                    console.log('object=' + object.tagName);
                     $("#dialogTagId").val(object.tagId);
                     $("#dialogTagName").val(object.tagName);
                     $("#dialogTagParents").val(object.tagParent);
@@ -118,15 +115,15 @@
 </div>
 
 
-<div id="dialog" title="TAG CARD" style="width: 320px;">
+<div id="dialog" title="TAG CARD" >
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
-    <table style="border-radius: 8px; border: none; table-layout: fixed;">
+    <table style="border-radius: 8px; border: none; table-layout: fixed; width: 340px;">
         <tr>
             <td style="border: none; width:10%;"><input disabled="disabled" style="width:95%;" id="dialogTagId" class="dialogInput"
                                                         type="text" title="Id" placeholder="Id"></td>
-            <td style="border: none;width:45%;"><input style="width:95%;" id="dialogTagName" class="dialogInput"
+            <td style="border: none;width:80%;"><input style="width:95%;" id="dialogTagName" class="dialogInput"
                                                        type="text" title="Tag's name" placeholder="Tag's name"></td>
-            <td style="border: none;width:45%;"><input style="width:95%;" id="dialogTagParents" class="dialogInput"
+            <td style="border: none;width:10%; text-align: left;"><input style="width:95%;" id="dialogTagParents" class="dialogInput"
                                                        type="text" title="Parent" placeholder="Parent"></td>
         </tr>
     </table>

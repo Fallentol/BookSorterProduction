@@ -3,6 +3,7 @@ package servlet;
 import config.Configurator;
 import dataBaseUtils.SQLUtils;
 import essence.FileBookLink;
+import essence.Tag;
 import fileUtils.FileController;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 @WebServlet("/fileStore")
 public class FileServlet extends HttpServlet {
@@ -53,7 +57,14 @@ public class FileServlet extends HttpServlet {
             fileBookLinks.add(fileBookLink);
         }
 
+        SQLUtils sqlUtils = new SQLUtils();
+        Map<String, String> tagOptionsMap = new TreeMap<>();
+        for (Tag t : sqlUtils.getAllTags()) {
+            tagOptionsMap.put(String.valueOf(t.getId()), t.getName());
+        }
+
         request.setAttribute("fileTable", fileBookLinks);
+        request.setAttribute("tags", tagOptionsMap);
         request.setAttribute("bookTypes", new String[]{"n/a", "article", "book", "magazine", "encyclopedia"});
         request.setAttribute("bookLanguage", new String[]{"n/a", "ru", "en", "ua"});
 

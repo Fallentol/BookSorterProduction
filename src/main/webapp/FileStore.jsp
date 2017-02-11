@@ -6,8 +6,20 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ page isELIgnored="false" %>
 </head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>--%>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+
+
+
+
 <script type="text/javascript">
     function sendPost() {
         var findText = $(".findText").val();
@@ -17,9 +29,11 @@
             .submit();
     }
     function showDialogCard(item) {
+        $("#dialog").dialog({
+            width: 800
+        });
         var listIndex = $(item).attr("class");
         $.post("/fileDialog", {listIndex: listIndex}, function (resp) {
-            $(".dialogDiv").fadeIn();
             var object = JSON.parse(resp);
             $("#dialogFileName").val(object.fileName);
             $("#dialogFileAuthor").val(object.fileAuthor);
@@ -38,7 +52,6 @@
     function openFile(item) {
         var listIndex = $(item).attr("class");
         $.post("/fileStore", {listIndex: listIndex, action: "openFile"});
-
     }
 
     function saveCard() {
@@ -67,8 +80,12 @@
         closeDialog();
     }
     function closeDialog() {
-        $('.dialogDiv').fadeOut();
+        $("#dialog").dialog("close");
     }
+
+    $(document).ready(function(){
+        $('.tagSelector').chosen();
+    });
 </script>
 
 <link href="styles/dialogStyle.css" rel="stylesheet" type="text/css">
@@ -145,8 +162,7 @@
     </div>
 </div>
 
-<div class="dialogDiv">
-    <h2 id="dialogTitle" style="text-shadow: 2px 2px 10px #303030; font-weight: bold; color: #303030;">BOOK CARD</h2>
+<div id="dialog" title="BOOK CARD">
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none;">
         <tr>
@@ -186,8 +202,17 @@
             <td style="border: none;"><input id="dialogFileDescription" class="dialogInput" type="text"
                                              title="Description" placeholder="Description"></td>
         </tr>
+        <tr>
+            <td colspan="2" style="border: none;">
+                <select name='type' class="dialogInput tagSelector" style="width: 95%;" title="Type" id="dialogFileTags" data-placeholder="Select the tags">
+                    <c:forEach items="${tags}" var="tag">
+                        <option value="${tag.key}">${tag.value}</option>
+                    </c:forEach>
+                </select>
+            </td>
+        </tr>
     </table>
-    <div>
+    <div style="align-content: center; text-align:center; margin:auto; ">
         <input type="button" class="dialogButton" value="Save" onclick="saveCard();">
         <input type="button" class="dialogButton" value="Close" onclick="closeDialog();">
     </div>

@@ -125,7 +125,6 @@ public class FileDialogServlet extends HttpServlet {
     private JSONObject getJSONObjectFromBook(int identity) {
         SQLUtils sqlUtilsObj = new SQLUtils();
         Book book = sqlUtilsObj.getBookFromId(String.valueOf(identity));
-        System.out.println("Book=" + book);
         JSONObject json = new JSONObject();
         try {
             json.put("fileId", book.getId());
