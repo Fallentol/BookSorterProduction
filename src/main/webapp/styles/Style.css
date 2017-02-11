@@ -1,8 +1,17 @@
 body {
     margin: 0px;
     padding: 0px;
-    background-color: #0b0b0b;
-    background-image: url(/images/books2.jpg);
+    background: url(/images/books2.jpg) no-repeat;
+    background-size: 100%;
+}
+
+.nameDiv {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #666666;
+    font-size: 80px;
+    text-align: center;
+    line-height: 120px;
 }
 
 .bodyDiv {
@@ -10,7 +19,13 @@ body {
     margin-top: 0px;
     width: 70%;
     height: 100%;
-    background: linear-gradient(to top, #fefcea, mediumseagreen);
+}
+
+.bodyDiv a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #fff;
+    padding-left: 20px;
 }
 
 .authInput {
@@ -18,9 +33,17 @@ body {
 }
 
 .mainDiv {
-    background-color: antiquewhite;
-    color: blue;
-    font-weight: bold;
+    display:inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.mainDiv a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 0;
 }
 
 table {
@@ -49,8 +72,8 @@ td {
     border: 2px solid #525252;
 }
 .btn:hover {
-    background-color: ivory;
-    color: green;
+    background-color: #0ccaa4;
+    transition: all 1s ease;
 }
 .btn:active {
     border: 1px solid red;
