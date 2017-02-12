@@ -79,7 +79,7 @@ public class FileDialogServlet extends HttpServlet {
 
         response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
-        pw.write(resultJSON.toString());
+    pw.write(resultJSON.toString());
     }
 
     private JSONObject getJSONObjectForNewFile(String fileName) {

@@ -14,24 +14,25 @@
     </head>
 
 <body>
+
+<header>
 <div class="bodyDiv">
+    <header>
     <div class="nameDiv">
         book sorter
     </div>
-    <div class="mainDiv">
-        <div class="btn">
-            <a href="/fileStore">File Store</a>
-        </div>
-        <div class="btn">
-            <a href="/fileUtility">File Utils</a>
-        </div>
-        <div class="btn">
-            <a href="/bookStore">Books</a>
-        </div>
-        <div class="btn">
-            <a href="/tagStore">Tags</a>
-        </div>
-    </div>
+
+    <!--Меню-->
+    <ul class="css-menu-2">
+        <li><a href="/s" class="selected">Home</a></li>
+        <li><a href="/fileStore">File Store</a></li>
+        <li><a href="/fileUtility">File Utils</a></li>
+        <li><a href="/bookStore">Books</a></li>
+        <li><a href="/tagStore">Tags</a></li>
+    </ul>
+    <!--Меню-->
+    </header>
+
     <div class="form">
 
         <div class="submitForm" style="margin: 50px; background-color: #fefcea; padding: 30px;">
@@ -49,35 +50,39 @@
         <!--Выбор профиля/добавление новой рабочей папки-->
         <div class="selectorProfile" style="margin: 50px; background-color: #fefcea; padding: 30px;">
             <form name="form" id="formSelect">
-                База данных:</br>
+                <div class="selectorName">
+                <p>База данных:</p>
+                </div>
                 <select name="dialogBaseName" id="dialogBaseName" class="StyleSelectBox">
                     <c:forEach items="${s_baseName}" var="base">
                         <option value="${base}">${base}</option>
                     </c:forEach>
-                </select>
-                <td></td>
-                </br>
-                Пользователь:</br>
+                </select></br>
+
+                <div class="selectorName">
+                <p>Пользователь:</p>
+                </div>
                 <select name="dialogUserName" id="dialogUserName" class="StyleSelectBox">
                     <c:forEach items="${s_userName}" var="user">
                         <option value="${user}">${user}</option>
                     </c:forEach>
-                </select>
-                <td></td>
-                </br>
-                <input type="text" placeholder="User Password" name="userPass_S" id="userPass_S" class="authInput"></br>
-                <input type="button" onclick="checkInfo();" id="checkUser" value="Check Info"></br></br>
-                Рабочая папка:<br/>
+                </select></br>
+
+                <input type="text" placeholder="User Password" name="dialogUserPass" id="dialogUserPass" class="passInput">
+                <input type="button" id="checkInfo" value="Check Info"/>
+                <div style="font-size: 0.7em;" id="selectResult"></div></br>
+
+                <div class="selectorName">
+                <p>Рабочая папка:</p>
+                </div>
                 <select name="dialogProfPath" id="dialogProfPath" disabled="disabled" class="StyleSelectBox">
                     <c:forEach items="${s_profPath}" var="path">
                         <option value="${path}">${path}</option>
                     </c:forEach>
-                </select>
-                <td></td>
-                </br>
-                <input type="button" value="Use Profile">
+                </select></br>
+                <input type="button" onclick="useProfile();" id="useProfile" style="margin-top: 5px;" value="Use Profile">
             </form>
-            <div style="font-size: 0.7em;" id="selectResult"></div>
+
         </div>
         <!--Выбор профиля/добавление новой рабочей папки-->
 

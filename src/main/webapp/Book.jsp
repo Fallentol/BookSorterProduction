@@ -24,10 +24,23 @@
 
 <body>
 <div class="bodyDiv">
-    <div class="mainDiv">
-        <h2>Book Store</h2>
-    </div>
-    <a href="/s" >Back to start page</a>
+
+    <header>
+        <div class="nameDiv">
+            book sorter
+        </div>
+
+        <!--Меню-->
+        <ul class="css-menu-2">
+            <li><a href="/s">Home</a></li>
+            <li><a href="/fileStore">File Store</a></li>
+            <li><a href="/fileUtility">File Utils</a></li>
+            <li><a href="/bookStore" class="selected">Books</a></li>
+            <li><a href="/tagStore">Tags</a></li>
+        </ul>
+        <!--Меню-->
+    </header>
+
     <fieldset>
         <legend>Search</legend>
         <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">

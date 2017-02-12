@@ -24,42 +24,68 @@ public class ProfileDialogServlet extends HttpServlet {
             throws ServletException, IOException {
 
         /// обработка кнопки Check Info
-//        userName = request.getParameter("userName");
-//        userPass = request.getParameter("userPass");
-//        baseName = request.getParameter("baseName");
-//
-//        String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
-//        try {
-//            SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String result = SQLUtils.testConnection();
-//        response.setContentType("text/html;charset=utf-8");
-//        PrintWriter pw = response.getWriter();
-//        pw.write(result);
-//
-//
-//
-//        ArrayList<String> listProfile = SQLUtils.collectorUserPath(userName);
-//        String[] result1 = (String[]) listProfile.toArray();
-//
-//        request.setAttribute("s_baseName", new String[]{"BookSotrerPro"});
-//        request.setAttribute("s_userName", new String[]{"admin"});
-//        request.setAttribute("s_profPath", result1);
+        if ("checkInfoAction".equals(request.getParameter("action"))) {
+            userName = request.getParameter("userName");
+            userPass = request.getParameter("userPass");
+            baseName = request.getParameter("baseName");
+            String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
+            try {
+                SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String result = SQLUtils.testConnection();
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.write(result);
 
+            do {
+                ArrayList<String> listProfile = SQLUtils.collectorUserPath(userName);
+                String[] resultListPath = (String[]) listProfile.toArray();
+
+                request.setAttribute("s_profPath", resultListPath);
+            } while (result == "All parameters are correct");
+        }
+
+        /// обработка кнопки Use Profile
+        if ("useProfileAction".equals(request.getParameter("action"))) {
+            userName = request.getParameter("userName");
+            userPass = request.getParameter("userPass");
+            baseName = request.getParameter("baseName");
+            profPath = request.getParameter("userPath");
+            String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
+            try {
+                SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            String result = SQLUtils.testConnection();
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.write(result);
+
+            do {
+                //добавляю в базу новую рабочую папку для ПРОВЕРЕННОГО пользователя
+                SQLUtils s = new SQLUtils();
+                s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
+
+                //использую введенные данные РАБОЧЕЙ ПАПКИ и ПОЛЬЗОВАТЕЛЯ для работы
+
+            } while (result == "All parameters are correct");
+
+
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-
-        request.setAttribute("s_baseName", new String[]{"BookSotrerPro"});
-        request.setAttribute("s_userName", new String[]{"admin"});
+        request.getRequestDispatcher("/BookSorterPro.jsp").forward(request, response);
     }
 }
+
+
 
 
 

@@ -21,11 +21,28 @@ $(document).ready(function () {
     });
 });
 
-function checkInfo() {
+checkInfo.onclick = function () {
     var base = $("#dialogBaseName").val();
     var user = $("#dialogUserName").val();
-    var pass = $("#userPass_S").val();
-    $.post("/ProfileDialog", {baseName: base, userName: user, userPass: pass}, function (checkInfo) {
+    var pass = $("#dialogUserPass").val();
+    $.post("/profileDialog", {baseName: base, userName: user, userPass: pass, action: "checkInfoAction"}, function (result) {
+        $("#selectResult").text(result);
+        if (result == 'All parameters are correct') {
+            $("#selectResult").css("color", "green");
+            $('.not-active').unbind('click', false);
+            $(".not-active").css('opacity', '1');
+        } else {
+            $("#selectResult").css("color", "red");
+        }
+    });
+};
+
+function useProfile() {
+    var base = $("#dialogBaseName").val();
+    var user = $("#dialogUserName").val();
+    var pass = $("#dialogUserPass").val();
+    var path = $("#dialogProfPath").val();
+    $.post("/profileDialog", {baseName: base, userName: user, userPass: pass, action: "useProfileAction"}, function (result) {
 
     });
 };
