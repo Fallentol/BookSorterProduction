@@ -6,12 +6,12 @@
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
-    <schema id="3" parent="1" name="grafen"/>
-    <schema id="4" parent="1" name="information_schema"/>
-    <schema id="5" parent="1" name="magaz.loc"/>
-    <schema id="6" parent="1" name="mysql"/>
-    <schema id="7" parent="1" name="performance_schema"/>
-    <schema id="8" parent="1" name="sys"/>
+    <schema id="3" parent="1" name="information_schema"/>
+    <schema id="4" parent="1" name="magaz.loc"/>
+    <schema id="5" parent="1" name="mysql"/>
+    <schema id="6" parent="1" name="performance_schema"/>
+    <schema id="7" parent="1" name="sys"/>
+    <schema id="8" parent="1" name="grafen.loc"/>
     <table id="9" parent="2" name="books"/>
     <table id="10" parent="2" name="links"/>
     <table id="11" parent="2" name="tags"/>

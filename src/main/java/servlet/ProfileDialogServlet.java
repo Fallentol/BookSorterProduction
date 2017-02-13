@@ -1,7 +1,10 @@
 package servlet;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import config.Configurator;
 import dataBaseUtils.SQLUtils;
+import essence.Tag;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +16,7 @@ import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static config.Configurator.*;
 
@@ -24,69 +28,55 @@ public class ProfileDialogServlet extends HttpServlet {
             throws ServletException, IOException {
 
         /// обработка кнопки Check Info
-        if ("checkInfoAction".equals(request.getParameter("action"))) {
-            userName = request.getParameter("userName");
-            userPass = request.getParameter("userPass");
-            baseName = request.getParameter("baseName");
-            String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
-            try {
-                SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String result = SQLUtils.testConnection();
-            response.setContentType("text/html;charset=utf-8");
-            PrintWriter pw = response.getWriter();
-            pw.write(result);
-
-            do {
+        try {
+            if ("checkInfoAction".equals(request.getParameter("action"))) {
                 ArrayList<String> listProfile = SQLUtils.collectorUserPath(userName);
-                String[] resultListPath = (String[]) listProfile.toArray();
+//                Object[] resultListPath = listProfile.toArray();
 
-                request.setAttribute("s_profPath", resultListPath);
-            } while (result == "All parameters are correct");
+                System.out.println("Массив построил");
+                System.out.println(listProfile);
+
+                JSONObject resultJSON = getJSONObjectForProfPath(listProfile);
+                response.setContentType("text/html;charset=utf-8");
+                PrintWriter pwList = response.getWriter();
+                pwList.write(resultJSON.toString());
+                request.setAttribute("s_profPath", listProfile);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
         }
+
 
         /// обработка кнопки Use Profile
-        if ("useProfileAction".equals(request.getParameter("action"))) {
-            userName = request.getParameter("userName");
-            userPass = request.getParameter("userPass");
-            baseName = request.getParameter("baseName");
-            profPath = request.getParameter("userPath");
-            String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
-            try {
-                SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            String result = SQLUtils.testConnection();
-            response.setContentType("text/html;charset=utf-8");
-            PrintWriter pw = response.getWriter();
-            pw.write(result);
+        try {
+            if ("useProfileAction".equals(request.getParameter("action"))) {
+                userName = request.getParameter("userName");
+                profPath = request.getParameter("userPath");
 
-            do {
-                //добавляю в базу новую рабочую папку для ПРОВЕРЕННОГО пользователя
                 SQLUtils s = new SQLUtils();
                 s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
-
-                //использую введенные данные РАБОЧЕЙ ПАПКИ и ПОЛЬЗОВАТЕЛЯ для работы
-
-            } while (result == "All parameters are correct");
-
-
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html");
-        request.getRequestDispatcher("/BookSorterPro.jsp").forward(request, response);
+    private JSONObject getJSONObjectForProfPath(ArrayList<String> listProfile) {
+        JSONObject json = new JSONObject();
+        try {
+            int counter = 0;
+            for (String str : listProfile) {
+                String string = "Item " + ++counter;
+                json.put(string, str);
+            }
+        } catch (Exception e) {
+            System.out.println("JSONObject json Exception=" + e);
+        }
+        return json;
     }
 }
-
-
-
 
 
 

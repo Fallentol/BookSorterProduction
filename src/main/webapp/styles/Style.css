@@ -123,8 +123,52 @@ ul.css-menu-2 li a.selected {
     padding: 14px 14px 10px 14px;
     font-weight: bold;
 }
-/*-----------Меню-----------*/
+/*-----------/Меню-----------*/
 
 .selectorName {
     margin-top: 10px;
 }
+
+.selectResult {
+    font-size: 0.7em;
+    height: 20px;
+    margin-top: 5px;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+/*-----------Форма данных авторизации-----------*/
+.autorizationInfo {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    background-color:#FEFCEA;
+    border: 1px #888899 solid;
+    font-size: 10px;
+    opacity: 0.75;
+}
+.autorizationInfo ul {
+    list-style: none;
+    margin: 0px;
+    padding: 5px;
+}
+.autorizationInfo li {
+    display: block;
+    margin-right: 5px;
+    text-align: left;
+}
+.autorizationInfo li a {
+    color: #888899;
+    text-decoration: none;
+    border-bottom: none;
+    padding: 1px 1px;
+}
+.autorizationInfo li a:hover {
+    color: green;
+    transition: all 0.5s ease;
+    text-decoration: none;
+}
+.autorizationInfo .leftLi {
+    text-align: right;
+}
+/*-----------/Форма данных авторизации-----------*/
