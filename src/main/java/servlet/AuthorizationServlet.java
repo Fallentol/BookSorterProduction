@@ -24,7 +24,6 @@ public class AuthorizationServlet extends HttpServlet {
         userName = request.getParameter("userName");
         userPass = request.getParameter("userPass");
         baseName = request.getParameter("baseName");
-        filePath = request.getParameter("filePath");
         String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
         try {
             SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);

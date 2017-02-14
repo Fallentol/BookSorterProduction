@@ -25,6 +25,8 @@ public class StartPageServlet extends HttpServlet {
         request.setAttribute("message", message);
         SQLConnection sqlCon = new SQLConnection();
         request.setAttribute("booksSort", sqlCon.getBooks());*/
+        request.setAttribute("s_baseName", new String[]{"BookSorterPro", "test"});
+        request.setAttribute("s_userName", new String[]{"admin", "user"});
         request.getRequestDispatcher("/BookSorterPro.jsp").forward(request, response);
     }
 }

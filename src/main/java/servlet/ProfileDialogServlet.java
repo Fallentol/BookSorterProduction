@@ -1,7 +1,7 @@
 package servlet;
 
-import config.Configurator;
 import dataBaseUtils.SQLUtils;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import static config.Configurator.*;
@@ -23,37 +22,65 @@ public class ProfileDialogServlet extends HttpServlet {
             throws ServletException, IOException {
 
         /// обработка кнопки Check Info
-        if ("checkInfo".equals(request.getParameter("action"))) {
-            try {
-                userName = request.getParameter("userName");
-                userPass = request.getParameter("userPass");
-                baseName = request.getParameter("baseName");
-                String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
-                try {
-                    SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        try {
+            if ("checkInfoAction".equals(request.getParameter("action"))) {
+                String userName = request.getParameter("userName");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return;
+                ArrayList<String> listProfile = SQLUtils.collectorUserPath(userName);
+
+                System.out.println("Массив построил");
+                System.out.println(listProfile);
+
+                JSONObject resultJSON = getJSONObjectForProfPath(listProfile);
+                response.setContentType("text/html;charset=utf-8");
+                PrintWriter pwList = response.getWriter();
+                pwList.write(resultJSON.toString());
+                request.setAttribute("s_profPath", listProfile);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
 
+
+        /// обработка кнопки Use Profile
+        try {
+            if ("useProfileAction".equals(request.getParameter("action"))) {
+                String baseName = request.getParameter("baseName");
+                String userName = request.getParameter("userName");
+                String profPath = request.getParameter("dialogProfPath");
+
+                SQLUtils s = new SQLUtils();
+                s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
+
+                JSONObject resultJSON = UseProfileServlet.getJSONObjectForProfile(baseName, userName, profPath);
+                response.setContentType("text/html;charset=utf-8");
+                PrintWriter pw = response.getWriter();
+                pw.write(resultJSON.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        ArrayList<String> listProfile = SQLUtils.collectorUserPath(userName);
-        String[] result = (String[]) listProfile.toArray();
-
-        request.setAttribute("baseName", new String[]{"BookSotrerPro"});
-        request.setAttribute("userName", new String[]{"admin"});
-        request.setAttribute("profPath", result);
-
-        request.getRequestDispatcher("/BookSorterPro.jsp").forward(request, response);
+    private JSONObject getJSONObjectForProfPath(ArrayList<String> listProfile) {
+        JSONObject json = new JSONObject();
+        try {
+            int counter = 0;
+            for (String str : listProfile) {
+                String string = "Item " + ++counter;
+                json.put(string, str);
+            }
+        } catch (Exception e) {
+            System.out.println("JSONObject json Exception=" + e);
+        }
+        return json;
     }
 }
+
+
+
+
+
+
