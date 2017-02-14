@@ -1,32 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
 body {
     margin: 0px;
     padding: 0px;
-    background: url(/images/books2.jpg) no-repeat;
-    background-size: 100%;
-    font-family: 'Open Sans', sans-serif;
-}
-
-p {
-    padding-bottom: 2px;
-    margin: 0;
-    font-weight: bold;
-}
-
-.StyleSelectBox {
-    width: 250px;
-}
-
-.nameDiv {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #666666;
-    font-size: 80px;
-    text-align: center;
-    line-height: 140px;
-    font-family: Open Sans Extra-Bold;
-    letter-spacing: 25px;
+    background-color: #0b0b0b;
+    background-image: url(/images/books2.jpg);
 }
 
 .bodyDiv {
@@ -34,39 +10,17 @@ p {
     margin-top: 0px;
     width: 70%;
     height: 100%;
-}
-
-.bodyDiv a {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #fff;
-    padding-left: 20px;
+    background: linear-gradient(to top, #fefcea, mediumseagreen);
 }
 
 .authInput {
     width: 350px;
 }
 
-.passInput {
-    width: 161px;
-    -webkit-text-security: disc;
-    letter-spacing: 4.5px;
-    padding-left: 3px;
-    margin-top: 10px;
-}
-
 .mainDiv {
-    display:inline-block;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #000;
-}
-
-.mainDiv a {
-    text-decoration: none;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    padding: 0;
+    background-color: antiquewhite;
+    color: blue;
+    font-weight: bold;
 }
 
 table {
@@ -86,89 +40,24 @@ td {
     color: floralwhite;
     background-color: #323232;
 }
-/*-----------Меню-----------*/
-ul.css-menu-2 {
-    list-style: none;
-    border-bottom: 1px #888899 solid;
-    padding-bottom: 10px;
-}
-
-ul.css-menu-2 li {
-    display: inline;
-    margin-right: 5px;
-}
-
-ul.css-menu-2 li a {
-    color: #888899;
-    text-decoration: none;
-    background: #f7f7f9;
-    border: 1px #bbbbcc solid;
-    border-bottom: none;
-    padding: 10px 14px;
-}
-
-ul.css-menu-2 li a:hover {
-    padding: 14px 14px 10px 14px;
-    background-color: #D4C19D;
-    color:#000;
-    border: 1px #000 solid;
-    transition: all 1s ease;
-}
-
-ul.css-menu-2 li a.selected {
-    color: #000;
-    background: #6A9E5F;
-    border: 1px #000 solid;
-    border-bottom: 1px #888899 solid;
-    padding: 14px 14px 10px 14px;
+.btn{
+    display: inline-block;
+    background-color: cornflowerblue;
+    color: #525252;
     font-weight: bold;
+    padding: 15px;
+    border: 2px solid #525252;
 }
-/*-----------/Меню-----------*/
-
-.selectorName {
-    margin-top: 10px;
-}
-
-.selectResult {
-    font-size: 0.7em;
-    height: 20px;
-    margin-top: 5px;
-    padding: 0;
-    margin-bottom: 5px;
-}
-
-/*-----------Форма данных авторизации-----------*/
-.autorizationInfo {
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    background-color:#FEFCEA;
-    border: 1px #888899 solid;
-    font-size: 10px;
-    opacity: 0.75;
-}
-.autorizationInfo ul {
-    list-style: none;
-    margin: 0px;
-    padding: 5px;
-}
-.autorizationInfo li {
-    display: block;
-    margin-right: 5px;
-    text-align: left;
-}
-.autorizationInfo li a {
-    color: #888899;
-    text-decoration: none;
-    border-bottom: none;
-    padding: 1px 1px;
-}
-.autorizationInfo li a:hover {
+.btn:hover {
+    background-color: ivory;
     color: green;
-    transition: all 0.5s ease;
-    text-decoration: none;
 }
-.autorizationInfo .leftLi {
-    text-align: right;
+.btn:active {
+    border: 1px solid red;
 }
-/*-----------/Форма данных авторизации-----------*/
+
+
+/*.not-active {
+    pointer-events: none;
+    cursor: default;
+}*/

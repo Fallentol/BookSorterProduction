@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static config.Configurator.*;
-import static config.Configurator.userName;
-import static config.Configurator.userPass;
 
 public class SQLUtils implements mySQLhandler {
 
@@ -79,13 +77,6 @@ public class SQLUtils implements mySQLhandler {
 
 
     public static int getUserIdFromName(String userName) {
-        //подключаюсь к серверу на правах админа
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
         int user_id = 0;
         String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
         try {
@@ -98,13 +89,6 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public static ArrayList<String> collectorUserPath(String userName) {
-        //подключаюсь к серверу на правах админа
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
         ArrayList<String> results = new ArrayList<>();
         String query = "SELECT profPath FROM sys.UserProfile WHERE prof_id = '" + getUserIdFromName(userName) + "'";
         try {
@@ -207,13 +191,6 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public String createUserAP(String userName, String userPass, String userPath) {
-        //подключаюсь к серверу на правах админа
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true");
-        } catch (SQLException e) {
-            //e.printStackTrace();
-        }
-
         String result = "New profile created";
         //создаю нового пользователя и пароль
         String createCommandUser = "CREATE USER '" + userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + userPass + "';";
@@ -276,14 +253,6 @@ public class SQLUtils implements mySQLhandler {
     }
 
     public String insertUserProfile(int prof_id, String profPath) {
-        //подключаюсь к серверу на правах админа
-        String sqlHost = "jdbc:mysql://" + Configurator.serverURL + "/" + baseName + "?user=" + userName + "&password=" + userPass + "&useSSL=true";
-        try {
-            SQLUtils.sqlConnection = DriverManager.getConnection(sqlHost);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         String result = "User`s profile inserted";
 
         String createCommandProfile = "insert into sys.UserProfile (prof_id, profPath) values (?, ?)";
