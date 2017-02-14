@@ -16,8 +16,9 @@
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 
-
-
+<script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.jquery.js"></script>
+<script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.proto.js"></script>
+<link rel="stylesheet" href="/JS/chosen_v1.6.2/chosen.css">
 
 
 <script type="text/javascript">
@@ -30,7 +31,8 @@
     }
     function showDialogCard(item) {
         $("#dialog").dialog({
-            width: 800
+            width: 800,
+            overflow:"visible"
         });
         var listIndex = $(item).attr("class");
         $.post("/fileDialog", {listIndex: listIndex}, function (resp) {
@@ -83,8 +85,13 @@
         $("#dialog").dialog("close");
     }
 
-    $(document).ready(function(){
-        $('.tagSelector').chosen();
+    $(document).ready(function () {
+        $('#tagSelector').chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            width: "98%"
+        });
+        $("#dialog").dialog("close");
     });
 </script>
 
@@ -107,28 +114,24 @@
         border-radius: 10px;
         box-shadow: 0 3px #999;
     }
+    #tagSelector_chosen{
+        padding-left:10px;
+    }
+    .chosen-choices {
+
+    }
+    #dialog {
+        overflow: visible;
+    }
 </style>
 
 <body>
 
 <div class="bodyDiv">
-
-    <header>
-        <div class="nameDiv">
-            book sorter
-        </div>
-
-        <!--Меню-->
-        <ul class="css-menu-2">
-            <li><a href="/s">Home</a></li>
-            <li><a href="/fileStore" class="selected">File Store</a></li>
-            <li><a href="/fileUtility">File Utils</a></li>
-            <li><a href="/bookStore">Books</a></li>
-            <li><a href="/tagStore">Tags</a></li>
-        </ul>
-        <!--Меню-->
-    </header>
-
+    <div class="mainDiv">
+        <h2>File Store</h2>
+    </div>
+    <a href="/s">Back to start page</a>
     <fieldset>
         <legend>Search</legend>
         <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">
@@ -175,7 +178,7 @@
     </div>
 </div>
 
-<div id="dialog" title="BOOK CARD">
+<div id="dialog" style="display: none;" title="BOOK CARD">
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none;">
         <tr>
@@ -217,7 +220,8 @@
         </tr>
         <tr>
             <td colspan="2" style="border: none;">
-                <select name='type' class="dialogInput tagSelector" style="width: 95%;" title="Type" id="dialogFileTags" data-placeholder="Select the tags">
+                <select multiple="multiple" name='type' id="tagSelector" class="dialogInput" style="width: 95%;"
+                        title="Type" id="dialogFileTags" data-placeholder="Select the tags">
                     <c:forEach items="${tags}" var="tag">
                         <option value="${tag.key}">${tag.value}</option>
                     </c:forEach>

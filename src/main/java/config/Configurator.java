@@ -20,5 +20,4 @@ public class Configurator {
     public static String baseName = "booksorterpro";
     public static String userName = "admin";
     public static String userPass = "214926341";
-    public static String profPath = null;
 }

@@ -80,23 +80,10 @@
 <body>
 
 <div class="bodyDiv">
-
-    <header>
-        <div class="nameDiv">
-            book sorter
-        </div>
-
-        <!--Меню-->
-        <ul class="css-menu-2">
-            <li><a href="/s">Home</a></li>
-            <li><a href="/fileStore">File Store</a></li>
-            <li><a href="/fileUtility" class="selected">File Utils</a></li>
-            <li><a href="/bookStore">Books</a></li>
-            <li><a href="/tagStore">Tags</a></li>
-        </ul>
-        <!--Меню-->
-    </header>
-
+    <div class="mainDiv">
+        <h2>File Utils</h2>
+    </div>
+    <a href="/s">Back to start page</a>
     <fieldset>
         <legend>Utility</legend>
         <input type="button" id="deleteOldIdentity" value="Delete Old File Identity" class="dialogButton"
