@@ -48,11 +48,10 @@ p {
 }
 
 .passInput {
-    width: 161px;
+    width: 191px;
     -webkit-text-security: disc;
-    letter-spacing: 4.5px;
+    letter-spacing: 7px;
     padding-left: 3px;
-    margin-top: 10px;
 }
 
 .mainDiv {
@@ -112,7 +111,7 @@ ul.css-menu-2 li a:hover {
     background-color: #D4C19D;
     color:#000;
     border: 1px #000 solid;
-    transition: all 1s ease;
+    transition: all 0.5s ease;
 }
 
 ul.css-menu-2 li a.selected {
@@ -129,12 +128,20 @@ ul.css-menu-2 li a.selected {
     margin-top: 10px;
 }
 
+.inputPass {
+    margin-top: 10px;
+}
+
 .selectResult {
     font-size: 0.7em;
     height: 20px;
     margin-top: 5px;
     padding: 0;
     margin-bottom: 5px;
+}
+
+#useProfileButton {
+    margin-top: 2px;
 }
 
 /*-----------Форма данных авторизации-----------*/
