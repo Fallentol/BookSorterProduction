@@ -45,10 +45,7 @@ function checkInfo1() {
                     action: "checkInfoAction"
                 }, function (resp) {
                     var object = JSON.parse(resp);
-
-                    counterMK = 0;
-                    MK = "Item " + ++counterMK;
-                    console.log(MK);
+                    console.log(resp);
 
                     $("#dialogProfPath").val(object.MK);
 
