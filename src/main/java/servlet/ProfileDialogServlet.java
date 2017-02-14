@@ -41,27 +41,6 @@ public class ProfileDialogServlet extends HttpServlet {
             e.printStackTrace();
             System.out.println(e);
         }
-
-
-        /// обработка кнопки Use Profile
-        try {
-            if ("useProfileAction".equals(request.getParameter("action"))) {
-                String baseName = request.getParameter("baseName");
-                String userName = request.getParameter("userName");
-                String profPath = request.getParameter("dialogProfPath");
-
-                SQLUtils s = new SQLUtils();
-                s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
-
-                JSONObject resultJSON = UseProfileServlet.getJSONObjectForProfile(baseName, userName, profPath);
-                response.setContentType("text/html;charset=utf-8");
-                PrintWriter pw = response.getWriter();
-                pw.write(resultJSON.toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-        }
     }
 
     private JSONObject getJSONObjectForProfPath(ArrayList<String> listProfile) {

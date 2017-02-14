@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static config.Configurator.*;
-
 @WebServlet("/userInfoCleaner")
 public class UserInfoCleanerServlet extends HttpServlet {
 
@@ -19,14 +17,17 @@ public class UserInfoCleanerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        userName = "none";
-        baseName = "none";
-        profPath = "none";
+        /// обработка кнопки Log out
+        if ("clearUserInfoAction".equals(request.getParameter("action"))) {
+            String userName = "none";
+            String baseName = "none";
+            String profPath = "none";
 
-        JSONObject resultJSON = getJSONObjectForCleaner(baseName, userName, profPath);
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter pw = response.getWriter();
-        pw.write(resultJSON.toString());
+            JSONObject resultJSON = getJSONObjectForCleaner(baseName, userName, profPath);
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.write(resultJSON.toString());
+        }
     }
 
     private JSONObject getJSONObjectForCleaner(String baseName, String userName, String profPath) {

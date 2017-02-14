@@ -49,7 +49,7 @@
         <div class="selectorProfile" style="margin: 50px; background-color: #fefcea; padding: 30px;">
             <form name="form" id="formSelect" onsubmit="checkInfo1();return false">
                 <div class="selectorName">
-                    <p>База данных:</p>
+                    <p>Data base:</p>
                 </div>
                 <select name="dialogBaseName" id="dialogBaseName" class="StyleSelectBox">
                     <c:forEach items="${s_baseName}" var="base">
@@ -58,7 +58,7 @@
                 </select></br>
 
                 <div class="selectorName">
-                    <p>Пользователь:</p>
+                    <p>User:</p>
                 </div>
                 <select name="dialogUserName" id="dialogUserName" class="StyleSelectBox">
                     <c:forEach items="${s_userName}" var="user">
@@ -66,20 +66,23 @@
                     </c:forEach>
                 </select></br>
 
-                <input type="text" placeholder="User Password"
-                       name="dialogUserPass" id="dialogUserPass" class="passInput">
-                <input type="submit" onclick="checkInfo1()" value="Check Info"/>
+                <div class="inputPass">
+                    <p>Password:</p>
+                </div>
+                <input type="text" placeholder="User Password" name="dialogUserPass" id="dialogUserPass"
+                       class="passInput">
+                <input type="submit" onclick="checkInfo1()" value="Log in"/>
                 <div class="selectResult" id="selectResult"></div>
 
                 <div class="selectorName">
-                    <p>Рабочая папка:</p>
+                    <p>Selected folder:</p>
                 </div>
                 <select name="dialogProfPath" id="dialogProfPath" disabled="disabled" class="StyleSelectBox">
                     <c:forEach items="${s_profPath}" var="path">
                         <option value="${path}">${path}</option>
                     </c:forEach>
                 </select></br>
-                <input type="button" onclick="useProfile1()" disabled="disabled" id="useProfile1" style="margin-top: 5px;"
+                <input type="button" onclick="useProfile1()" disabled="disabled" id="useProfileButton"
                        value="Use Profile">
             </form>
         </div>
@@ -90,10 +93,12 @@
 
 <div class="autorizationInfo">
     <ul>
-        <li><input id="baseNameInfo" placeholder="Здесь будет название БД" disabled="disabled"></li>
-        <li><input id="userNameInfo" placeholder="Здесь будет название учетки" disabled="disabled"></li>
-        <li><input id="profPathInfo" placeholder="Здесь будет рабочая папка" disabled="disabled"></li>
-        <li class="leftLi"><button id="clearUserInfoButton" disabled="disabled" onclick="clearUserInfo1()">Выйти</button></li>
+        <li><input id="baseNameInfo" placeholder="Data base Info" disabled="disabled"></li>
+        <li><input id="userNameInfo" placeholder="User Info" disabled="disabled"></li>
+        <li><input id="profPathInfo" placeholder="Selected folder Info" disabled="disabled"></li>
+        <li class="leftLi">
+            <button id="clearUserInfoButton" disabled="disabled" onclick="clearUserInfo1()">Log out</button>
+        </li>
     </ul>
 </div>
 

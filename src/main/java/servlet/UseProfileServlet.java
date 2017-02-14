@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static config.Configurator.*;
-
 @WebServlet("/useProfile")
 public class UseProfileServlet extends HttpServlet {
 
@@ -21,26 +19,29 @@ public class UseProfileServlet extends HttpServlet {
             throws ServletException, IOException {
 
         /// обработка кнопки Use Profile
-        try {
-            if ("useProfileAction".equals(request.getParameter("action"))) {
-                baseName = request.getParameter("baseName");
-                userName = request.getParameter("userName");
-                profPath = request.getParameter("dialogProfPath");
+        if ("useProfileAction".equals(request.getParameter("action"))) {
+            String baseName = request.getParameter("baseName");
+            String userName = request.getParameter("userName");
+            String profPath = request.getParameter("profPath");
 
-                SQLUtils s = new SQLUtils();
-                s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-            return;
+            System.out.println("baseName = " + baseName);
+            System.out.println("userName = " + userName);
+            System.out.println("profPath = " + profPath);
+
+//            try {
+//                SQLUtils s = new SQLUtils();
+//                s.insertUserProfile(SQLUtils.getUserIdFromName(userName), profPath);
+//                return;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                System.out.println(e);
+//            }
+            JSONObject resultJSON = getJSONObjectForProfile(baseName, userName, profPath);
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter pw = response.getWriter();
+            pw.write(resultJSON.toString());
+
         }
-
-        JSONObject resultJSON = getJSONObjectForProfile(baseName, userName, profPath);
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter pw = response.getWriter();
-        pw.write(resultJSON.toString());
     }
 
     public static JSONObject getJSONObjectForProfile(String baseName, String userName, String profPath) {
@@ -52,6 +53,7 @@ public class UseProfileServlet extends HttpServlet {
         } catch (Exception e) {
             System.out.println("JSONObject json Exception=" + e);
         }
+        System.out.println("getJSONObjectForProfile = " + json);
         return json;
     }
 }

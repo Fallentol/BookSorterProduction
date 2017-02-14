@@ -39,10 +39,10 @@ function checkInfo1() {
             if (result == 'All parameters are correct') {
                 $("#selectResult").css("color", "green");
                 document.getElementById("dialogProfPath").disabled = false;
-                document.getElementById("useProfile1").disabled = false;
+                document.getElementById("useProfileButton").disabled = false;
                 document.getElementById("clearUserInfoButton").disabled = false;
                 $.post("/profileDialog", {
-                    action: checkInfoAction
+                    action: "checkInfoAction"
                 }, function (resp) {
                     var object = JSON.parse(resp);
 
@@ -56,7 +56,7 @@ function checkInfo1() {
             } else {
                 $("#selectResult").css("color", "red");
                 document.getElementById("dialogProfPath").disabled = true;
-                document.getElementById("useProfile1").disabled = true;
+                document.getElementById("useProfileButton").disabled = true;
                 document.getElementById("clearUserInfoButton").disabled = true;
             }
         }
@@ -67,24 +67,28 @@ function useProfile1() {
     var base = $("#dialogBaseName").val();
     var user = $("#dialogUserName").val();
     var path = $("#dialogProfPath").val();
-    $.post("/profileDialog", {
+    console.log("base = " + base);
+    console.log("user = " + user);
+    console.log("path = " + path);
+    $.post("/useProfile", {
         baseName: base,
         userName: user,
         userPath: path,
         action: "useProfileAction"
-    }, function (resp) {
-        var object = JSON.parse(resp);
+    }, function (infoForm) {
+        var object = JSON.parse(infoForm);
+        console.log("object = " + object);
         $("#baseNameInfo").val(object.baseNameInfoU);
         $("#userNameInfo").val(object.userNameInfoU);
         $("#profPathInfo").val(object.profPathInfoU);
-
     });
 };
 
 function clearUserInfo1() {
-    $.post("/userInfoCleaner",
-        function (resp) {
-            var object = JSON.parse(resp);
+    $.post("/userInfoCleaner", {
+            action: "clearUserInfoAction"
+        }, function (clearInfoForm) {
+            var object = JSON.parse(clearInfoForm);
             $("#baseNameInfo").val(object.baseNameInfoC);
             $("#userNameInfo").val(object.userNameInfoC);
             $("#profPathInfo").val(object.profPathInfoC);
