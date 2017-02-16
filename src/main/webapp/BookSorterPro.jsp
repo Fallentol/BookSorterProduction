@@ -47,6 +47,7 @@
 
         <!--Выбор профиля/добавление новой рабочей папки-->
         <div class="selectorProfile" style="margin: 50px; background-color: #fefcea; padding: 30px;">
+
             <form name="form" id="formSelect" onsubmit="checkInfo1();return false">
                 <div class="selectorName">
                     <p>Data base:</p>
@@ -85,6 +86,16 @@
                 <input type="button" onclick="useProfile1()" disabled="disabled" id="useProfileButton"
                        value="Use Profile">
             </form>
+
+            <div class="kvantifikator" style="border: 1px #888899 solid; padding: 5px;">
+                <p>Проверяем работу квантификатора</p>
+                <div onsubmit="kvantifikuy();return false">
+                    <input type="text" id="kvantifikator_val" onkeyup="return proverka(this);" onchange="return proverka(this);" placeholder="Ведите любое число">
+                    <input type="submit" onclick="kvantifikuy()" value="Показать в таблице"><br><br>
+                    <p>Введеное число стало:</p>
+                    <input type="text" id="kvantifikator_num" placeholder="Число стало таким">
+                </div>
+            </div>
         </div>
         <!--/Выбор профиля/добавление новой рабочей папки-->
 

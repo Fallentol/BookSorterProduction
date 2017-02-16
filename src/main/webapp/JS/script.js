@@ -92,3 +92,23 @@ function clearUserInfo1() {
         }
     )
 };
+
+function proverka(input) {
+    input.value = input.value.replace(/[^-+\d.]/g, '');
+};
+
+
+function kvantifikuy() {
+    var value = $("#kvantifikator_val").val();
+    console.log("value = " + value);
+    if (value < 0) {
+        var pt = value.replace(/[^0-9]/, '', pt);
+        console.log("pt = " + pt);
+        kvantifikator_str = "(" + pt + ")";
+        console.log("kvantifikator_str = " + kvantifikator_str);
+        $("#kvantifikator_num").val(kvantifikator_str);
+    } else {
+        $("#kvantifikator_num").val(value);
+    }
+};
+
