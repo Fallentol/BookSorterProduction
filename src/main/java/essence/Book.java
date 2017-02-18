@@ -17,6 +17,7 @@ public class Book implements Serializable {
     public String description;
     public int year;
     public int size;
+    public String tagsmassive; // поле для переноса на страницу временных тегов
 
     public Book(){}
 

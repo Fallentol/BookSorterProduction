@@ -32,8 +32,9 @@
     function showDialogCard(item) {
         $("#dialog").dialog({
             width: 800,
-            overflow:"visible"
+            overflow: "visible"
         });
+        erraseTagSelector();
         var listIndex = $(item).attr("class");
         $.post("/fileDialog", {listIndex: listIndex}, function (resp) {
             var object = JSON.parse(resp);
@@ -45,10 +46,20 @@
             $("#dialogFileDescription").val(object.fileDescription);
             $("#dialogFileType").val(object.fileType);
             $("#dialogFileLanguage").val(object.fileLanguage);
+            updateTagSelector(object.fileTags);
+            console.log("object.fileTags=" + object.fileTags);
             if (object.fileId != null) {
                 $("#dialogTitle").text("BOOK CARD (" + object.fileId + ")");
             }
         });
+    }
+
+    function updateTagSelector(d) {
+        if (d == null) return;
+        $('#tagSelector').val(d.split(',')).trigger('chosen:updated');
+    }
+    function erraseTagSelector() {
+        $("#tagSelector").val('').trigger("chosen:updated");
     }
 
     function openFile(item) {
@@ -65,6 +76,9 @@
         var description = $("#dialogFileDescription").val();
         var language = $("#dialogFileLanguage").val();
         var type = $("#dialogFileType").val();
+        var tags = $("#tagSelector").val();
+        tags = tags.toString();
+        console.log('tags=' + tags);
 
         $.post("/fileDialog", {
             action: "saveCard",
@@ -75,7 +89,8 @@
             path: path,
             type: type,
             description: description,
-            language: language
+            language: language,
+            tags: tags
         });
 
         setTimeout('window.location.reload()', 2000)
@@ -114,12 +129,15 @@
         border-radius: 10px;
         box-shadow: 0 3px #999;
     }
-    #tagSelector_chosen{
-        padding-left:10px;
+
+    #tagSelector_chosen {
+        padding-left: 10px;
     }
+
     .chosen-choices {
 
     }
+
     #dialog {
         overflow: visible;
     }
@@ -233,7 +251,7 @@
         <tr>
             <td colspan="2" style="border: none;">
                 <select multiple="multiple" name='type' id="tagSelector" class="dialogInput" style="width: 95%;"
-                        title="Type" id="dialogFileTags" data-placeholder="Select the tags">
+                        title="Type" data-placeholder="Select the tags">
                     <c:forEach items="${tags}" var="tag">
                         <option value="${tag.key}">${tag.value}</option>
                     </c:forEach>

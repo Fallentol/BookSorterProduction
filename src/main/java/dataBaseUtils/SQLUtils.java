@@ -505,10 +505,25 @@ public class SQLUtils implements mySQLhandler {
         Link result = new Link();
         if (id == null || "".equals(id)) return result;
         try {
-            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE link_id = " + id);
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM links WHERE link_id = " + id);
             result = allocateLinkFields(rs);
         } catch (SQLException e) {
             System.err.println("getLinkFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
+    }
+
+    public ArrayList<Link> getLinkAttachedToBook(String bookId) {
+        ArrayList<Link> result = new ArrayList<Link>();
+        if (bookId == null || "".equals(bookId)) return result;
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM links WHERE bookId = " + bookId);
+            while (rs.next()) {
+                result.add(allocateLinkFields(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("getLinkAttachedToBook WARNING!! " + e.getStackTrace());
             return result;
         }
         return result;

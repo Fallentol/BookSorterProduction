@@ -5,7 +5,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/BookSorterPro</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/BookSorterPro?useSSL=false</property>
+        <property name="connection.verifyServerCertificate">false</property>
+        <property name="connection.requireSSL">false</property>
+        <property name="connection.autoReconnect">true</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 
         <property name="connection.username">admin</property>

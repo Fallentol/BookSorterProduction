@@ -24,13 +24,24 @@ public class TagServlet extends HttpServlet {
             try {
                 String name = request.getParameter("name");
                 int parent = Integer.valueOf(request.getParameter("parent"));
-                System.out.println("NAME PARENT : " + name + " " + parent);
                 TagsEntity te = new TagsEntity(name, parent);
                 HibernateController.insertNewTag(te);
+                te = null;
             } catch (Exception e) {
                 System.out.println("INSERT FAILED CUSTOM MESSAGE " + e);
             }
         }
+
+        if ("deleteTag".equals(request.getParameter("action"))) {
+            try {
+                String itemClass = request.getParameter("listIndex");
+                int tagId = Integer.valueOf(itemClass.replace("item",""));
+                HibernateController.deleteTag(tagId);
+            } catch (Exception e) {
+                System.out.println("DELETE FAILED CUSTOM MESSAGE " + e);
+            }
+        }
+
 
     }
 

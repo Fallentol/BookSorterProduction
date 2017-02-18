@@ -3,6 +3,9 @@ package servlet;
 import config.Configurator;
 import dataBaseUtils.SQLUtils;
 import essence.Book;
+import essence.Link;
+import essence.LinksEntity;
+import essence.Tag;
 import fileUtils.FileController;
 import org.json.JSONObject;
 
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +35,11 @@ public class FileDialogServlet extends HttpServlet {
                 String type = request.getParameter("type");
                 String description = request.getParameter("description");
                 String author = request.getParameter("author");
+                String tags = request.getParameter("tags");
+                System.out.println("tags=" + tags);
+                //tags=10,14,2
+
+                int bookId = 0;
                 int year;
                 try {
                     year = Integer.valueOf(request.getParameter("year"));
@@ -43,7 +52,7 @@ public class FileDialogServlet extends HttpServlet {
                 int cardId = SQLUtils.fileBaseIdMap.get(path) == null ? -1 : SQLUtils.fileBaseIdMap.get(path);
                 SQLUtils sqlUtils = new SQLUtils();
                 if (cardId == -1) { // книги еще нет в базе
-                    int bookId = sqlUtils.insertNewBook(book);
+                    bookId = sqlUtils.insertNewBook(book);
                     if (bookId == -1) try {
                         throw new Exception("SQL INSERT ERROR");
                     } catch (Exception e) {
@@ -54,10 +63,16 @@ public class FileDialogServlet extends HttpServlet {
                     book.setId(cardId);
                     sqlUtils.updateBook(book);
                 }
+
+                for (String str : tags.split(",")) {
+                    Link link = new Link();
+                    link.book_id = bookId == 0 ? cardId : bookId;
+                    link.tag_id = Integer.valueOf(str);
+                    sqlUtils.insertNewLink(link);
+                }
+
                 FileController.reserveBook(book);
 
-                /*FileServlet fileServlet = new FileServlet();
-                fileServlet.doGet(request, response);*/
                 return;
 
             } catch (Exception e) {
@@ -125,6 +140,14 @@ public class FileDialogServlet extends HttpServlet {
     private JSONObject getJSONObjectFromBook(int identity) {
         SQLUtils sqlUtilsObj = new SQLUtils();
         Book book = sqlUtilsObj.getBookFromId(String.valueOf(identity));
+        SQLUtils sqlUtils = new SQLUtils();
+        ArrayList<Link> links = sqlUtils.getLinkAttachedToBook(String.valueOf(book.getId()));
+        String tagNumbers = "";
+        for (Link lk : links) {
+            if (!tagNumbers.equals("")) tagNumbers += ",";
+            tagNumbers += lk.getTag_id();
+        }
+        System.out.println("tagNumbers=" + tagNumbers);
         JSONObject json = new JSONObject();
         try {
             json.put("fileId", book.getId());
@@ -136,6 +159,7 @@ public class FileDialogServlet extends HttpServlet {
             json.put("fileLanguage", book.getLanguage());
             json.put("fileDescription", book.getDescription());
             json.put("fileType", book.getType());
+            json.put("fileTags", tagNumbers);
         } catch (Exception e) {
             System.out.println("JSONObject json Exception=" + e);
         }

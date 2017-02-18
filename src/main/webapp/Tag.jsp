@@ -32,6 +32,14 @@
                 });
             }
         }
+
+        function deleteTag (item) {
+            var listIndex = $(item).attr("class");
+            $.post("/tagStore", {listIndex: listIndex, action: "deleteTag"}, function (resp) {
+                setTimeout('window.location.reload()', 2000);
+            });
+        }
+
         function saveTag() {
             var name = $("#dialogTagName").val();
             var parent = $("#dialogTagParents").val();
@@ -42,9 +50,10 @@
                 parent: parent
             });
 
-            setTimeout('window.location.reload()', 2000)
+            setTimeout('window.location.reload()', 2000);
             closeDialog();
         }
+
         function closeDialog() {
             $("#dialog").dialog("close");
         }
@@ -98,7 +107,7 @@
     <div>
         <table>
             <tr>
-                <td width="30px" class="headerRow">
+                <td width="80px" class="headerRow">
 
                 </td>
                 <td width="30px" class="headerRow">
@@ -115,6 +124,7 @@
                 <tr>
                     <td>
                         <input class="item${tag.getTagId()}" style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button" value="Edit" onclick="showDialogTag(this)">
+                        <input class="item${tag.getTagId()}" style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button" value="Del" onclick="if(!confirm('Clicking “Ok” will fully delete the Tag.  Click “Cancel” to go back.')) return false; deleteTag(this)">
                     </td>
                     <td>${tag.getTagId()}</td>
                     <td>${tag.getTagName()}</td>
@@ -127,7 +137,7 @@
 </div>
 
 
-<div id="dialog" title="TAG CARD" >
+<div id="dialog" style="display: none;" title="TAG CARD" style="" >
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
     <table style="border-radius: 8px; border: none; table-layout: fixed; width: 340px;">
         <tr>
@@ -135,7 +145,7 @@
                                                         type="text" title="Id" placeholder="Id"></td>
             <td style="border: none;width:80%;"><input style="width:95%;" id="dialogTagName" class="dialogInput"
                                                        type="text" title="Tag's name" placeholder="Tag's name"></td>
-            <td style="border: none;width:10%; text-align: left;"><input style="width:95%;" id="dialogTagParents" class="dialogInput"
+            <td style="border: none;width:10%; text-align: left;"><input style="width:95%; margin-left: 0px;" id="dialogTagParents" class="dialogInput"
                                                        type="text" title="Parent" placeholder="Parent"></td>
         </tr>
     </table>
