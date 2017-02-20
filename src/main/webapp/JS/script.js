@@ -115,20 +115,20 @@ function kvantifikuy() {
 //Кнопка поиска открывающаяся при клике
 $('.opacity').css({opacity: 0.7});
 
-$(".search_header").click(function(){
+$(".search_header").click(function () {
     $(".search_popup").show();
     $(".close_search").show();
     $(".opacity").show();
 });
 
-$(".close_search").click(function(){
+$(".close_search").click(function () {
     $(".search_popup").hide();
     $(".close_search").hide();
     $(".opacity").hide();
 });
 
 //Кнопка "Наверх".
-$(window).scroll(function(){
+$(window).scroll(function () {
     if ($(this).scrollTop() > 800) {
         $('.up_button i').fadeIn();
     } else {
@@ -136,8 +136,22 @@ $(window).scroll(function(){
     }
 });
 
-$('.up_button i').click(function(){
-    $("html, body").animate({ scrollTop: 0 }, 600);
+$('.up_button i').click(function () {
+    $("html, body").animate({scrollTop: 0}, 600);
     return false;
 });
 
+
+searchSubmit.onclick = function () {
+    var value = $("#input_vspl").val();
+    console.log("value = " + value);
+    $.post("/searchPage", {
+            value: value,
+            action: "searchValue"
+        }, function (search) {
+            var object = JSON.parse(search);
+            $("#").val(object.tagName);
+        }
+    );
+    window.open("/searchPage");
+};

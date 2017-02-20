@@ -34,7 +34,7 @@
             </ul>
             <div class="search_header"><i class="fa fa-search"></i></div>
         </div>
-        <!--/Меню-->
+        <!--END Меню-->
     </header>
 
     <!--Поиск-->
@@ -44,15 +44,16 @@
             <div class="row">
                 <div class="search_popup hidden-sm hidden-xs">
                     <form action="" method="post" class="search_vspl">
-                        <input type="search" name="" placeholder="Поиск..." class="input_vspl" />
-                        <button type="submit" class="searchsubmit" name="submit" value="Search"><i class="fa fa-search"></i></button>
+                        <input type="search" name="" placeholder="Поиск..." class="input_vspl" id="input_vspl"/>
+                        <button type="submit" class="searchSubmit" id="searchSubmit" name="submit" value="Search"><i
+                                class="fa fa-search"></i></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <div class="opacity hidden-sm hidden-xs"></div>
-    <!--Поиск-->
+    <!--END Поиск-->
 
     <div class="form">
 
@@ -111,15 +112,8 @@
                     <input type="button" onclick="useProfile1()" disabled="disabled" id="useProfileButton"
                            value="Use Profile">
                 </div>
-                <div class="preForm">
-                    <input type="text" placeholder="User Password" id="dialogUserPass"
-                           class="passInput">
-                    <input type="submit" onclick="checkInfo1()" value="Log in"/>
-                    <div class="result">
-
-                    </div>
-                </div>
             </form>
+            <!--END Выбор профиля/добавление новой рабочей папки-->
 
             <div class="kvantifikator" style="border: 1px #888899 solid; padding: 5px;">
                 <p>Проверяем работу квантификатора</p>
@@ -131,9 +125,8 @@
                     <input type="text" id="kvantifikator_num" placeholder="Число стало таким">
                 </div>
             </div>
-        </div>
-        <!--/Выбор профиля/добавление новой рабочей папки-->
 
+        </div>
     </div>
 </div>
 
@@ -148,7 +141,9 @@
     </ul>
 </div>
 
+<!--Кнопка наверх-->
 <div class="up_button"><i class="fa fa-chevron-up" aria-hidden="true"></i></div>
+<!--END Кнопка наверх-->
 
 <!-- Подключаю библиотеку jQuery -->
 <script src="//libs.raltek.ru/libs/jquery/1.8.3/js/jquery-1.8.3.js"></script>

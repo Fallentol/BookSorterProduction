@@ -6,6 +6,7 @@ body {
     padding: 0px;
     background: url(/images/books2.jpg) no-repeat;
     background-size: 100%;
+    background-attachment: fixed;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -33,7 +34,6 @@ p {
 .bodyDiv {
     margin: auto;
     margin-top: 0px;
-    height: 100%;
 }
 
 .bodyDiv a {
