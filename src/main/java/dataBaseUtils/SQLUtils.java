@@ -190,8 +190,8 @@ public class SQLUtils implements mySQLhandler {
         }
     }
 
-    public String createUserAP(String userName, String userPass, String userPath) {
-        String result = "New profile created";
+    public String createUserAP(String userName, String userPass) {
+        String result = "New user added";
         //создаю нового пользователя и пароль
         String createCommandUser = "CREATE USER '" + userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + userPass + "';";
 
@@ -227,42 +227,40 @@ public class SQLUtils implements mySQLhandler {
             e.printStackTrace();
             return "Flush is not done";
         }
-        ////////////////////////////////////////User DB//////////////////////////////////////////
-        //добавляю запись в БД с пользователем
-        String createCommandList = "insert into sys.UserList (userName, userPass) values (?, ?)";
-        try {
-            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandList);
-            preStatement.setString(1, userName);
-            preStatement.setString(2, userPass);
-            preStatement.execute();
-            preStatement.close();
-
-            String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
-            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
-            int prof_id = 0;
-            while (rs.next()) {
-                prof_id = rs.getInt("user_id");
-            }
-            insertUserProfile(prof_id, userPath);
-        } catch (SQLException e) {
-            System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
-            return "Can`t insert to sys.UserList new User. Table is created?";
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////
+//        ////////////////////////////////////////User DB//////////////////////////////////////////
+//        //добавляю запись в БД с пользователем
+//        String createCommandList = "insert into sys.UserList (userName, userPass) values (?, ?)";
+//        try {
+//            PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandList);
+//            preStatement.setString(1, userName);
+//            preStatement.setString(2, userPass);
+//            preStatement.execute();
+//            preStatement.close();
+//
+//            String query = "SELECT user_id FROM sys.UserList WHERE userName = '" + userName + "'";
+//            ResultSet rs = sqlConnection.createStatement().executeQuery(query);
+//            int prof_id = 0;
+//            while (rs.next()) {
+//                prof_id = rs.getInt("user_id");
+//            }
+//            insertUserProfile(prof_id, userPath);
+//        } catch (SQLException e) {
+//            System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
+//            return "Can`t insert to sys.UserList new User. Table is created?";
+//        }
+//        //////////////////////////////////////////////////////////////////////////////////////////
         return result;
     }
 
-    public String insertUserProfile(int prof_id, String profPath) {
+    public String insertUserProfile(String userName, String profPath) {
         String result = "User`s profile inserted";
-
         String createCommandProfile = "insert into sys.UserProfile (prof_id, profPath) values (?, ?)";
         try {
             PreparedStatement preStatement = sqlConnection.prepareStatement(createCommandProfile);
-            preStatement.setInt(1, prof_id);
+            preStatement.setInt(1, getUserIdFromName(userName));
             preStatement.setString(2, profPath);
             preStatement.execute();
             preStatement.close();
-
         } catch (SQLException e) {
             System.err.println("insertNewUser WARNING!! " + e.getStackTrace());
             return "Can`t insert to sys.UserProfile new userPath. Table is created?";
@@ -272,7 +270,7 @@ public class SQLUtils implements mySQLhandler {
 
     public void createAdminServer(String serverURL, String userName, String userPass) {
         //создаю нового пользователя и пароль
-        String createCommandUser = "CREATE USER '" + Configurator.userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + Configurator.userPass + "';";
+        String createCommandUser = "CREATE USER '" + userName + "'@'" + Configurator.serverURL + "' IDENTIFIED BY '" + userPass + "';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
@@ -284,12 +282,12 @@ public class SQLUtils implements mySQLhandler {
         }
 
         //раздаю права
-        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + Configurator.userName + "'@'" + Configurator.serverURL + "';";
+        String createCommandPrivileges = "GRANT ALL PRIVILEGES ON * . * TO '" + userName + "'@'" + Configurator.serverURL + "';";
 
         try {
             Statement stCR = sqlConnection.createStatement();
             stCR.execute(createCommandPrivileges);
-            System.out.println("Права 'All Privileges' АДМИНУ '" + Configurator.userName + " успешно назначены!");
+            System.out.println("Права 'All Privileges' АДМИНУ '" + userName + " успешно назначены!");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Can`t grant AP for new User");

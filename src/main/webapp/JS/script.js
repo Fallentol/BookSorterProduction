@@ -102,7 +102,7 @@ function kvantifikuy() {
     var value = $("#kvantifikator_val").val();
     console.log("value = " + value);
     if (value < 0) {
-        var pt = value.replace(/[^0-9]/, '', pt);
+        var pt = value.replace(/[^0-9]/, '');
         console.log("pt = " + pt);
         kvantifikator_str = "(" + pt + ")";
         console.log("kvantifikator_str = " + kvantifikator_str);
@@ -111,4 +111,33 @@ function kvantifikuy() {
         $("#kvantifikator_num").val(value);
     }
 };
+
+//Кнопка поиска открывающаяся при клике
+$('.opacity').css({opacity: 0.7});
+
+$(".search_header").click(function(){
+    $(".search_popup").show();
+    $(".close_search").show();
+    $(".opacity").show();
+});
+
+$(".close_search").click(function(){
+    $(".search_popup").hide();
+    $(".close_search").hide();
+    $(".opacity").hide();
+});
+
+//Кнопка "Наверх".
+$(window).scroll(function(){
+    if ($(this).scrollTop() > 800) {
+        $('.up_button i').fadeIn();
+    } else {
+        $('.up_button i').fadeOut();
+    }
+});
+
+$('.up_button i').click(function(){
+    $("html, body").animate({ scrollTop: 0 }, 600);
+    return false;
+});
 

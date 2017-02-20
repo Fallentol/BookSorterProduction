@@ -27,7 +27,7 @@ public class CreateProfileServlet extends HttpServlet {
         filePath = request.getParameter("filePath");
 
         SQLUtils s = new SQLUtils();
-        String result = s.createUserAP(userName, userPass, filePath);
+        String result = s.createUserAP(userName, userPass);
         response.setContentType("text/html;charset=utf-8");
         PrintWriter pw = response.getWriter();
         pw.write(result);

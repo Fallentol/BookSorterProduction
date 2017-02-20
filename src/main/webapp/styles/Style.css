@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 body {
-    margin: 0px;
+    width: 1200px;
+    margin: auto;
     padding: 0px;
     background: url(/images/books2.jpg) no-repeat;
     background-size: 100%;
@@ -32,7 +33,6 @@ p {
 .bodyDiv {
     margin: auto;
     margin-top: 0px;
-    width: 70%;
     height: 100%;
 }
 
@@ -124,6 +124,101 @@ ul.css-menu-2 li a.selected {
 }
 /*-----------/Меню-----------*/
 
+/*----Форма поиска----*/
+.search_header {
+    position: relative;
+    left: -5px;
+    color: #eee;
+    font-size: 36px;
+    top: -55px;
+    float: right;
+}
+
+.search_header:hover {
+    color: #ff8100;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.search_popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 10002;
+    width: 84%;
+    margin-left: -42%;
+    height: 80px;
+    margin-top: -40px;
+    display: none;
+}
+
+.search_vspl {
+    width: 100%;
+    position: relative;
+}
+
+.search_vspl input {
+    outline: none;
+    border: none;
+    padding-left: 25px;
+}
+
+.search_vspl .input_vspl {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #fff;
+    font-size: 38px;
+    color: #555;
+    outline: none;
+    height: 80px;
+}
+
+.search_vspl .searchsubmit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    font-size: 27px;
+    outline: none;
+    border: medium none;
+    color: #fff;
+    background: #ff8100;
+}
+
+.search_popup .searchsubmit:hover {
+    cursor: pointer;
+    background: #de6f00;
+    transition: all 0.5s ease;
+}
+
+.close_search {
+    position: fixed;
+    top: 0;
+    right: 60px;
+    color: #fff;
+    font-size: 140px;
+    z-index: 10002;
+    display: none;
+}
+
+.close_search:hover {
+    cursor: pointer;
+}
+
+.opacity {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #ff8100;
+    opacity: 0.7;
+    z-index: 10001;
+    display: none;
+}
+/*----END Форма поиска----*/
+
 .selectorName {
     margin-top: 10px;
 }
@@ -142,6 +237,22 @@ ul.css-menu-2 li a.selected {
 
 #useProfileButton {
     margin-top: 2px;
+}
+
+.up_button i {
+    font-size: 40px;
+    position: fixed;
+    right: 25px;
+    bottom: 30px;
+    opacity: 0.5;
+    display: none;
+}
+
+.up_button i:hover {
+    opacity: 0.9;
+    text-decoration: none;
+    transition: all 0.5s ease;
+    cursor: pointer;
 }
 
 /*-----------Форма данных авторизации-----------*/
