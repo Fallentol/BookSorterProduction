@@ -31,6 +31,7 @@
                 <li><a href="/fileUtility">File Utils</a></li>
                 <li><a href="/bookStore">Books</a></li>
                 <li><a href="/tagStore">Tags</a></li>
+                <li><a href="/searchPage">Search Page</a></li>
             </ul>
             <div class="search_header"><i class="fa fa-search"></i></div>
         </div>

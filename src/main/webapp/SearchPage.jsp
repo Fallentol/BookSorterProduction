@@ -41,34 +41,52 @@
     </header>
 
     <fieldset style="margin-bottom: 20px; color: #eee;">
-        <legend>Search</legend>
-        <input type="text" class="findText" placeholder="What are you looking for?" style="width: 94%">
-        <input type="button" value="Search" id="searchSubmit">
+        <legend>Search Properties</legend>
+        <div style="float: left;">
+            <div style="">
+                <input type="text" placeholder="Enter the book name" id="bookName"
+                       style="width: 400px; height: 27px; margin: 10px 0px 10px 0px;">
+            </div>
+            <br/>
+            <div style="padding-bottom: 20px;">
+                <select name='type' id="tagSelector" multiple="multiple"
+                        title="Type" data-placeholder="Select the tags">
+                    <c:forEach items="${tags}" var="tag">
+                        <option value="${tag.key}">${tag.value}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+        <div style="float: right;">
+            <img src="images/SearchButton.png" id="searchBut" width="100" height="100" alt="START SEARCH"
+                 title="Start to search">
+        </div>
+
     </fieldset>
 
     <!--Отчет поиска-->
     <div>
         <table style="width: 100%; margin: 0; margin-top:10px;">
             <tr>
-                <td width="5%" class="headerRow">
-
-                </td>
-                <td width="" class="headerRow">
+                <td width="20%" class="headerRow">
                     Book name
                 </td>
                 <td width="20%" class="headerRow">
-                    Tag
+                    Author
+                </td>
+                <td width="20%" class="headerRow">
+                    Year
                 </td>
                 <td width="20%;" class="headerRow">
-                    Parent
+
                 </td>
             </tr>
-            <c:forEach items="${tagsSort}" var="tag">
+            <c:forEach items="${books}" var="book">
                 <tr>
+                    <td>${book.getName()}</td>
+                    <td>${book.getAuthor()}</td>
+                    <td>${book.getYear()}</td>
                     <td></td>
-                    <td></td>
-                    <td>${tag.getTagName()}</td>
-                    <td>${tag.getTagParent()}</td>
                 </tr>
             </c:forEach>
         </table>
@@ -91,7 +109,57 @@
 <!-- Подключаю управляющий скрипт -->
 <script src="JS/script.js"></script>
 
+<script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.jquery.js"></script>
+<script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.proto.js"></script>
+<link rel="stylesheet" href="/JS/chosen_v1.6.2/chosen.css">
+
 </body>
+
+<script>
+    $(document).ready(function () {
+        $('#tagSelector').chosen({
+            disable_search_threshold: 5,
+            no_results_text: "Oops, nothing found!",
+            width: "400px"
+        });
+        $("#searchBut").click(function () {
+            console.log('Click');
+            searchBooks();
+            $("#searchBut").animate({
+                opacity: 0.2,
+                width: '1200px',
+                height: '1200px',
+                left: "100px",
+                top: '0px',
+                position: 'absolute'
+            }, 1500);
+        });
+    });
+
+    function searchBooks() {
+        var name = $("#bookName").val();
+        var tags = $("#tagSelector").val();
+        name = name == null || name == '' ? 'none' : name;
+        tags = tags == null || tags == '' ? 'none' : tags;
+        $.post("/searchPage", {
+            action: "searchBook",
+            name: name,
+            tags: (tags.toString())
+        }, function (resp) {
+            console.log(resp);
+        });
+
+        setTimeout('window.location.reload()', 1000);
+    }
+
+</script>
+
+<style>
+    #searchBut:hover {
+        width: 105px;
+        height: 105px;
+    }
+</style>
 
 </head>
 

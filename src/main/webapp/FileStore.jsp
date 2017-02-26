@@ -47,7 +47,6 @@
             $("#dialogFileType").val(object.fileType);
             $("#dialogFileLanguage").val(object.fileLanguage);
             updateTagSelector(object.fileTags);
-            console.log("object.fileTags=" + object.fileTags);
             if (object.fileId != null) {
                 $("#dialogTitle").text("BOOK CARD (" + object.fileId + ")");
             }
@@ -78,7 +77,6 @@
         var type = $("#dialogFileType").val();
         var tags = $("#tagSelector").val();
         tags = tags.toString();
-        console.log('tags=' + tags);
 
         $.post("/fileDialog", {
             action: "saveCard",

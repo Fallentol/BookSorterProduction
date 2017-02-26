@@ -3,6 +3,7 @@ package servlet;
 import dataBaseUtils.SQLConnection;
 import dataBaseUtils.SQLUtils;
 import essence.Book;
+import essence.Tag;
 import essence.TagsEntity;
 import fileUtils.FileController;
 import hibernate.HibernateController;
@@ -13,6 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 @WebServlet("/tagStore")
 public class TagServlet extends HttpServlet {
@@ -35,7 +40,7 @@ public class TagServlet extends HttpServlet {
         if ("deleteTag".equals(request.getParameter("action"))) {
             try {
                 String itemClass = request.getParameter("listIndex");
-                int tagId = Integer.valueOf(itemClass.replace("item",""));
+                int tagId = Integer.valueOf(itemClass.replace("item", ""));
                 HibernateController.deleteTag(tagId);
             } catch (Exception e) {
                 System.out.println("DELETE FAILED CUSTOM MESSAGE " + e);
@@ -51,8 +56,14 @@ public class TagServlet extends HttpServlet {
 
         response.setContentType("text/html");
 
-        String message = "Worked";
-        request.setAttribute("message", message);
+        SQLUtils sqlUtils = new SQLUtils();
+        Map<String, String> tagOptionsMap = new LinkedHashMap<>();
+        for (Tag t : sqlUtils.getAllTags()) {
+            System.out.println(t.getName());
+            tagOptionsMap.put(String.valueOf(t.getId()), t.getName());
+        }
+
+        request.setAttribute("tags", tagOptionsMap);
         request.setAttribute("tagsSort", HibernateController.getAllTags());
         request.getRequestDispatcher("/Tag.jsp").forward(request, response);
     }

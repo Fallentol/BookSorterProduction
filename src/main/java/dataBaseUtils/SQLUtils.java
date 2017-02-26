@@ -13,10 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static config.Configurator.*;
 
@@ -470,13 +467,57 @@ public class SQLUtils implements mySQLhandler {
         return result;
     }
 
+    public ArrayList<Book> getBooksFromTagIds(Set<Integer> tagIds) {
+        ArrayList<Book> result = new ArrayList<Book>();
+        if (tagIds == null || tagIds.size() == 0) return result;
+
+        Set<Integer> bookIds = new TreeSet<>();
+        String whereString = prepareString(tagIds, "tagId");
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM links " + whereString);
+            while (rs.next()) {
+                bookIds.add(rs.getInt("bookId"));
+            }
+            whereString = prepareString(bookIds, "book_id");
+            rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books " + whereString);
+            while (rs.next()) {
+                result.add(allocateBookFields(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("getBookFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
+    }
+
     public ArrayList<Tag> getAllTags() {
         ArrayList<Tag> result = new ArrayList<>();
         try {
-            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM tags");
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM tags ORDER BY tagName");
             System.out.println("RS=" + rs);
             while (rs.next()) {
                 result.add(allocateTagFields(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public Set<Integer> getTagChildren(Set<Integer> result) {
+        if (result == null || result.size() == 0) return new TreeSet<>();
+
+        String whereString = "WHERE";
+        for (Integer i : result) {
+            if (!"WHERE".equals(whereString)) whereString += " OR ";
+            whereString += " tagParent = " + i;
+        }
+        System.out.println("whereString=" + whereString);
+        try {
+            ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT * FROM tags " + whereString + " ORDER BY tagName");
+            System.out.println("RS=" + rs);
+            while (rs.next()) {
+                result.add(rs.getInt("tag_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -776,6 +817,15 @@ public class SQLUtils implements mySQLhandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String prepareString(Set<Integer> items, String field) {
+        String whereString = "WHERE";
+        for (Integer i : items) {
+            if (!"WHERE".equals(whereString)) whereString += " OR ";
+            whereString += " " + field + " = " + i;
+        }
+        return whereString;
     }
     ////////   SERVICE METHODS //////
 }

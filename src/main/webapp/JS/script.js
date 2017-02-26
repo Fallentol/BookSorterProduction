@@ -142,7 +142,7 @@ $('.up_button i').click(function () {
 });
 
 
-searchSubmit.onclick = function () {
+/*searchSubmit.onclick = function () {
     var value = $("#input_vspl").val();
     console.log("value = " + value);
     $.post("/searchPage", {
@@ -154,4 +154,4 @@ searchSubmit.onclick = function () {
         }
     );
     window.open("/searchPage");
-};
+};*/

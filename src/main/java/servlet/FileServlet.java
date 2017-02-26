@@ -63,8 +63,8 @@ public class FileServlet extends HttpServlet {
             tagOptionsMap.put(String.valueOf(t.getId()), t.getName());
         }
 
-        request.setAttribute("fileTable", fileBookLinks);
         request.setAttribute("tags", tagOptionsMap);
+        request.setAttribute("fileTable", fileBookLinks);
         request.setAttribute("bookTypes", new String[]{"n/a", "article", "book", "magazine", "encyclopedia"});
         request.setAttribute("bookLanguage", new String[]{"n/a", "ru", "en", "ua"});
 

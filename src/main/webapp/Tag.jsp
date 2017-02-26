@@ -13,27 +13,32 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 
+    <script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.jquery.js"></script>
+    <script type="text/javascript" src="/JS/chosen_v1.6.2/chosen.proto.js"></script>
+    <link rel="stylesheet" href="/JS/chosen_v1.6.2/chosen.css">
+
     <script type="text/javascript">
         function showDialogTag(item) {
             $("#dialog").dialog({
-                width: 400
+                width: 600,
+                overflow: "visible"
             });
             if (item == null) {
                 $("#dialogTagId").val('');
                 $("#dialogTagName").val('');
-                $("#dialogTagParents").val('');
+                $("#parentSelector").val('');
             } else {
                 var listIndex = $(item).attr("class");
                 $.post("/tagDialog", {listIndex: listIndex, action: "getTagInfo"}, function (resp) {
                     var object = JSON.parse(resp);
                     $("#dialogTagId").val(object.tagId);
                     $("#dialogTagName").val(object.tagName);
-                    $("#dialogTagParents").val(object.tagParent);
+                    updateTagSelector(object.tagParent);
                 });
             }
         }
 
-        function deleteTag (item) {
+        function deleteTag(item) {
             var listIndex = $(item).attr("class");
             $.post("/tagStore", {listIndex: listIndex, action: "deleteTag"}, function (resp) {
                 setTimeout('window.location.reload()', 2000);
@@ -42,7 +47,7 @@
 
         function saveTag() {
             var name = $("#dialogTagName").val();
-            var parent = $("#dialogTagParents").val();
+            var parent = $("#parentSelector").val();
 
             $.post("/tagStore", {
                 action: "saveCard",
@@ -57,6 +62,22 @@
         function closeDialog() {
             $("#dialog").dialog("close");
         }
+
+        function updateTagSelector(d) {
+            console.log(d);
+            if (d == null) return;
+            $('#parentSelector').val(d).trigger('chosen:updated');
+        }
+
+        $(document).ready(function () {
+            $('#parentSelector').chosen({
+                disable_search_threshold: 5,
+                no_results_text: "Oops, nothing found!",
+                width: "98%"
+            });
+            $("#dialog").dialog("close");
+        });
+
 
     </script>
 
@@ -77,6 +98,14 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 3px #999;
+        }
+
+        #dialog {
+            overflow: visible;
+        }
+
+        .chosen-container ul.chosen-results li.highlighted {
+            background-color: #53534e;
         }
     </style>
 </head>
@@ -113,7 +142,7 @@
                 <td width="30px" class="headerRow">
                     ID
                 </td>
-                <td width="200px" class="headerRow">
+                <td width="400px" class="headerRow">
                     Name
                 </td>
                 <td width="30px;" class="headerRow">
@@ -123,8 +152,13 @@
             <c:forEach items="${tagsSort}" var="tag">
                 <tr>
                     <td>
-                        <input class="item${tag.getTagId()}" style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button" value="Edit" onclick="showDialogTag(this)">
-                        <input class="item${tag.getTagId()}" style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button" value="Del" onclick="if(!confirm('Clicking “Ok” will fully delete the Tag.  Click “Cancel” to go back.')) return false; deleteTag(this)">
+                        <input class="item${tag.getTagId()}"
+                               style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button"
+                               value="Edit" onclick="showDialogTag(this)">
+                        <input class="item${tag.getTagId()}"
+                               style="background-color: #6d6d6d; font-weight: normal; font-size: 10px;" type="button"
+                               value="Del"
+                               onclick="if(!confirm('Clicking “Ok” will fully delete the Tag.  Click “Cancel” to go back.')) return false; deleteTag(this)">
                     </td>
                     <td>${tag.getTagId()}</td>
                     <td>${tag.getTagName()}</td>
@@ -132,21 +166,33 @@
                 </tr>
             </c:forEach>
         </table>
-        <input type="button" class="dialogButton" style="margin-left: 20px;" value="Add New Tag" onclick="showDialogTag(null)">
+        <input type="button" class="dialogButton" style="margin-left: 20px;" value="Add New Tag"
+               onclick="showDialogTag(null)">
     </div>
 </div>
 
 
-<div id="dialog" style="display: none;" title="TAG CARD" style="" >
+<div id="dialog" style="display: none;" title="TAG CARD" style="">
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>
-    <table style="border-radius: 8px; border: none; table-layout: fixed; width: 340px;">
+    <table style="border-radius: 8px; border: none; table-layout: fixed; width: 550px;">
         <tr>
-            <td style="border: none; width:10%;"><input disabled="disabled" style="width:95%;" id="dialogTagId" class="dialogInput"
+            <td style="border: none; width:12%;"><input disabled="disabled" style="width:95%;" id="dialogTagId"
+                                                        class="dialogInput"
                                                         type="text" title="Id" placeholder="Id"></td>
-            <td style="border: none;width:80%;"><input style="width:95%;" id="dialogTagName" class="dialogInput"
+            <td style="border: none;width:47%;"><input style="width:95%;" id="dialogTagName" class="dialogInput"
                                                        type="text" title="Tag's name" placeholder="Tag's name"></td>
-            <td style="border: none;width:10%; text-align: left;"><input style="width:95%; margin-left: 0px;" id="dialogTagParents" class="dialogInput"
-                                                       type="text" title="Parent" placeholder="Parent"></td>
+            <%--<td style="border: none;width:10%; text-align: left;"><input style="width:95%; margin-left: 0px;"
+                                                                         id="dialogTagParents" class="dialogInput"
+                                                                         type="text" title="Parent"
+                                                                         placeholder="Parent"></td>--%>
+            <td style="border: none;width:47%;">
+                <select name='type' id="parentSelector"
+                        title="Type" data-placeholder="Select the tag">
+                    <c:forEach items="${tags}" var="tag">
+                        <option value="${tag.key}">${tag.value}</option>
+                    </c:forEach>
+                </select>
+            </td>
         </tr>
     </table>
     <div style="align-content: center; text-align:center; margin:auto; ">
