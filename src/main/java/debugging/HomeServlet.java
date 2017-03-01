@@ -25,6 +25,7 @@ public class HomeServlet extends HttpServlet {
         request.setAttribute("url", "http://www.journaldev.com");
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
         rd.forward(request, response);
+        System.out.println("Hello world");
     }
 
 }
