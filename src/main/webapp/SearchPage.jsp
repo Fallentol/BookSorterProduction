@@ -156,8 +156,8 @@
 
 <style>
     #searchBut:hover {
-        width: 105px;
-        height: 105px;
+        width: 110px;
+        height: 110px;
     }
 </style>
 
