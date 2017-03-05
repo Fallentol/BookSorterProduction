@@ -55,6 +55,7 @@
                         <option value="${tag.key}">${tag.value}</option>
                     </c:forEach>
                 </select>
+                <input type="checkbox" id="childrenInclude"> Include Children
             </div>
         </div>
         <div style="float: right;">
@@ -139,11 +140,14 @@
     function searchBooks() {
         var name = $("#bookName").val();
         var tags = $("#tagSelector").val();
+        var includeChildren = $("#childrenInclude").prop('checked');
+        console.log('includeChildren='+includeChildren);
         name = name == null || name == '' ? 'none' : name;
         tags = tags == null || tags == '' ? 'none' : tags;
         $.post("/searchPage", {
             action: "searchBook",
             name: name,
+            include: includeChildren,
             tags: (tags.toString())
         }, function (resp) {
             console.log(resp);

@@ -65,6 +65,12 @@
         var listIndex = $(item).attr("class");
         $.post("/fileStore", {listIndex: listIndex, action: "openFile"});
     }
+    function deleteFile(item) {
+        var listIndex = $(item).attr("class");
+        $.post("/fileStore", {listIndex: listIndex, action: "deleteFile"});
+        setTimeout('window.location.reload()', 1000)
+    }
+
 
     function saveCard() {
         var name = $("#dialogFileName").val();
@@ -161,9 +167,12 @@
     </header>
 
     <fieldset>
-        <legend>Search</legend>
+        <legend style="color: #ffff99;">Search</legend>
         <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">
         <input type="button" value="Search" onclick="sendPost();">
+        <div style="padding-left: 20px; display: inline-block; color: #e6db74; font-weight: bold; text-shadow: 2px 2px 6px #96992c;">
+            Total files  <c:out value="${totalFiles}"/> and books reserved is <c:out value="${totalBooks}"/>
+        </div>
     </fieldset>
     <div>
         <% int counter = 0; %>
@@ -179,7 +188,7 @@
                 <td class="headerRow">
                     Book Id
                 </td>
-                <td class="headerRow" colspan="2">
+                <td class="headerRow" colspan="3">
                     Action
                 </td>
             </tr>
@@ -189,22 +198,27 @@
 
                     <c:if test="${file.getBaseId() == '000000'}">
                         <td>-//-</td>
-                        <td><input type="button" value="Create Card" class="item<%=counter%>"
+                        <td><input type="button" value="Create" class="item<%=counter%>"
                                    onclick="showDialogCard(this);" style="width:100%; background-color: #ffa718;"></td>
                     </c:if>
                     <c:if test="${file.getBaseId() != '000000'}">
                         <td>${file.getBaseId()}</td>
-                        <td><input type="button" value="Edit Card" class="item<%=counter%>"
+                        <td><input type="button" value="Edit" class="item<%=counter%>"
                                    onclick="showDialogCard(this);" style="width:100%; background-color: #baedba;"></td>
                     </c:if>
-                    <td><input type="button" value="Open File" class="item<%=counter%>"
+                    <td><input type="button" value="Open" class="item<%=counter%>"
                                onclick="openFile(this);" style="width:100%; background-color: #1cb7ff;"></td>
+                    <td><input type="button" value="Del" class="item<%=counter%>"
+                               onclick="if(!confirm('Clicking “Ok” will fully delete the File.  Click “Cancel” to go back.')) return false; deleteFile(this)" style="width:100%; background-color: #ff4c4f;"></td>
                     <% counter++; %>
                 </tr>
             </c:forEach>
         </table>
     </div>
 </div>
+
+
+
 
 <div id="dialog" style="display: none;" title="BOOK CARD">
     <div style="float: right; color: red; font-size:0.6em;" id="dialogWarning"></div>

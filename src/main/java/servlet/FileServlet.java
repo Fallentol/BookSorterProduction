@@ -33,6 +33,16 @@ public class FileServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        if ("deleteFile".equals(request.getParameter("action"))) {
+            try {
+                String param = request.getParameter("listIndex").replace("item", "");
+                int listIndex = Integer.valueOf(param);
+                String fileName = FileController.getFileBooksByName(Configurator.findFileName).get(listIndex);
+                FileController.deleteFile(fileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -64,6 +74,8 @@ public class FileServlet extends HttpServlet {
         }
 
         request.setAttribute("tags", tagOptionsMap);
+        request.setAttribute("totalFiles", FileController.filesQuantity);
+        request.setAttribute("totalBooks", SQLUtils.bookQuantity);
         request.setAttribute("fileTable", fileBookLinks);
         request.setAttribute("bookTypes", new String[]{"n/a", "article", "book", "magazine", "encyclopedia"});
         request.setAttribute("bookLanguage", new String[]{"n/a", "ru", "en", "ua"});

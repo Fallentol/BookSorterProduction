@@ -22,15 +22,18 @@ public class SQLUtils implements mySQLhandler {
     public static Connection sqlConnection;
 
     public static Map<String, Integer> fileBaseIdMap; // мапа, где ключ -путь к файлу, а значение Айдишник book из базы данных
+    public static int bookQuantity = 0;
 
     public static void initFileBaseIdMap() {
         try {
             ResultSet rs = sqlConnection.createStatement().executeQuery("SELECT book_Id, bookPath FROM books");
             fileBaseIdMap = new HashMap<>();
+            bookQuantity = 0;
             while (rs.next()) {
                 String bookPA = rs.getString("bookPath");
                 int bookId = rs.getInt("book_Id");
                 fileBaseIdMap.put(bookPA, bookId);
+                bookQuantity++;
             }
         } catch (Exception e) {
             System.out.println("ОШИБКА НАПОЛНЕНИЯ МАПЫ");
@@ -482,6 +485,23 @@ public class SQLUtils implements mySQLhandler {
             rs = sqlConnection.createStatement().executeQuery("SELECT * FROM books " + whereString);
             while (rs.next()) {
                 result.add(allocateBookFields(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("getBookFromId WARNING!! " + e.getStackTrace());
+            return result;
+        }
+        return result;
+    }
+
+    public ArrayList<Book> getBooksFromName(String bookName) {
+        ArrayList<Book> result = new ArrayList<Book>();
+        if (bookName == null || bookName.equals("")) return result;
+
+        Set<Integer> bookIds = new TreeSet<>();
+        try {
+            ResultSet rset = sqlConnection.createStatement().executeQuery("SELECT * FROM books WHERE bookName LIKE '%" + bookName + "%'");
+            while (rset.next()) {
+                result.add(allocateBookFields(rset));
             }
         } catch (SQLException e) {
             System.err.println("getBookFromId WARNING!! " + e.getStackTrace());

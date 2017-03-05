@@ -18,35 +18,49 @@ import java.util.*;
 public class SearchServlet extends HttpServlet {
 
     private static Set<Integer> tagChildrenIds = new TreeSet<>();
+    private static String bookname = null;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /*if ("searchValue".equals(request.getParameter("action"))) {
-            try {
-
-            } catch (Exception e) {
-                System.out.println("Search FAILED." + e);
-            }
-        }*/
-
         if ("searchBook".equals(request.getParameter("action"))) {
             try {
+                SQLUtils sqlUtils = new SQLUtils();
+                Set<Integer> tagIds = new TreeSet<>();
+
                 String name = request.getParameter("name");
                 String tags = request.getParameter("tags");
-                System.out.println("name=" + name + " tags=" + tags);
-                Set<Integer> tagIds = new TreeSet<>();
-                for (String s : tags.split(",")) {
-                    tagIds.add(Integer.valueOf(s));
+                boolean needToIncludeChildren = Boolean.valueOf(request.getParameter("include"));
+                System.out.println("name=" + name + " tags=" + tags + " bool=" + needToIncludeChildren);
+
+                if (name.equals("none") && tags.equals("none")) {
+                    bookname = null;
+                    tagChildrenIds = new TreeSet<>();
+                    return;
                 }
-                SQLUtils sqlUtils = new SQLUtils();
-                tagChildrenIds = tagIds;
-                int setsize = 0;
-                while (true) {
-                    tagChildrenIds = sqlUtils.getTagChildren(tagChildrenIds);
-                    if (setsize == tagChildrenIds.size()) break;
-                    setsize = tagChildrenIds.size();
+
+                if (name.equals("none")) {
+                    bookname = null;
+                } else {
+                    bookname = name;
+                }
+                if (tags.equals("none")) {
+                    tagChildrenIds = new TreeSet<>();
+                } else {
+                    for (String s : tags.split(",")) {
+                        tagIds.add(Integer.valueOf(s));
+                    }
+                    tagChildrenIds = tagIds;
+                }
+
+                if (needToIncludeChildren && tagChildrenIds.size() > 0) {
+                    int setsize = 0;
+                    while (true) {
+                        tagChildrenIds = sqlUtils.getTagChildren(tagChildrenIds);
+                        if (setsize == tagChildrenIds.size()) break;
+                        setsize = tagChildrenIds.size();
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Search FAILED." + e);
@@ -65,7 +79,15 @@ public class SearchServlet extends HttpServlet {
         for (Tag t : sqlUtils.getAllTags()) {
             tagOptionsMap.put(String.valueOf(t.getId()), t.getName());
         }
-        ArrayList<Book> books = sqlUtils.getBooksFromTagIds(tagChildrenIds);
+        ArrayList<Book> books = new ArrayList<>();
+        if (bookname != null) {
+            books = sqlUtils.getBooksFromName(bookname);
+            System.out.println("На выходе bookName=" + bookname);
+            System.out.println("bookname book.size=" + books.size());
+        } else {
+            books = sqlUtils.getBooksFromTagIds(tagChildrenIds);
+            System.out.println("bookTag book.size=" + books.size());
+        }
 
         request.setAttribute("tags", tagOptionsMap);
         request.setAttribute("books", books);

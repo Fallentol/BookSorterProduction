@@ -11,11 +11,13 @@ public class FileController {
 
     private static Thread delOldFileIdThread;
     private static Thread unzipThread;
+    public static int filesQuantity = 0;
 
     public static ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
         File fileObject = new File(Configurator.filePath);
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)
+        filesQuantity = fileArray.length;
         for (String currentFile : fileArray) {
             if (currentFile.contains(name)) {
                 result.add(currentFile);
@@ -56,6 +58,10 @@ public class FileController {
 
     public static void openFile(String fileName) {
         FileProcessor.openFile(fileName);
+    }
+
+    public static void deleteFile(String fileName) {
+        FileProcessor.deleteFile(fileName);
     }
 
     public static void reserveBook(Book book) {

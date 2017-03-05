@@ -5,6 +5,7 @@ import essence.Book;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.*;
 
 public class FileProcessor {
 
@@ -80,6 +81,19 @@ public class FileProcessor {
             }
         } else {
             System.out.println("НЕ ПОДДЕРЖИВАЕТСЯ");
+        }
+    }
+
+    public static void deleteFile(String filename) {
+        Path path = Paths.get(Configurator.filePath + filename);
+        try {
+            Files.delete(path);
+        } catch (NoSuchFileException x) {
+            System.err.format("WARNING!!! No such file or directory ", path);
+        } catch (DirectoryNotEmptyException x) {
+            System.err.format("WARNING!!! Not empty", path);
+        } catch (IOException x) {
+            System.err.println(x);
         }
     }
 
