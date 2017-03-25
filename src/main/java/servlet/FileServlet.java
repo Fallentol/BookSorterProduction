@@ -23,6 +23,12 @@ public class FileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            System.out.println("ACTION = " + request.getParameter("action"));
+        } catch (Exception e) {
+
+        }
+
         if ("openFile".equals(request.getParameter("action"))) {
             try {
                 String param = request.getParameter("listIndex").replace("item", "");
@@ -43,6 +49,15 @@ public class FileServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        if ("forwardPage".equals(request.getParameter("action"))) {
+            System.out.println("FORWARD");
+            FileController.startPosition += FileController.booksOnThePage;
+        } else if ("backPage".equals(request.getParameter("action"))) {
+            FileController.startPosition -= FileController.booksOnThePage;
+            if (FileController.startPosition < 0) FileController.startPosition = 0;
+            System.out.println("BACK");
+        }
+
     }
 
     @Override
@@ -53,9 +68,12 @@ public class FileServlet extends HttpServlet {
         try {
             findName = new String(request.getParameter("findText").getBytes("ISO-8859-1"), "UTF-8");
         } catch (Exception e) {
-            findName = "test";
+            findName = "";
         }
-        Configurator.findFileName = findName;
+        if (!findName.equals("")) {
+            Configurator.findFileName = findName;
+        }
+
         FileController fileController = new FileController();
         SQLUtils.initFileBaseIdMap();
         ArrayList<FileBookLink> fileBookLinks = new ArrayList<>();
@@ -73,7 +91,9 @@ public class FileServlet extends HttpServlet {
             tagOptionsMap.put(String.valueOf(t.getId()), t.getName());
         }
 
+
         request.setAttribute("tags", tagOptionsMap);
+        request.setAttribute("showListing", (FileController.filesFound > FileController.booksOnThePage));
         request.setAttribute("totalFiles", FileController.filesQuantity);
         request.setAttribute("totalBooks", SQLUtils.bookQuantity);
         request.setAttribute("fileTable", fileBookLinks);

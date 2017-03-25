@@ -12,18 +12,28 @@ public class FileController {
     private static Thread delOldFileIdThread;
     private static Thread unzipThread;
     public static int filesQuantity = 0;
+    public static int filesFound = 0;
+    public static int startPosition = 0;
+    public static int booksOnThePage = 20;
 
     public static ArrayList<String> getFileBooksByName(String name) {
         ArrayList<String> result = new ArrayList<String>();
         File fileObject = new File(Configurator.filePath);
         String[] fileArray = fileObject.list();// list вытягивает список папок и файлов (null если это не директория, а файл)
         filesQuantity = fileArray.length;
+        int counter = -1;
+        boolean needNextOne = true;
         for (String currentFile : fileArray) {
             if (currentFile.contains(name)) {
-                result.add(currentFile);
-                if (result.size() > 20) break;
+                counter++;
+                if (counter < startPosition) continue;
+                if (counter >= (startPosition + booksOnThePage)) needNextOne = false;
+                if (needNextOne) {
+                    result.add(currentFile);
+                }
             }
         }
+        filesFound = counter;
         return result;
     }
 

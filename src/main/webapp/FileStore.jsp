@@ -29,6 +29,16 @@
             .appendTo($(document.body)) //it has to be added somewhere into the <body>
             .submit();
     }
+
+    function forwardPage() {
+        $.post("/fileStore", {action: "forwardPage"});
+        setTimeout('window.location.reload()', 500);
+    }
+    function backPage() {
+        $.post("/fileStore", {action: "backPage"});
+        setTimeout('window.location.reload()', 500);
+    }
+
     function showDialogCard(item) {
         $("#dialog").dialog({
             width: 800,
@@ -145,6 +155,21 @@
     #dialog {
         overflow: visible;
     }
+
+    .navigationButton:active {
+        width: 90px;
+        height: 60px;
+    }
+
+    .navigationButton:hover {
+        width: 122px;
+        height: 105px;
+    }
+
+    .navigationButton {
+        width: 120px;
+        height: 100px;
+    }
 </style>
 
 <body>
@@ -171,7 +196,7 @@
         <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">
         <input type="button" value="Search" onclick="sendPost();">
         <div style="padding-left: 20px; display: inline-block; color: #e6db74; font-weight: bold; text-shadow: 2px 2px 6px #96992c;">
-            Total files  <c:out value="${totalFiles}"/> and books reserved is <c:out value="${totalBooks}"/>
+            Total files <c:out value="${totalFiles}"/> and <c:out value="${totalBooks}"/> books are reserved
         </div>
     </fieldset>
     <div>
@@ -209,15 +234,24 @@
                     <td><input type="button" value="Open" class="item<%=counter%>"
                                onclick="openFile(this);" style="width:100%; background-color: #1cb7ff;"></td>
                     <td><input type="button" value="Del" class="item<%=counter%>"
-                               onclick="if(!confirm('Clicking “Ok” will fully delete the File.  Click “Cancel” to go back.')) return false; deleteFile(this)" style="width:100%; background-color: #ff4c4f;"></td>
+                               onclick="if(!confirm('Clicking “Ok” will fully delete the File.  Click “Cancel” to go back.')) return false; deleteFile(this)"
+                               style="width:100%; background-color: #ff4c4f;"></td>
                     <% counter++; %>
                 </tr>
             </c:forEach>
         </table>
+        <c:if test="${showListing}">
+            <div style="float: left;">
+                <img src="images/backArrow.png" class="navigationButton" alt="BACK PAGE"
+                     title="Page Back" onclick="backPage();">
+            </div>
+            <div style="float: right;">
+                <img src="images/forwardArrow.png" class="navigationButton" alt="FORWARD PAGE"
+                     title="Page Forward" onclick="forwardPage();">
+            </div>
+        </c:if>
     </div>
 </div>
-
-
 
 
 <div id="dialog" style="display: none;" title="BOOK CARD">
@@ -240,7 +274,8 @@
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='language' class="dialogInput" title="Language" id="dialogFileLanguage">
+                <select name='language' class="dialogInput" title="Language" id="dialogFileLanguage"
+                        data-placeholder="language">
                     <c:forEach items="${bookLanguage}" var="language">
                         <option value="${language}">${language}</option>
                     </c:forEach>
@@ -251,7 +286,7 @@
         </tr>
         <tr>
             <td style="border: none;">
-                <select name='type' class="dialogInput" title="Type" id="dialogFileType">
+                <select name='type' class="dialogInput" title="Type" id="dialogFileType" data-placeholder="type">
                     <c:forEach items="${bookTypes}" var="type">
                         <option value="${type}">${type}</option>
                     </c:forEach>

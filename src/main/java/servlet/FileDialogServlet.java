@@ -36,8 +36,6 @@ public class FileDialogServlet extends HttpServlet {
                 String description = request.getParameter("description");
                 String author = request.getParameter("author");
                 String tags = request.getParameter("tags");
-                System.out.println("tags=" + tags);
-                //tags=10,14,2
 
                 int bookId = 0;
                 int year;
@@ -99,9 +97,9 @@ public class FileDialogServlet extends HttpServlet {
 
     private JSONObject getJSONObjectForNewFile(String fileName) {
         String filePath = fileName;
-        String fileYear = "n/a";
-        String fileAuthor = "n/a";
-        String fileFormat = "n/a";
+        String fileYear = "2050";
+        String fileAuthor = "Author";
+        String fileFormat = "Format";
 
         Pattern p = Pattern.compile("19\\d{2}|20\\d{2}");
         Matcher m = p.matcher(fileName);
@@ -109,7 +107,7 @@ public class FileDialogServlet extends HttpServlet {
         try {
             fileYear = m.group();
         } catch (Exception e) {
-            fileYear = "n/a";
+            fileYear = "2050";
         }
 
         p = Pattern.compile("(.jpg|.pdf|.html|.rar|.zip|.txt|.djvu|.doc|.rtf)$"); // ([^\s]+(\.(?i)(jpg|png|gif|bmp|pdf|djvu))$)
@@ -118,7 +116,7 @@ public class FileDialogServlet extends HttpServlet {
         try {
             fileFormat = m.group();
         } catch (Exception e) {
-            fileFormat = "n/a";
+            fileFormat = "Format";
         }
 
         fileName = fileName.replaceAll("(.jpg|.pdf|.html|.rar|.zip|.txt|.djvu|.doc|.rtf)$", "").replaceAll("19\\d{2}|20\\d{2}", "");
@@ -130,6 +128,8 @@ public class FileDialogServlet extends HttpServlet {
             json.put("fileYear", fileYear);
             json.put("fileFormat", fileFormat);
             json.put("filePath", filePath);
+            json.put("fileLanguage", "ru");
+            json.put("fileType", "book");
         } catch (Exception e) {
             System.out.println("JSONObject json Exception=" + e);
         }

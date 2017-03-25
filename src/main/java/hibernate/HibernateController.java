@@ -18,7 +18,7 @@ public class HibernateController {
 
     public static List<TagsEntity> getAllTags() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Query query = session.createQuery("FROM TagsEntity");
+        Query query = session.createQuery("FROM TagsEntity ORDER BY tagName");
         //session.close();
         return query.list();
     }
