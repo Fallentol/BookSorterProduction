@@ -30,6 +30,12 @@
             .submit();
     }
 
+    function handleEnter(e) {
+        if (e.keyCode == 13) {
+            sendPost();
+        }
+    }
+
     function forwardPage() {
         $.post("/fileStore", {action: "forwardPage"});
         setTimeout('window.location.reload()', 500);
@@ -193,7 +199,8 @@
 
     <fieldset>
         <legend style="color: #ffff99;">Search</legend>
-        <input type="text" class="findText" placeholder="Put out file name" style="width: 200px">
+        <input type="text" class="findText" placeholder="Put out file name" onkeypress="return handleEnter(event);"
+               style="width: 200px">
         <input type="button" value="Search" onclick="sendPost();">
         <div style="padding-left: 20px; display: inline-block; color: #e6db74; font-weight: bold; text-shadow: 2px 2px 6px #96992c;">
             Total files <c:out value="${totalFiles}"/> and <c:out value="${totalBooks}"/> books are reserved
